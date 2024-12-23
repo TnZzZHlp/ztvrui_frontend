@@ -13,4 +13,16 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    proxy: {
+      '/ztapi/': {
+        target: 'http://192.168.255.51:7000',
+        changeOrigin: true,
+      },
+      '/api/': {
+        target: 'http://192.168.3.10:7000',
+        changeOrigin: true,
+      },
+    },
+  },
 })

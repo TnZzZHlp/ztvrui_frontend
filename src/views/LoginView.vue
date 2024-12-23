@@ -15,6 +15,13 @@ const password = ref('')
 const errMsg = ref('')
 const showErrMsg = ref(false)
 
+// Listen Enter
+document.onkeydown = function (event) {
+  if (event.key === 'Enter') {
+    login()
+  }
+};
+
 const login = () => {
   fetch('/api/login', {
     method: 'POST',
@@ -28,11 +35,9 @@ const login = () => {
   })
     .then(res => res.json())
     .then(data => {
-      if (data.code === 0) {
-        // 跳转到首页
-        router.push('/manage')
+      if (data.error === '0') {
+        router.push('/home')
       } else {
-        // 登录失败
         errMsg.value = data.error
         showErrMsg.value = true
       }
@@ -41,34 +46,35 @@ const login = () => {
       errMsg.value = 'Unknown error:' + err
       showErrMsg.value = true
     })
-
 }
 </script>
 
 <template>
   <v-app :theme="theme">
     <div class="page-wrapper">
+
       <header>
-        <!-- <img src="/src/assets/ZeroTierIcon.png" alt=""> -->
         <v-img class="mx-auto my-6" max-width="64" src="/ZeroTierIcon.png"></v-img>
       </header>
+
       <main>
         <section>
           <v-text-field :label="$t('username')" variant="outlined" v-model="username"></v-text-field>
-          <v-text-field :label="$t('password')" variant="outlined" v-model="password"></v-text-field>
+          <v-text-field :label="$t('password')" variant="outlined" v-model="password" type="password"></v-text-field>
 
           <v-btn @click="login()" variant="tonal">{{ $t('login') }}</v-btn>
           <v-snackbar v-model="showErrMsg" timeout="5000" color="error">
             {{ errMsg }}
           </v-snackbar>
         </section>
-
       </main>
+
       <footer>
         <div>
           <a href="https://github.com/tnzzzhlp/ztvrui">Powered by ztvrui</a>
         </div>
       </footer>
+
     </div>
   </v-app>
 </template>

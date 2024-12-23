@@ -39,7 +39,7 @@ const active = ref('')
         </template>
       </v-navigation-drawer>
 
-      <v-main class="d-flex align-center justify-center">
+      <v-main class="d-flex">
         <RouterView />
       </v-main>
     </v-layout>

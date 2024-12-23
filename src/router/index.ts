@@ -1,5 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
+import HomeView from '../views/HomeView.vue'
+
+import NetworksComponent from '@/components/NetworksComponent.vue'
+import NetworkComponent from '@/components/NetworkComponent.vue'
+import UserManageComponent from '@/components/UserManageComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +13,28 @@ const router = createRouter({
       path: '/',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: HomeView,
+      children: [
+        {
+          path: '',
+          name: 'networks',
+          component: NetworksComponent,
+        },
+        {
+          path: 'network/:id',
+          name: 'network',
+          component: NetworkComponent,
+        },
+        {
+          path: 'user_manage',
+          name: 'user_manage',
+          component: UserManageComponent,
+        },
+      ],
     },
   ],
 })

@@ -136,9 +136,7 @@ const copyToClipboard = (content: string) => {
 
       <template v-slot:subtitle>
         <v-btn variant="text" size="small" @click="copyToClipboard(network.id)">
-          <v-icon>
-            content_copy
-          </v-icon>
+          <v-icon icon="$copy" />
           {{ network.id }}
           <v-tooltip activator="parent" location="end" open-on-click :open-on-hover='false'>
             {{ $t('copied') }}
@@ -148,7 +146,7 @@ const copyToClipboard = (content: string) => {
 
       <template v-slot:actions>
         <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
-          <v-btn :text="$t('delete_network')" variant="tonal" @click="showDialog(network.id)" prepend-icon="delete"
+          <v-btn :text="$t('delete_network')" variant="tonal" @click="showDialog(network.id)" prepend-icon="$delete"
             color="red"></v-btn>
           <v-btn :text="$t('enter_network')" variant="tonal"
             @click="router.push('/home/network/' + network.id)"></v-btn>

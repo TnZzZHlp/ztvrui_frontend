@@ -5,18 +5,30 @@ import i18n from './i18n'
 
 // Vuetify
 import 'vuetify/styles'
-import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure your project is capable of handling css files
+import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { aliases, md } from 'vuetify/iconsets/md'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
+import {
+  mdiNetworkOutline,
+  mdiContentCopy,
+  mdiAccountCircleOutline,
+  mdiDeleteOutline,
+} from '@mdi/js'
 
 const vuetify = createVuetify({
   icons: {
-    defaultSet: 'md',
-    aliases,
+    defaultSet: 'mdi',
+    aliases: {
+      ...aliases,
+      network: mdiNetworkOutline,
+      copy: mdiContentCopy,
+      account: mdiAccountCircleOutline,
+      delete: mdiDeleteOutline,
+    },
     sets: {
-      md,
+      mdi,
     },
   },
   components,

@@ -12,9 +12,12 @@ const en = {
   logout: 'Logout',
   network_name: 'Network name',
   networks: 'Networks',
+  network_member: 'Network member',
   no_networks_yet: 'No networks yet',
   password: 'Password',
   please_check_config_or_create_network: 'Please check the configuration or create a network',
+  overview: 'Overview',
+  setting: 'Setting',
   user_manage: 'UserManage',
   username: 'Username',
 }

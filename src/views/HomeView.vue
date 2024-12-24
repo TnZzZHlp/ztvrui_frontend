@@ -16,6 +16,17 @@ const changeComponent = (component: string) => {
 
 const active = ref('')
 
+// Logout
+const logout = () => {
+  fetch('/api/logout')
+    .then(res => res.json())
+    .then(data => {
+      if (data.error == '0') {
+        router.push('/')
+      }
+    })
+}
+
 onMounted(() => {
   // Check Cookie
   fetch('/api/check')
@@ -31,21 +42,22 @@ onMounted(() => {
 
 <template>
   <v-app :theme="theme">
+
     <v-layout class="rounded rounded-md">
       <v-app-bar title="ZTVRUI">
       </v-app-bar>
 
       <v-navigation-drawer permanent>
         <v-list nav>
-          <v-list-item :title="$t('networks')" @click="changeComponent('networks')"
-            :active="active === 'networks'"></v-list-item>
+          <v-list-item :title="$t('networks')" @click="changeComponent('networks')" :active="active === 'networks'"
+            append-icon="$network"></v-list-item>
           <v-list-item :title="$t('user_manage')" @click="changeComponent('user_manage')"
-            :active="active === 'user_manage'">
+            :active="active === 'user_manage'" append-icon="$account">
           </v-list-item>
         </v-list>
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn block>
+            <v-btn block @click="logout" variant="outlined">
               {{ $t('logout') }}
             </v-btn>
           </div>

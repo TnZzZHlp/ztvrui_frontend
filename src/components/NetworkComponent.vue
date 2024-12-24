@@ -4,49 +4,29 @@ import { useRoute } from 'vue-router'
 
 const network_id = ref(useRoute().params.id)
 
-import { shallowRef } from 'vue'
-
-const tab = shallowRef('tab-1')
-const tabs = [
-  {
-    icon: 'book-open-page-variant',
-    text: 'Readme',
-    value: 'tab-1',
-  },
-  {
-    icon: 'handshake-outline',
-    text: 'Code of Conduct',
-    value: 'tab-2',
-  },
-  {
-    icon: 'license',
-    text: 'MIT License',
-    value: 'tab-3',
-  },
-  {
-    icon: 'shield-lock-outline',
-    text: 'Security',
-    value: 'tab-4',
-  },
-]
-
+const tab = ref(null)
 </script>
 
 <template>
-  <v-sheet color="#0d1117" elevation="3" rounded="lg">
-    <v-tabs v-model="tab" :items="tabs" align-tabs="center" color="white" height="60" slider-color="#f78166">
-      <template v-slot:tab="{ item }">
-        <v-tab :text="item.text" :value="item.value" class="text-none"></v-tab>
-      </template>
-
-      <template v-slot:item="{ item }">
-        <v-tabs-window-item :value="item.value" class="pa-4">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore
-          voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde
-          voluptatem!
-        </v-tabs-window-item>
-      </template>
+  <v-sheet height="100%">
+    <v-tabs v-model="tab" align-tabs="center">
+      <v-tab :value="1">{{ $t('overview') }}</v-tab>
+      <v-tab :value="2">{{ $t('network_member') }}</v-tab>
+      <v-tab :value="3">{{ $t('setting') }}</v-tab>
     </v-tabs>
+
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item :value="1">
+        1
+      </v-tabs-window-item>
+      <v-tabs-window-item :value="2">
+        2
+      </v-tabs-window-item>
+
+      <v-tabs-window-item :value="3">
+        3
+      </v-tabs-window-item>
+    </v-tabs-window>
   </v-sheet>
 </template>
 

@@ -16,7 +16,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/ztapi/': {
-        target: 'http://192.168.255.51:7000',
+        target: 'http://192.168.3.10:7000',
         changeOrigin: true,
       },
       '/api/': {

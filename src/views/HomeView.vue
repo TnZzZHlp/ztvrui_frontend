@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -16,19 +16,32 @@ const changeComponent = (component: string) => {
 
 const active = ref('')
 
+onMounted(() => {
+  // Check Cookie
+  fetch('/api/check')
+    .then(res => res.json())
+    .then(data => {
+      if (data.error != '0') {
+        router.push(data.path)
+      }
+    })
+})
+
 </script>
 
 <template>
   <v-app :theme="theme">
     <v-layout class="rounded rounded-md">
-      <v-app-bar title="ZTVRUI"></v-app-bar>
+      <v-app-bar title="ZTVRUI">
+      </v-app-bar>
 
       <v-navigation-drawer permanent>
         <v-list nav>
           <v-list-item :title="$t('networks')" @click="changeComponent('networks')"
             :active="active === 'networks'"></v-list-item>
           <v-list-item :title="$t('user_manage')" @click="changeComponent('user_manage')"
-            :active="active === 'user_manage'"></v-list-item>
+            :active="active === 'user_manage'">
+          </v-list-item>
         </v-list>
         <template v-slot:append>
           <div class="pa-2">
@@ -39,9 +52,12 @@ const active = ref('')
         </template>
       </v-navigation-drawer>
 
-      <v-main class="d-flex">
+      <v-main class="d-flex" scrollable>
         <RouterView />
       </v-main>
+
     </v-layout>
   </v-app>
 </template>
+
+<style scoped></style>

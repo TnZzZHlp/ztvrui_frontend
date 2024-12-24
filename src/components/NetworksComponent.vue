@@ -1,63 +1,208 @@
 <script setup lang="ts">
+import router from '@/router'
 import { ref, onMounted } from 'vue'
 
+onMounted(() => {
+  getNetworks()
+})
+
+// Get networks
 interface Network {
-  id: number
+  id: string
   name: string
 }
 
 const networks = ref<Network[]>([])
 
-onMounted(() => {
-
-  const temp = []
-
-  fetch('/ztapi/controller/network', { mode: 'no-cors' })
-    .then(response => response.json())
-    .then(data => {
+const getNetworks = () => {
+  fetch('/ztapi/controller/network', {
+    credentials: 'include',
+  })
+    .then((response) => response.json())
+    .then((data) => {
       data.forEach((element: string) => {
-        fetch('/ztapi/controller/network/' + element, { mode: 'no-cors' })
-          .then(response => response.json())
-          .then(data => {
+        fetch('/ztapi/controller/network/' + element, {
+          credentials: 'include',
+        })
+          .then((response) => response.json())
+          .then((data) => {
             networks.value.push({
               id: data.id,
-              name: data.name
+              name: data.name,
             })
           })
-          .catch(error => {
+          .catch((error) => {
             console.error('There was an error!', error)
           })
       })
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('There was an error!', error)
     })
-})
+}
 
+// Create a new network
+const networkName = ref('')
+
+const createNetwork = () => {
+  fetch('/ztapi/controller/network', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: networkName.value,
+      enableBroadcast: true,
+      mtu: 1280,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      networks.value.push({
+        id: data.id,
+        name: data.name,
+      })
+    })
+    .catch((error) => {
+      console.error('There was an error!', error)
+    })
+}
+
+// Delete a network
+const dialogShow = ref(false)
+const deleteNetworkId = ref('')
+
+const showDialog = (id: string) => {
+  deleteNetworkId.value = id
+  dialogShow.value = true
+}
+
+const deleteNetwork = () => {
+  if (deleteNetworkId.value === '') {
+    return
+  }
+
+  fetch('/ztapi/controller/network/' + deleteNetworkId.value, {
+    method: 'DELETE',
+  })
+    .then((response) => response.json())
+    .then(() => {
+      networks.value = networks.value.filter((network) => network.id !== deleteNetworkId.value)
+      dialogShow.value = false
+      deleteNetworkId.value = ''
+    })
+    .catch((error) => {
+      console.error('There was an error!', error)
+    })
+}
+
+// Copy Network ID
+const unsecuredCopyToClipboard = (text: string) => {
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+  document.body.appendChild(textArea)
+  textArea.focus()
+  textArea.select()
+  try {
+    document.execCommand('copy')
+  } catch (err) {
+    console.error('Unable to copy to clipboard', err)
+  }
+  document.body.removeChild(textArea)
+}
+
+/**
+ * Copies the text passed as param to the system clipboard
+ * Check if using HTTPS and navigator.clipboard is available
+ * Then uses standard clipboard API, otherwise uses fallback
+ */
+const copyToClipboard = (content: string) => {
+  if (window.isSecureContext && navigator.clipboard) {
+    navigator.clipboard.writeText(content);
+  } else {
+    unsecuredCopyToClipboard(content)
+  }
+}
 </script>
 
 <template>
   <div class="cards">
-    <v-card :title="network.name" :subtitle=network.id v-for="network in networks" :key="network.id"
-      :to="{ name: 'network', params: { id: network.id } }">
-      <!-- <v-card-actions>
-        <v-btn>Click me</v-btn>
-      </v-card-actions> -->
+    <!-- Networks -->
+    <v-card v-for="network in networks" :key="network.id">
+      <template v-slot:title>
+        {{ network.name }}
+      </template>
+
+      <template v-slot:subtitle>
+        <v-btn variant="text" size="small" @click="copyToClipboard(network.id)">
+          <v-icon>
+            content_copy
+          </v-icon>
+          {{ network.id }}
+          <v-tooltip activator="parent" location="end" open-on-click :open-on-hover='false'>
+            {{ $t('copied') }}
+          </v-tooltip>
+        </v-btn>
+      </template>
+
+      <template v-slot:actions>
+        <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
+          <v-btn :text="$t('delete_network')" variant="tonal" @click="showDialog(network.id)" prepend-icon="delete"
+            color="red"></v-btn>
+          <v-btn :text="$t('enter_network')" variant="tonal"
+            @click="router.push('/home/network/' + network.id)"></v-btn>
+        </div>
+      </template>
     </v-card>
+
+    <!-- Create a New Network -->
+    <v-card>
+      <template v-slot:title>
+        {{ $t('create_network') }}
+      </template>
+
+
+      <template v-slot:text>
+        <v-text-field :label="$t('network_name')" variant="outlined" max-width="400" v-model="networkName"
+          @keyup.enter="createNetwork"></v-text-field>
+      </template>
+
+      <template v-slot:actions>
+        <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
+          <v-btn :text="$t('create')" variant="tonal" @click="createNetwork"></v-btn>
+        </div>
+      </template>
+    </v-card>
+
+
+    <!-- Confirm Delete Network Dialog -->
+    <v-dialog max-width="500" v-model="dialogShow">
+      <v-card :title="$t('confirm_delete_network') + ' ' + deleteNetworkId + ' ' + '?'">
+        <v-card-text>
+          {{ $t('delete_network_tip') }}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn :text="$t('confirm_delete_network')" @click="deleteNetwork()" prepend-icon="delete"
+            color="red"></v-btn>
+          <v-btn :text="$t('cancel')" @click="dialogShow = false"></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <style>
 .cards {
   display: flex;
-  flex-wrap: wrap;
-  height: 100%;
+  flex-direction: column;
   width: 100%;
+  align-items: center;
 }
 
 .cards>* {
-  flex: 1 1 200px;
-  height: 200px;
+  width: calc(100% - 20px);
   margin: 10px;
 }
 </style>

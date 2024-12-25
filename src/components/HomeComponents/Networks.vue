@@ -2,9 +2,11 @@
 import router from '@/router'
 import { ref, onMounted } from 'vue'
 
-onMounted(() => {
-  getNetworks()
-})
+
+// Edit network name
+const editNetworkName = (name: string) => {
+  console.log(name)
+}
 
 // Get networks
 interface Network {
@@ -124,6 +126,11 @@ const copyToClipboard = (content: string) => {
     unsecuredCopyToClipboard(content)
   }
 }
+
+
+onMounted(() => {
+  getNetworks()
+})
 </script>
 
 <template>
@@ -131,10 +138,14 @@ const copyToClipboard = (content: string) => {
     <!-- Networks -->
     <v-card v-for="network in networks" :key="network.id">
       <template v-slot:title>
-        {{ network.name }}
+        {{ $t('network_name') }}
+        <v-text-field variant="underlined" :width="400" @keyup.enter="editNetworkName(network.name)">
+          {{ network.name }}
+        </v-text-field>
       </template>
 
       <template v-slot:subtitle>
+        {{ $t('network_id') }}
         <v-btn variant="text" size="small" @click="copyToClipboard(network.id)">
           <v-icon icon="$copy" />
           {{ network.id }}

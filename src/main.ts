@@ -15,6 +15,7 @@ import {
   mdiContentCopy,
   mdiAccountCircleOutline,
   mdiDeleteOutline,
+  mdiPencilOutline,
 } from '@mdi/js'
 
 const vuetify = createVuetify({
@@ -26,6 +27,7 @@ const vuetify = createVuetify({
       copy: mdiContentCopy,
       account: mdiAccountCircleOutline,
       delete: mdiDeleteOutline,
+      edit: mdiPencilOutline,
     },
     sets: {
       mdi,

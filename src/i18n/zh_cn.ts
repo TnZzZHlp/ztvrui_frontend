@@ -13,12 +13,15 @@ const zh_cn = {
   network_name: '网络名称',
   networks: '网络',
   no_networks_yet: '当前控制器没有网络',
+  ip_assignment: 'IP分配',
+  overview: '概览',
   password: '密码',
   please_check_config_or_create_network: '请检查配置或创建网络',
-  overview: '概览',
+  route: '路由',
   setting: '设置',
   user_manage: '用户管理',
   username: '用户名',
+  network_id: '网络ID',
 }
 
 export default zh_cn

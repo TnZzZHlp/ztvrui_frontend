@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 
-import NetworksComponent from '@/components/NetworksComponent.vue'
-import NetworkComponent from '@/components/NetworkComponent.vue'
-import UserManageComponent from '@/components/UserManageComponent.vue'
+import NetworksComponent from '@/components/HomeComponents/Networks.vue'
+import NetworkComponent from '@/components/HomeComponents/Network.vue'
+import UserManageComponent from '@/components/HomeComponents/UserManage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

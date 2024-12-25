@@ -14,12 +14,15 @@ const en = {
   networks: 'Networks',
   network_member: 'Network member',
   no_networks_yet: 'No networks yet',
+  ip_assignment: 'IP assignment',
+  overview: 'Overview',
   password: 'Password',
   please_check_config_or_create_network: 'Please check the configuration or create a network',
-  overview: 'Overview',
+  route: 'Route',
   setting: 'Setting',
   user_manage: 'UserManage',
   username: 'Username',
+  network_id: 'Network ID',
 }
 
 export default en

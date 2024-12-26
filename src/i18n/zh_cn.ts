@@ -22,6 +22,13 @@ const zh_cn = {
   user_manage: '用户管理',
   username: '用户名',
   network_id: '网络ID',
+  member_name: '节点名称',
+  member_id: '节点ID',
+  member_address: '节点地址',
+  actions: '操作',
+  authorized: '授权',
+  save_success: '保存成功',
+  save_error: '保存失败',
 }
 
 export default zh_cn

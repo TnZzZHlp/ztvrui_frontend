@@ -1,11 +1,42 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import router from '@/router'
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
+
+const snackBarShow = ref(false)
+const snackBarStatus = ref('success')
+const snackBarText = ref('')
+
+const showSnackBar = (status: string, text: string) => {
+  snackBarStatus.value = status
+  snackBarText.value = text
+  snackBarShow.value = true
+}
 
 // Edit network name
-const editNetworkName = (name: string) => {
-  console.log(name)
+const editNetworkName = (network) => {
+  fetch('/ztapi/controller/network/' + network.id, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: network.name,
+    }),
+  })
+    .then((response) => response.json())
+    .then(() => {
+      snackBarStatus.value = 'success'
+      snackBarText.value = t('save_success')
+      snackBarShow.value = true
+    })
+    .catch((error) => {
+      showSnackBar('error', t('save_error'))
+      console.error('There was an error!', error)
+    })
 }
 
 // Get networks
@@ -34,11 +65,15 @@ const getNetworks = () => {
             })
           })
           .catch((error) => {
+            snackBarStatus.value = 'error'
+            snackBarText.value = t('save_error')
+            snackBarShow.value = true
             console.error('There was an error!', error)
           })
       })
     })
     .catch((error) => {
+      showSnackBar('error', t('save_error'))
       console.error('There was an error!', error)
     })
 }
@@ -67,6 +102,7 @@ const createNetwork = () => {
       })
     })
     .catch((error) => {
+      showSnackBar('error', t('save_error'))
       console.error('There was an error!', error)
     })
 }
@@ -95,6 +131,7 @@ const deleteNetwork = () => {
       deleteNetworkId.value = ''
     })
     .catch((error) => {
+      showSnackBar('error', t('save_error'))
       console.error('There was an error!', error)
     })
 }
@@ -108,8 +145,11 @@ const unsecuredCopyToClipboard = (text: string) => {
   textArea.select()
   try {
     document.execCommand('copy')
-  } catch (err) {
-    console.error('Unable to copy to clipboard', err)
+  } catch (error) {
+    snackBarStatus.value = 'error'
+    snackBarText.value = t('save_error')
+    snackBarShow.value = true
+    console.error('There was an error!', error)
   }
   document.body.removeChild(textArea)
 }
@@ -121,12 +161,11 @@ const unsecuredCopyToClipboard = (text: string) => {
  */
 const copyToClipboard = (content: string) => {
   if (window.isSecureContext && navigator.clipboard) {
-    navigator.clipboard.writeText(content);
+    navigator.clipboard.writeText(content)
   } else {
     unsecuredCopyToClipboard(content)
   }
 }
-
 
 onMounted(() => {
   getNetworks()
@@ -139,8 +178,14 @@ onMounted(() => {
     <v-card v-for="network in networks" :key="network.id">
       <template v-slot:title>
         {{ $t('network_name') }}
-        <v-text-field variant="underlined" :width="400" @keyup.enter="editNetworkName(network.name)">
-          {{ network.name }}
+        <v-text-field
+          variant="underlined"
+          :width="400"
+          @keyup.enter="editNetworkName(network)"
+          v-model="network.name"
+          append-inner-icon="$save"
+          @click:append-inner="editNetworkName(network)"
+        >
         </v-text-field>
       </template>
 
@@ -149,7 +194,7 @@ onMounted(() => {
         <v-btn variant="text" size="small" @click="copyToClipboard(network.id)">
           <v-icon icon="$copy" />
           {{ network.id }}
-          <v-tooltip activator="parent" location="end" open-on-click :open-on-hover='false'>
+          <v-tooltip activator="parent" location="end" open-on-click :open-on-hover="false">
             {{ $t('copied') }}
           </v-tooltip>
         </v-btn>
@@ -157,10 +202,18 @@ onMounted(() => {
 
       <template v-slot:actions>
         <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
-          <v-btn :text="$t('delete_network')" variant="tonal" @click="showDialog(network.id)" prepend-icon="$delete"
-            color="red"></v-btn>
-          <v-btn :text="$t('enter_network')" variant="tonal"
-            @click="router.push('/home/network/' + network.id)"></v-btn>
+          <v-btn
+            :text="$t('delete_network')"
+            variant="tonal"
+            @click="showDialog(network.id)"
+            prepend-icon="$delete"
+            color="red"
+          ></v-btn>
+          <v-btn
+            :text="$t('enter_network')"
+            variant="tonal"
+            @click="router.push('/home/network/' + network.id)"
+          ></v-btn>
         </div>
       </template>
     </v-card>
@@ -171,10 +224,14 @@ onMounted(() => {
         {{ $t('create_network') }}
       </template>
 
-
       <template v-slot:text>
-        <v-text-field :label="$t('network_name')" variant="outlined" max-width="400" v-model="networkName"
-          @keyup.enter="createNetwork"></v-text-field>
+        <v-text-field
+          :label="$t('network_name')"
+          variant="outlined"
+          max-width="400"
+          v-model="networkName"
+          @keyup.enter="createNetwork"
+        ></v-text-field>
       </template>
 
       <template v-slot:actions>
@@ -184,7 +241,6 @@ onMounted(() => {
       </template>
     </v-card>
 
-
     <!-- Confirm Delete Network Dialog -->
     <v-dialog max-width="500" v-model="dialogShow">
       <v-card :title="$t('confirm_delete_network') + ' ' + deleteNetworkId + ' ' + '?'">
@@ -193,13 +249,21 @@ onMounted(() => {
         </v-card-text>
 
         <v-card-actions>
-          <v-btn :text="$t('confirm_delete_network')" @click="deleteNetwork()" prepend-icon="delete"
-            color="red"></v-btn>
+          <v-btn
+            :text="$t('confirm_delete_network')"
+            @click="deleteNetwork()"
+            prepend-icon="delete"
+            color="red"
+          ></v-btn>
           <v-btn :text="$t('cancel')" @click="dialogShow = false"></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
+
+  <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
+    {{ snackBarText }}
+  </v-snackbar>
 </template>
 
 <style>
@@ -210,7 +274,7 @@ onMounted(() => {
   align-items: center;
 }
 
-.cards>* {
+.cards > * {
   width: calc(100% - 20px);
   margin: 10px;
 }

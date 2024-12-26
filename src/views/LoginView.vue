@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -7,7 +7,6 @@ const router = useRouter()
 // Get system theme
 const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 const theme = ref(systemTheme)
-
 
 // Login
 const username = ref('')
@@ -20,21 +19,21 @@ document.onkeydown = function (event) {
   if (event.key === 'Enter') {
     login()
   }
-};
+}
 
 const login = () => {
   fetch('/api/login', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       username: username.value,
-      password: password.value
-    })
+      password: password.value,
+    }),
   })
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       if (data.error === '0') {
         router.push('/home')
       } else {
@@ -42,28 +41,50 @@ const login = () => {
         showErrMsg.value = true
       }
     })
-    .catch(err => {
+    .catch((err) => {
       errMsg.value = 'Unknown error:' + err
       showErrMsg.value = true
     })
 }
+
+onMounted(() => {
+  // Check Logined
+  fetch('/api/check')
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error === '0') {
+        router.push('/home')
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+})
 </script>
 
 <template>
   <v-app :theme="theme">
     <div class="page-wrapper">
-
       <header>
         <v-img class="mx-auto my-6" max-width="64" src="/ZeroTierIcon.png"></v-img>
       </header>
 
       <main>
         <section>
-          <v-text-field :label="$t('username')" variant="outlined" v-model="username"></v-text-field>
-          <v-text-field :label="$t('password')" variant="outlined" v-model="password" type="password"></v-text-field>
+          <v-text-field
+            :label="$t('username')"
+            variant="outlined"
+            v-model="username"
+          ></v-text-field>
+          <v-text-field
+            :label="$t('password')"
+            variant="outlined"
+            v-model="password"
+            type="password"
+          ></v-text-field>
 
           <v-btn @click="login()" variant="tonal">{{ $t('login') }}</v-btn>
-          <v-snackbar v-model="showErrMsg" timeout="5000" color="error">
+          <v-snackbar v-model="showErrMsg" timeout="3000" color="error" location="top">
             {{ errMsg }}
           </v-snackbar>
         </section>
@@ -74,7 +95,6 @@ const login = () => {
           <a href="https://github.com/tnzzzhlp/ztvrui">Powered by ztvrui</a>
         </div>
       </footer>
-
     </div>
   </v-app>
 </template>

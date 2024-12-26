@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, toRefs } from 'vue'
+import { toRefs } from 'vue'
 
 // Copy Network ID
 const unsecuredCopyToClipboard = (text: string) => {

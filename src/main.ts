@@ -7,8 +7,7 @@ import i18n from './i18n'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import {
   mdiNetworkOutline,
@@ -16,6 +15,8 @@ import {
   mdiAccountCircleOutline,
   mdiDeleteOutline,
   mdiPencilOutline,
+  mdiMagnify,
+  mdiContentSaveOutline,
 } from '@mdi/js'
 
 const vuetify = createVuetify({
@@ -28,13 +29,13 @@ const vuetify = createVuetify({
       account: mdiAccountCircleOutline,
       delete: mdiDeleteOutline,
       edit: mdiPencilOutline,
+      search: mdiMagnify,
+      save: mdiContentSaveOutline,
     },
     sets: {
       mdi,
     },
   },
-  components,
-  directives,
 })
 
 const app = createApp(App)

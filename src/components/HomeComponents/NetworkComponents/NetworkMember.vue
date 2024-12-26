@@ -10,8 +10,6 @@ const props = defineProps({
 
 const { network } = toRefs(props)
 
-const network_members = ref<Request[]>([])
-
 const snackbarShow = ref(false)
 const snackbarText = ref('')
 
@@ -20,6 +18,7 @@ const headers = ref([
   { title: t('member_name'), key: 'name' },
   { title: t('member_id'), key: 'id' },
   { title: t('member_address'), key: 'address' },
+  { title: t('status'), key: 'status' },
   { title: t('actions'), key: 'actions' },
 ])
 
@@ -37,9 +36,7 @@ const saveMemberName = (item: Request) => {
     }),
   })
     .then((res) => res.json())
-    .then((data) => {
-      console.log(data)
-    })
+    .then((data) => {})
     .catch((err) => {
       console.error(err)
     })
@@ -59,9 +56,7 @@ const Authorize = (item: Request) => {
     }),
   })
     .then((res) => res.json())
-    .then((data) => {
-      console.log(data)
-    })
+    .then((data) => {})
     .catch((err) => {
       console.error(err)
     })
@@ -99,7 +94,8 @@ export interface Request {
   vRev: number
 }
 
-onMounted(() => {
+const network_members = ref<Request[]>([])
+const getMembers = () => {
   fetch(`/ztapi/controller/network/` + network.value.id + `/member`)
     .then((res) => res.json())
     .then((data) => {
@@ -114,6 +110,41 @@ onMounted(() => {
     .catch((err) => {
       console.error(err)
     })
+}
+
+const network_members_detail = ref([])
+const getMembersDetail = () => {
+  fetch(`/ztapi/peer`)
+    .then((res) => res.json())
+    .then((data) => {
+      network_members_detail.value = data
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+}
+
+const getMemberDetailById = (id: string) => {
+  return network_members_detail.value.find((member) => member.address == id)
+}
+
+const getMemberStatusById = (id: string) => {
+  const member = getMemberDetailById(id)
+
+  if (member) {
+    if (member.paths.length > 0) {
+      return member.paths.find((path) => path.preferred == true).address
+    } else {
+      return t('offline')
+    }
+  } else {
+    return t('controller')
+  }
+}
+
+onMounted(() => {
+  getMembers()
+  getMembersDetail()
 })
 </script>
 
@@ -143,6 +174,12 @@ onMounted(() => {
 
     <template v-slot:item.address="{ item }">
       <v-btn v-for="ip in item.ipAssignments" append-icon="$copy" variant="text">{{ ip }}</v-btn>
+    </template>
+
+    <template v-slot:item.status="{ item }">
+      <v-chip :color="getMemberStatusById(item.id) == t('offline') ? 'error' : 'primary'" small>
+        {{ getMemberStatusById(item.id) }}
+      </v-chip>
     </template>
 
     <template v-slot:item.actions="{ item }">

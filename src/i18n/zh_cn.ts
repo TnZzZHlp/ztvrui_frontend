@@ -29,6 +29,8 @@ const zh_cn = {
   authorized: '授权',
   save_success: '保存成功',
   save_error: '保存失败',
+  controller: '控制器',
+  offline: '离线',
 }
 
 export default zh_cn

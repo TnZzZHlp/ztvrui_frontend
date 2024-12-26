@@ -29,9 +29,7 @@ const editNetworkName = (network) => {
   })
     .then((response) => response.json())
     .then(() => {
-      snackBarStatus.value = 'success'
-      snackBarText.value = t('save_success')
-      snackBarShow.value = true
+      showSnackBar('success', t('save_success'))
     })
     .catch((error) => {
       showSnackBar('error', t('save_error'))
@@ -65,9 +63,7 @@ const getNetworks = () => {
             })
           })
           .catch((error) => {
-            snackBarStatus.value = 'error'
-            snackBarText.value = t('save_error')
-            snackBarShow.value = true
+            showSnackBar('error', t('save_error'))
             console.error('There was an error!', error)
           })
       })

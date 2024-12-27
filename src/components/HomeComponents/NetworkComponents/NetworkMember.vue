@@ -22,6 +22,18 @@ const headers = ref([
   { title: t('actions'), key: 'actions' },
 ])
 
+const search = ref('')
+
+const tableFilter = (value, query, item) => {
+  const result =
+    query &&
+    (item.raw.name.toString().toLowerCase().includes(query.toLowerCase()) ||
+      item.raw.id.toLowerCase().includes(query.toLowerCase()) ||
+      item.raw.ipAssignments.some((ip) => ip.toLowerCase().includes(query.toLowerCase())))
+
+  return result
+}
+
 // Save member name
 const saveMemberName = (item) => {
   fetch(`/ztapi/controller/network/` + item.nwid + `/member/` + item.id, {
@@ -126,14 +138,24 @@ const copyToClipboard = (content: string) => {
 
 <template>
   <v-card variant="tonal">
-    <v-data-table-virtual :headers="headers" :items="network_members" style="padding: 10px">
+    <v-data-table-virtual
+      :headers="headers"
+      :items="network_members"
+      style="border-radius: 0"
+      :search="search"
+      :custom-filter="tableFilter"
+      fixed-header
+      density="compact"
+    >
       <template v-slot:top>
-        <v-text-field
-          variant="underlined"
-          append-inner-icon="$search"
-          append-icon="$reload"
-          @click:append="emit('refreshData')"
-        ></v-text-field>
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <v-text-field
+            variant="underlined"
+            append-inner-icon="$search"
+            v-model="search"
+          ></v-text-field>
+          <v-btn icon="$reload" variant="plain" @click="emit('refreshData')"></v-btn>
+        </div>
       </template>
 
       <template v-slot:item.authorized="{ item }">
@@ -146,6 +168,8 @@ const copyToClipboard = (content: string) => {
           v-model="item.name"
           append-inner-icon="$save"
           @click:appendInner="saveMemberName(item)"
+          @keydown.enter="saveMemberName(item)"
+          min-width="100"
         >
         </v-text-field>
       </template>
@@ -155,20 +179,18 @@ const copyToClipboard = (content: string) => {
       </template>
 
       <template v-slot:item.address="{ item }">
-        <v-container>
-          <div style="display: flex; flex-direction: column">
-            <v-btn
-              v-for="(ip, index) in item.ipAssignments"
-              :key="index"
-              append-icon="$copy"
-              variant="text"
-              size="small"
-              @click="copyToClipboard(ip)"
-            >
-              {{ ip }}
-            </v-btn>
-          </div>
-        </v-container>
+        <div style="display: flex; flex-direction: column">
+          <v-btn
+            v-for="(ip, index) in item.ipAssignments"
+            :key="index"
+            append-icon="$copy"
+            variant="text"
+            size="small"
+            @click="copyToClipboard(ip)"
+          >
+            {{ ip }}
+          </v-btn>
+        </div>
       </template>
 
       <template v-slot:item.physical_address="{ item }">
@@ -182,7 +204,7 @@ const copyToClipboard = (content: string) => {
         <v-btn size="small" icon="$delete" @click="deleteMember(item)"></v-btn>
       </template>
 
-      <template v-slot:no-data>{{ $t('no_member_yet') }}</template>
+      <template v-slot:no-data>{{ $t('no_members') }}</template>
     </v-data-table-virtual>
   </v-card>
 </template>

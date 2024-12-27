@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { toRefs, ref, onMounted } from 'vue'
+import { toRefs, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+const props = defineProps({
+  network: Object,
+})
+
+const { network } = toRefs(props)
 
 const emit = defineEmits(['showSnackBar'])
 
@@ -59,30 +65,53 @@ const editNetworkName = () => {
     })
 }
 
-const props = defineProps({
-  network: Object,
-})
+// const infoHeight = computed(() => {
+//   // 计算属性，network-overview占据父元素15%的高
+//   return '15%'
+// })
 
-const { network } = toRefs(props)
+// const routeHeight = computed(() => {
+//   // 计算属性，network-route占据父元素30%的高
+//   return '200px'
+// })
+
+// const ipAssignmentHeight = computed(() => {
+//   // 计算属性，network-ip-assignment占据父元素30%的高
+//   return '30%'
+// })
+
+// const dnsRulesHeight = computed(() => {
+//   // 计算属性，dns-rules占据父元素25%的高
+//   return '25%'
+// })
 </script>
 
 <template>
   <!-- Info Part -->
-  <v-card variant="tonal" style="margin-bottom: 20px">
+  <v-card
+    variant="tonal"
+    style="margin-bottom: 10px"
+    :style="{ height: infoHeight }"
+    density="compact"
+  >
     <template v-slot:title>
-      <p>{{ $t('network_name') }}</p>
+      <div style="display: flex; justify-content: space-between">
+        <span>{{ $t('network_name') }}</span>
+        <v-btn icon="$settings" variant="plain" @click="console.log('123')" size="x-small"></v-btn>
+      </div>
       <p>
         <v-text-field
           variant="underlined"
           v-model="network.name"
           append-icon="$save"
           @click:append="editNetworkName(network.name)"
+          @keydown.enter="editNetworkName(network.name)"
         ></v-text-field>
       </p>
     </template>
     <template v-slot:subtitle>
       {{ $t('network_id') }}
-      <v-btn variant="text" size="small" @click="copyToClipboard(network?.id)">
+      <v-btn variant="text" size="x-small" @click="copyToClipboard(network?.id)">
         <v-icon icon="$copy" />
         {{ network?.id }}
       </v-btn>
@@ -90,38 +119,58 @@ const { network } = toRefs(props)
   </v-card>
 
   <!-- Route Part -->
-  <v-card variant="tonal" style="margin-bottom: 20px">
-    <template v-slot:title>
+  <v-card
+    variant="tonal"
+    style="margin-bottom: 10px"
+    id="network-route"
+    :style="{ height: routeHeight }"
+    density="compact"
+    height="300px"
+  >
+    <template v-slot:subtitle>
       <div style="display: flex; justify-content: space-between">
         <span>{{ $t('route') }}</span>
-        <v-btn icon="$settings" variant="plain" @click="console.log('123')"></v-btn>
+        <v-btn icon="$settings" variant="plain" @click="console.log('123')" size="x-small"></v-btn>
       </div>
     </template>
-
-    <v-data-table-virtual :headers="routesHeaders" :items="network.routes" style="padding: 10px">
+    <v-data-table-virtual
+      :headers="routesHeaders"
+      :items="network.routes"
+      style="border-radius: 0"
+      fixed-header
+      density="compact"
+    >
       <template v-slot:item.target="{ item }">
         {{ item.target }}
       </template>
       <template v-slot:item.via="{ item }">
-        {{ item.via }}
+        {{ item.via == null ? 'LAN' : item.via }}
       </template>
       <template v-slot:no-data>{{ $t('no_route_yet') }}</template>
     </v-data-table-virtual>
   </v-card>
 
   <!-- IP Assignment Part -->
-  <v-card variant="tonal" style="margin-bottom: 20px">
-    <template v-slot:title>
+  <v-card
+    variant="tonal"
+    style="margin-bottom: 10px"
+    id="network-ip-assignment"
+    :style="{ height: ipAssignmentHeight }"
+    density="compact"
+  >
+    <template v-slot:subtitle>
       <div style="display: flex; justify-content: space-between">
         <span>{{ $t('ip_assignment') }}</span>
-        <v-btn icon="$settings" variant="plain" @click="console.log('123')"></v-btn>
+        <v-btn icon="$settings" variant="plain" @click="console.log('123')" size="x-small"></v-btn>
       </div>
     </template>
 
     <v-data-table-virtual
       :headers="ipAssignmentHeaders"
       :items="network.ipAssignmentPools"
-      style="padding: 10px"
+      style="border-radius: 0"
+      fixed-header
+      density="compact"
     >
       <template v-slot:item.target="{ item }">
         {{ item.ipRangeStart }}
@@ -133,21 +182,45 @@ const { network } = toRefs(props)
     </v-data-table-virtual>
   </v-card>
 
-  <!-- DNS Part -->
-  <v-card variant="tonal" style="margin-bottom: 20px">
-    <template v-slot:title>
-      <div style="display: flex; justify-content: space-between">
-        <span>DNS</span>
-        <v-btn icon="$settings" variant="plain" @click="console.log('123')"></v-btn>
-      </div>
-    </template>
-    <template v-slot:subtitle>
-      <p>{{ $t('domain') }}</p>
-      <p>{{ network?.dns?.domain }}</p>
-    </template>
+  <v-row :style="{ height: dnsRulesHeight }">
+    <v-col>
+      <!-- DNS Part -->
+      <v-card variant="tonal" style="margin-bottom: 20px" height="100%" density="compact">
+        <template v-slot:subtitle>
+          <div style="display: flex; justify-content: space-between">
+            <span>DNS</span>
+            <v-btn
+              icon="$settings"
+              variant="plain"
+              @click="console.log('123')"
+              size="x-small"
+            ></v-btn>
+          </div>
+          <p>{{ $t('domain') }}</p>
+          <p>{{ network?.dns?.domain }}</p>
+        </template>
 
-    <template v-slot:item>
-      <v-chip v-for="server in network?.dns?.servers">{{ server }}</v-chip>
-    </template>
-  </v-card>
+        <template v-slot:item>
+          <v-chip v-for="server in network?.dns?.servers" size="small">{{ server }}</v-chip>
+        </template>
+      </v-card>
+    </v-col>
+
+    <v-col>
+      <!-- Rules Part -->
+      <v-card variant="tonal" style="margin-bottom: 20px" height="100%" density="compact">
+        <template v-slot:subtitle>
+          <div style="display: flex; justify-content: space-between">
+            <span>{{ $t('rules') }}</span>
+            <v-btn
+              icon="$settings"
+              variant="plain"
+              @click="console.log('123')"
+              size="x-small"
+            ></v-btn>
+          </div>
+        </template>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>

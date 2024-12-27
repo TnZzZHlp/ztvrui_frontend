@@ -34,13 +34,14 @@ const zh_cn = {
   physical_address: '物理地址',
   unauthorized: '取消授权',
   deleted: '已删除',
-  no_member_yet: '当前网络没有节点',
+  no_members: '当前网络没有符合的节点',
   no_route_yet: '当前网络没有路由',
   target: '目标',
   via: '下一跳',
   ip_range_start: '起始IP',
   ip_range_end: '结束IP',
   domain: '域名',
+  rules: '规则',
 }
 
 export default zh_cn

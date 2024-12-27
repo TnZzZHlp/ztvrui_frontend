@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted, toRefs } from 'vue'
+import { ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+const emit = defineEmits(['showSnackBar', 'refreshData'])
+
 const props = defineProps({
-  network: Object,
+  network_members: Array,
+  network_members_detail: Array,
 })
 
-const { network } = toRefs(props)
-
-const snackbarShow = ref(false)
-const snackbarText = ref('')
+const { network_members, network_members_detail } = toRefs(props)
 
 const headers = ref([
   { title: t('authorized'), key: 'authorized' },
   { title: t('member_name'), key: 'name' },
   { title: t('member_id'), key: 'id' },
   { title: t('member_address'), key: 'address' },
-  { title: t('status'), key: 'status' },
+  { title: t('physical_address'), key: 'physical_address' },
   { title: t('actions'), key: 'actions' },
 ])
 
 // Save member name
-const saveMemberName = (item: Request) => {
-  snackbarShow.value = true
-  snackbarText.value = t('save_success')
+const saveMemberName = (item) => {
   fetch(`/ztapi/controller/network/` + item.nwid + `/member/` + item.id, {
     method: 'POST',
     headers: {
@@ -36,14 +34,17 @@ const saveMemberName = (item: Request) => {
     }),
   })
     .then((res) => res.json())
-    .then((data) => {})
+    .then((data) => {
+      emit('showSnackBar', 'green', t('save_success'))
+      emit('refreshData')
+    })
     .catch((err) => {
       console.error(err)
     })
 }
 
 // Authorize member
-const Authorize = (item: Request) => {
+const Authorize = (item) => {
   item.authorized = !item.authorized
 
   fetch(`/ztapi/controller/network/` + item.nwid + `/member/` + item.id, {
@@ -56,141 +57,132 @@ const Authorize = (item: Request) => {
     }),
   })
     .then((res) => res.json())
-    .then((data) => {})
+    .then((data) => {
+      if (item.authorized) {
+        emit('showSnackBar', 'green', t('authorized'))
+        emit('refreshData')
+      } else {
+        emit('showSnackBar', 'red', t('unauthorized'))
+      }
+    })
     .catch((err) => {
       console.error(err)
     })
 }
 
-/**
- * Request
- */
-export interface Request {
-  activeBridge: boolean
-  address: string
-  authenticationExpiryTime: number
-  authorized: boolean
-  capabilities: number[]
-  creationTime: number
-  id: string
-  identity: string
-  ipAssignments: string[]
-  lastAuthorizedCredential: string
-  lastAuthorizedCredentialType: string
-  lastAuthorizedTime: number
-  lastDeauthorizedTime: number
-  name: string
-  noAutoAssignIps: boolean
-  nwid: string
-  objtype: string
-  remoteTraceLevel: number
-  remoteTraceTarget: string
-  revision: number
-  ssoExempt: boolean
-  tags: null
-  vMajor: number
-  vMinor: number
-  vProto: number
-  vRev: number
-}
-
-const network_members = ref<Request[]>([])
-const getMembers = () => {
-  fetch(`/ztapi/controller/network/` + network.value.id + `/member`)
+// Delete member
+const deleteMember = (item) => {
+  fetch(`/ztapi/controller/network/` + item.nwid + `/member/` + item.id, {
+    method: 'DELETE',
+  })
     .then((res) => res.json())
     .then((data) => {
-      Object.keys(data).forEach((member: string) => {
-        fetch(`/ztapi/controller/network/` + network.value.id + `/member/` + member)
-          .then((res) => res.json())
-          .then((data) => {
-            network_members.value.push(data)
-          })
-      })
+      emit('showSnackBar', 'error', t('deleted'))
+      emit('refreshData')
     })
     .catch((err) => {
       console.error(err)
     })
 }
 
-const network_members_detail = ref([])
-const getMembersDetail = () => {
-  fetch(`/ztapi/peer`)
-    .then((res) => res.json())
-    .then((data) => {
-      network_members_detail.value = data
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-}
-
+// Get member detail by ID
 const getMemberDetailById = (id: string) => {
   return network_members_detail.value.find((member) => member.address == id)
 }
 
+// Get member status by ID
 const getMemberStatusById = (id: string) => {
   const member = getMemberDetailById(id)
-
   if (member) {
-    if (member.paths.length > 0) {
+    if (member.latency >= 0) {
       return member.paths.find((path) => path.preferred == true).address
-    } else {
-      return t('offline')
     }
-  } else {
-    return t('controller')
   }
 }
 
-onMounted(() => {
-  getMembers()
-  getMembersDetail()
-})
+// Copy Network ID
+const copyToClipboard = (content: string) => {
+  const unsecuredCopyToClipboard = (text: string) => {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+    try {
+      document.execCommand('copy')
+    } catch (error) {
+      console.error('There was an error!', error)
+    }
+    document.body.removeChild(textArea)
+  }
+  if (window.isSecureContext && navigator.clipboard) {
+    navigator.clipboard.writeText(content)
+  } else {
+    unsecuredCopyToClipboard(content)
+  }
+  emit('showSnackBar', 'green', t('copied'))
+}
 </script>
 
 <template>
-  <v-data-table-virtual :headers="headers" :items="network_members">
-    <template v-slot:top>
-      <v-text-field variant="underlined" append-inner-icon="$search"></v-text-field>
-    </template>
+  <v-card variant="tonal">
+    <v-data-table-virtual :headers="headers" :items="network_members" style="padding: 10px">
+      <template v-slot:top>
+        <v-text-field
+          variant="underlined"
+          append-inner-icon="$search"
+          append-icon="$reload"
+          @click:append="emit('refreshData')"
+        ></v-text-field>
+      </template>
 
-    <template v-slot:item.authorized="{ item }">
-      <v-checkbox :model-value="item.authorized" @click="Authorize(item)"></v-checkbox>
-    </template>
+      <template v-slot:item.authorized="{ item }">
+        <v-checkbox :model-value="item.authorized" @click="Authorize(item)"></v-checkbox>
+      </template>
 
-    <template v-slot:item.name="{ item }">
-      <v-text-field
-        variant="underlined"
-        v-model="item.name"
-        append-inner-icon="$save"
-        @click:appendInner="saveMemberName(item)"
-      >
-      </v-text-field>
-    </template>
+      <template v-slot:item.name="{ item }">
+        <v-text-field
+          variant="underlined"
+          v-model="item.name"
+          append-inner-icon="$save"
+          @click:appendInner="saveMemberName(item)"
+        >
+        </v-text-field>
+      </template>
 
-    <template v-slot:item.id="{ item }">
-      <v-chip color="primary" small>{{ item.id }}</v-chip>
-    </template>
+      <template v-slot:item.id="{ item }">
+        <v-chip color="primary" small>{{ item.id }}</v-chip>
+      </template>
 
-    <template v-slot:item.address="{ item }">
-      <v-btn v-for="ip in item.ipAssignments" append-icon="$copy" variant="text">{{ ip }}</v-btn>
-    </template>
+      <template v-slot:item.address="{ item }">
+        <v-container>
+          <div style="display: flex; flex-direction: column">
+            <v-btn
+              v-for="(ip, index) in item.ipAssignments"
+              :key="index"
+              append-icon="$copy"
+              variant="text"
+              size="small"
+              @click="copyToClipboard(ip)"
+            >
+              {{ ip }}
+            </v-btn>
+          </div>
+        </v-container>
+      </template>
 
-    <template v-slot:item.status="{ item }">
-      <v-chip :color="getMemberStatusById(item.id) == t('offline') ? 'error' : 'primary'" small>
-        {{ getMemberStatusById(item.id) }}
-      </v-chip>
-    </template>
+      <template v-slot:item.physical_address="{ item }">
+        <v-chip color="primary" small v-if="getMemberStatusById(item.id)">
+          {{ getMemberStatusById(item.id) }}
+        </v-chip>
+      </template>
 
-    <template v-slot:item.actions="{ item }">
-      <v-btn class="me-2" size="small" icon="$edit" @click="console.log('click')"></v-btn>
-      <v-btn size="small" icon="$delete" @click="console.log('click')"></v-btn>
-    </template>
+      <template v-slot:item.actions="{ item }">
+        <v-btn class="me-2" size="small" icon="$edit" @click="console.log('click')"></v-btn>
+        <v-btn size="small" icon="$delete" @click="deleteMember(item)"></v-btn>
+      </template>
 
-    <template v-slot:no-data> </template>
-  </v-data-table-virtual>
-
-  <v-snackbar v-model="snackbarShow" timeout="2000" location="top" color="success">
-    {{ snackbarText }}
-  </v-snackbar>
+      <template v-slot:no-data>{{ $t('no_member_yet') }}</template>
+    </v-data-table-virtual>
+  </v-card>
 </template>

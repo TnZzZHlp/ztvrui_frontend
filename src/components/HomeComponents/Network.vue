@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -6,12 +7,52 @@ import NetworkMember from '@/components/HomeComponents/NetworkComponents/Network
 
 const network_id = ref(useRoute().params.id)
 
-const tab = ref(null)
+const snackBarShow = ref(false)
+const snackBarStatus = ref('success')
+const snackBarText = ref('')
 
-// Request network data
+const showSnackBar = (status: string, text: string) => {
+  snackBarStatus.value = status
+  snackBarText.value = text
+  snackBarShow.value = true
+}
+
+// Request network member data
+const network_members = ref([])
+const getMembers = () => {
+  fetch(`/ztapi/controller/network/` + network_id.value + `/member`)
+    .then((res) => res.json())
+    .then((data) => {
+      network_members.value = []
+      Object.keys(data).forEach((member: string) => {
+        fetch(`/ztapi/controller/network/` + network_id.value + `/member/` + member)
+          .then((res) => res.json())
+          .then((data) => {
+            network_members.value.push(data)
+          })
+      })
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+}
+
+// Request network member detail data
+const network_members_detail = ref([])
+const getMembersDetail = () => {
+  fetch(`/ztapi/peer`)
+    .then((res) => res.json())
+    .then((data) => {
+      network_members_detail.value = data
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+}
+
+// Get network data
 const network = ref({})
-
-onMounted(() => {
+const getNetwork = () => {
   fetch(`/ztapi/controller/network/` + network_id.value)
     .then((res) => res.json())
     .then((data) => {
@@ -20,30 +61,48 @@ onMounted(() => {
     .catch((err) => {
       console.error(err)
     })
+}
+
+// Continuously refresh data
+const refreshData = () => {
+  getNetwork()
+  getMembers()
+  getMembersDetail()
+}
+
+onMounted(() => {
+  getNetwork()
+  getMembers()
+  getMembersDetail()
 })
 </script>
 
 <template>
   <v-sheet height="100%">
-    <v-tabs v-model="tab" align-tabs="center">
-      <v-tab :value="1">{{ $t('overview') }}</v-tab>
-      <v-tab :value="2">{{ $t('network_member') }}</v-tab>
-    </v-tabs>
-
-    <v-tabs-window v-model="tab">
-      <v-tabs-window-item :value="1">
-        <div style="padding: 10px">
-          <OverView :network="network" />
-        </div>
-      </v-tabs-window-item>
-
-      <v-tabs-window-item :value="2">
-        <div style="padding: 10px">
-          <NetworkMember :network="network" />
-        </div>
-      </v-tabs-window-item>
-    </v-tabs-window>
+    <v-container fluid>
+      <v-row>
+        <v-col cols="4">
+          <OverView
+            :network="network"
+            :showSnackBar="showSnackBar"
+            @show-snack-bar="showSnackBar"
+            @refresh-data="refreshData"
+          />
+        </v-col>
+        <v-col>
+          <NetworkMember
+            :network_members="network_members"
+            :network_members_detail="network_members_detail"
+            @show-snack-bar="showSnackBar"
+            @refresh-data="refreshData"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
   </v-sheet>
+  <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
+    {{ snackBarText }}
+  </v-snackbar>
 </template>
 
 <style></style>

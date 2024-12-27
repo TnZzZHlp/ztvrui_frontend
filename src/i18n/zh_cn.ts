@@ -26,11 +26,21 @@ const zh_cn = {
   member_id: '节点ID',
   member_address: '节点地址',
   actions: '操作',
-  authorized: '授权',
+  authorized: '已授权',
   save_success: '保存成功',
   save_error: '保存失败',
   controller: '控制器',
   offline: '离线',
+  physical_address: '物理地址',
+  unauthorized: '取消授权',
+  deleted: '已删除',
+  no_member_yet: '当前网络没有节点',
+  no_route_yet: '当前网络没有路由',
+  target: '目标',
+  via: '下一跳',
+  ip_range_start: '起始IP',
+  ip_range_end: '结束IP',
+  domain: '域名',
 }
 
 export default zh_cn

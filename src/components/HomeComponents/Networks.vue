@@ -16,27 +16,6 @@ const showSnackBar = (status: string, text: string) => {
   snackBarShow.value = true
 }
 
-// Edit network name
-const editNetworkName = (network) => {
-  fetch('/ztapi/controller/network/' + network.id, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: network.name,
-    }),
-  })
-    .then((response) => response.json())
-    .then(() => {
-      showSnackBar('success', t('save_success'))
-    })
-    .catch((error) => {
-      showSnackBar('error', t('save_error'))
-      console.error('There was an error!', error)
-    })
-}
-
 // Get networks
 interface Network {
   id: string
@@ -105,12 +84,12 @@ const createNetwork = () => {
 
 // Delete a network
 const dialogShow = ref(false)
-const deleteNetworkId = ref('')
 
 const showDialog = (id: string) => {
   deleteNetworkId.value = id
   dialogShow.value = true
 }
+const deleteNetworkId = ref('')
 
 const deleteNetwork = () => {
   if (deleteNetworkId.value === '') {
@@ -133,33 +112,26 @@ const deleteNetwork = () => {
 }
 
 // Copy Network ID
-const unsecuredCopyToClipboard = (text: string) => {
-  const textArea = document.createElement('textarea')
-  textArea.value = text
-  document.body.appendChild(textArea)
-  textArea.focus()
-  textArea.select()
-  try {
-    document.execCommand('copy')
-  } catch (error) {
-    snackBarStatus.value = 'error'
-    snackBarText.value = t('save_error')
-    snackBarShow.value = true
-    console.error('There was an error!', error)
-  }
-  document.body.removeChild(textArea)
-}
-
-/**
- * Copies the text passed as param to the system clipboard
- * Check if using HTTPS and navigator.clipboard is available
- * Then uses standard clipboard API, otherwise uses fallback
- */
 const copyToClipboard = (content: string) => {
+  const unsecuredCopyToClipboard = (text: string) => {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+    try {
+      document.execCommand('copy')
+    } catch (error) {
+      console.error('There was an error!', error)
+    }
+    document.body.removeChild(textArea)
+  }
   if (window.isSecureContext && navigator.clipboard) {
     navigator.clipboard.writeText(content)
+    showSnackBar('success', t('copied'))
   } else {
     unsecuredCopyToClipboard(content)
+    showSnackBar('success', t('copied'))
   }
 }
 
@@ -169,20 +141,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="cards">
+  <div class="cards" style="width: 80%; margin: 0 auto">
     <!-- Networks -->
     <v-card v-for="network in networks" :key="network.id">
       <template v-slot:title>
-        {{ $t('network_name') }}
-        <v-text-field
-          variant="underlined"
-          :width="400"
-          @keyup.enter="editNetworkName(network)"
-          v-model="network.name"
-          append-inner-icon="$save"
-          @click:append-inner="editNetworkName(network)"
-        >
-        </v-text-field>
+        <p>{{ $t('network_name') }}</p>
+        <p style="font-size: 30px">{{ network.name }}</p>
       </template>
 
       <template v-slot:subtitle>
@@ -190,9 +154,6 @@ onMounted(() => {
         <v-btn variant="text" size="small" @click="copyToClipboard(network.id)">
           <v-icon icon="$copy" />
           {{ network.id }}
-          <v-tooltip activator="parent" location="end" open-on-click :open-on-hover="false">
-            {{ $t('copied') }}
-          </v-tooltip>
         </v-btn>
       </template>
 
@@ -255,11 +216,11 @@ onMounted(() => {
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
 
-  <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
-    {{ snackBarText }}
-  </v-snackbar>
+    <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
+      {{ snackBarText }}
+    </v-snackbar>
+  </div>
 </template>
 
 <style>

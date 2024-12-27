@@ -17,6 +17,10 @@ import {
   mdiPencilOutline,
   mdiMagnify,
   mdiContentSaveOutline,
+  mdiReload,
+  mdiLogout,
+  mdiThemeLightDark,
+  mdiCog,
 } from '@mdi/js'
 
 const vuetify = createVuetify({
@@ -31,6 +35,10 @@ const vuetify = createVuetify({
       edit: mdiPencilOutline,
       search: mdiMagnify,
       save: mdiContentSaveOutline,
+      reload: mdiReload,
+      logout: mdiLogout,
+      theme: mdiThemeLightDark,
+      settings: mdiCog,
     },
     sets: {
       mdi,

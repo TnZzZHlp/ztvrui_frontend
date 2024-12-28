@@ -184,245 +184,268 @@ const modifyDns = () => {
 
 <template>
   <!-- Info Part -->
-  <v-card variant="tonal" style="margin-bottom: 10px" density="compact">
-    <template v-slot:title>
-      <div style="display: flex; justify-content: space-between">
-        <span>{{ $t('network_name') }}</span>
-        <v-btn icon="$settings" variant="plain" @click="infoDialog = true" size="x-small"></v-btn>
-      </div>
-      <p>
-        <v-text-field
-          variant="underlined"
-          v-model="network.name"
-          append-icon="$save"
-          @click:append="editNetworkName(network.name)"
-          @keydown.enter="editNetworkName(network.name)"
-        ></v-text-field>
-      </p>
-    </template>
-    <template v-slot:subtitle>
-      {{ $t('network_id') }}
-      <v-btn variant="text" size="x-small" @click="copyToClipboard(network?.id)">
-        <v-icon icon="$copy" />
-        {{ network?.id }}
-      </v-btn>
-    </template>
-  </v-card>
+  <v-row>
+    <v-col>
+      <v-card variant="tonal" density="compact">
+        <template v-slot:title>
+          <div style="display: flex; justify-content: space-between">
+            <span>{{ $t('network_name') }}</span>
+            <v-btn
+              icon="$settings"
+              variant="plain"
+              @click="infoDialog = true"
+              size="x-small"
+            ></v-btn>
+          </div>
+          <p>
+            <v-text-field
+              variant="underlined"
+              v-model="network.name"
+              append-icon="$save"
+              @click:append="editNetworkName(network.name)"
+              @keydown.enter="editNetworkName(network.name)"
+            ></v-text-field>
+          </p>
+        </template>
+        <template v-slot:subtitle>
+          {{ $t('network_id') }}
+          <v-btn variant="text" size="x-small" @click="copyToClipboard(network?.id)">
+            <v-icon icon="$copy" />
+            {{ network?.id }}
+          </v-btn>
+        </template>
+      </v-card>
 
-  <!-- Info Dialog -->
-  <v-dialog max-width="500" v-model="infoDialog">
-    <v-card :title="t('modify_network_info')">
-      <v-card-text>
-        <v-form>
-          <v-container>
-            <v-row>
-              <v-col>
+      <!-- Info Dialog -->
+      <v-dialog max-width="800" v-model="infoDialog">
+        <v-card :title="t('modify_network_info')">
+          <v-card-text>
+            <v-form>
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-checkbox
+                      :label="t('enable_broadcast')"
+                      v-model="network.enableBroadcast"
+                      color="primary"
+                    ></v-checkbox>
+                    <v-checkbox
+                      :label="
+                        t('network_type') + ' ' + (network.private ? t('private') : t('public'))
+                      "
+                      v-model="network.private"
+                      color="primary"
+                    ></v-checkbox>
+                    <v-text-field label="MTU" required v-model="network.mtu"></v-text-field>
+                    <v-text-field
+                      :label="t('multicast_limit')"
+                      required
+                      v-model="network.multicastLimit"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn :text="t('cancel')" @click="infoDialog = false" variant="tonal"></v-btn>
+            <v-btn
+              :text="t('submit')"
+              @click="modifyNetworkInfo"
+              variant="tonal"
+              color="primary"
+            ></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+  </v-row>
+
+  <v-row>
+    <v-col>
+      <!-- Route Part -->
+      <v-card variant="tonal" id="network-route" density="compact" height="100%">
+        <template v-slot:subtitle>
+          <div style="display: flex; justify-content: space-between">
+            <span>{{ $t('route') }}</span>
+            <v-btn
+              icon="$settings"
+              variant="plain"
+              @click="routeDialog = true"
+              size="x-small"
+            ></v-btn>
+          </div>
+        </template>
+        <v-data-table-virtual
+          :headers="routesHeaders"
+          :items="network.routes"
+          style="border-radius: 0"
+          fixed-header
+          density="compact"
+        >
+          <template v-slot:item.target="{ item }">
+            {{ item.target }}
+          </template>
+          <template v-slot:item.via="{ item }">
+            {{ item.via == null ? 'LAN' : item.via }}
+          </template>
+          <template v-slot:no-data>{{ $t('no_route_yet') }}</template>
+        </v-data-table-virtual>
+      </v-card>
+
+      <!-- Route Dialog -->
+      <v-dialog v-model="routeDialog" fullscreen>
+        <v-card>
+          <v-card-title>
+            <div style="display: flex; justify-content: space-between">
+              <span>{{ $t('modify_route') }}</span>
+              <v-btn
+                icon="$add"
+                variant="tonal"
+                @click="network.routes.push({ target: '', via: null })"
+              ></v-btn>
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-container>
+                <v-row v-for="(route, index) in network.routes" :key="index">
+                  <v-col>
+                    <v-text-field
+                      :label="t('target')"
+                      required
+                      v-model="route.target"
+                      variant="solo-filled"
+                      append-inner-icon="$delete"
+                      @click:append-inner="network.routes.splice(index, 1)"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      :label="t('via')"
+                      required
+                      v-model="route.via"
+                      variant="solo-filled"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn :text="t('cancel')" @click="routeDialog = false" variant="tonal"></v-btn>
+            <v-btn :text="t('submit')" @click="modifyRoute" variant="tonal" color="primary"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+
+    <v-col>
+      <!-- IP Assignment Part -->
+      <v-card variant="tonal" id="network-ip-assignment" density="compact" height="100%">
+        <template v-slot:subtitle>
+          <div style="display: flex; justify-content: space-between">
+            <span>{{ $t('ip_assignment') }}</span>
+            <v-btn
+              icon="$settings"
+              variant="plain"
+              @click="ipAssignmentDialog = true"
+              size="x-small"
+            ></v-btn>
+          </div>
+        </template>
+
+        <v-data-table-virtual
+          :headers="ipAssignmentHeaders"
+          :items="network.ipAssignmentPools"
+          style="border-radius: 0"
+          fixed-header
+          density="compact"
+        >
+          <template v-slot:item.target="{ item }">
+            {{ item.ipRangeStart }}
+          </template>
+          <template v-slot:item.via="{ item }">
+            {{ item.ipRangeEnd }}
+          </template>
+          <template v-slot:no-data>{{ $t('no_route_yet') }}</template>
+        </v-data-table-virtual>
+      </v-card>
+
+      <!-- IP Assignment Dialog -->
+      <v-dialog v-model="ipAssignmentDialog" fullscreen>
+        <v-card height="100%">
+          <v-card-title>
+            <div style="display: flex; justify-content: space-between">
+              <span>{{ $t('modify_ip_assignment_pool') }}</span>
+              <v-btn
+                icon="$add"
+                variant="tonal"
+                @click="network.ipAssignmentPools.push({ ipRangeStart: '', ipRangeEnd: '' })"
+              ></v-btn>
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-container>
                 <v-checkbox
-                  :label="t('enable_broadcast')"
-                  v-model="network.enableBroadcast"
-                  color="primary"
+                  :label="'IPV4' + t('enable_auto_assign_from_range')"
+                  v-model="network.v4AssignMode.zt"
                 ></v-checkbox>
                 <v-checkbox
-                  :label="t('network_type') + ' ' + (network.private ? t('private') : t('public'))"
-                  v-model="network.private"
-                  color="primary"
+                  :label="'IPV6' + t('enable_auto_assign_from_range')"
+                  v-model="network.v6AssignMode.zt"
                 ></v-checkbox>
-                <v-text-field label="MTU" required v-model="network.mtu"></v-text-field>
-                <v-text-field
-                  :label="t('multicast_limit')"
-                  required
-                  v-model="network.multicastLimit"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-      </v-card-text>
+                <v-checkbox
+                  :label="t('enable_6plane')"
+                  v-model="network.v6AssignMode['6plane']"
+                ></v-checkbox>
+                <v-checkbox
+                  :label="t('enable_rfc4193')"
+                  v-model="network.v6AssignMode.rfc4193"
+                ></v-checkbox>
+                <v-row v-for="(ipAssignment, index) in network.ipAssignmentPools" :key="index">
+                  <v-col>
+                    <v-text-field
+                      :label="t('ip_range_start')"
+                      required
+                      v-model="ipAssignment.ipRangeStart"
+                      variant="solo-filled"
+                      append-inner-icon="$delete"
+                      @click:append-inner="network.ipAssignmentPools.splice(index, 1)"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      :label="t('ip_range_end')"
+                      required
+                      v-model="ipAssignment.ipRangeEnd"
+                      variant="solo-filled"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-card-text>
 
-      <v-card-actions>
-        <v-btn :text="t('cancel')" @click="infoDialog = false" variant="tonal"></v-btn>
-        <v-btn
-          :text="t('submit')"
-          @click="modifyNetworkInfo"
-          variant="tonal"
-          color="primary"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+          <v-card-actions>
+            <v-btn :text="t('cancel')" @click="ipAssignmentDialog = false" variant="tonal"></v-btn>
+            <v-btn
+              :text="t('submit')"
+              @click="modifyIpAssignment"
+              variant="tonal"
+              color="primary"
+            ></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+  </v-row>
 
-  <!-- Route Part -->
-  <v-card variant="tonal" style="margin-bottom: 10px" id="network-route" density="compact">
-    <template v-slot:subtitle>
-      <div style="display: flex; justify-content: space-between">
-        <span>{{ $t('route') }}</span>
-        <v-btn icon="$settings" variant="plain" @click="routeDialog = true" size="x-small"></v-btn>
-      </div>
-    </template>
-    <v-data-table-virtual
-      :headers="routesHeaders"
-      :items="network.routes"
-      style="border-radius: 0"
-      fixed-header
-      density="compact"
-    >
-      <template v-slot:item.target="{ item }">
-        {{ item.target }}
-      </template>
-      <template v-slot:item.via="{ item }">
-        {{ item.via == null ? 'LAN' : item.via }}
-      </template>
-      <template v-slot:no-data>{{ $t('no_route_yet') }}</template>
-    </v-data-table-virtual>
-  </v-card>
-
-  <!-- Route Dialog -->
-  <v-dialog v-model="routeDialog">
-    <v-card>
-      <v-card-title>
-        <div style="display: flex; justify-content: space-between">
-          <span>{{ $t('modify_route') }}</span>
-          <v-btn
-            icon="$add"
-            variant="tonal"
-            @click="network.routes.push({ target: '', via: null })"
-          ></v-btn>
-        </div>
-      </v-card-title>
-      <v-card-text>
-        <v-form>
-          <v-container>
-            <v-row v-for="(route, index) in network.routes" :key="index">
-              <v-col>
-                <v-text-field
-                  :label="t('target')"
-                  required
-                  v-model="route.target"
-                  variant="solo-filled"
-                  append-inner-icon="$delete"
-                  @click:append-inner="network.routes.splice(index, 1)"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field
-                  :label="t('via')"
-                  required
-                  v-model="route.via"
-                  variant="solo-filled"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-btn :text="t('cancel')" @click="routeDialog = false" variant="tonal"></v-btn>
-        <v-btn :text="t('submit')" @click="modifyRoute" variant="tonal" color="primary"></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
-  <!-- IP Assignment Part -->
-  <v-card variant="tonal" style="margin-bottom: 10px" id="network-ip-assignment" density="compact">
-    <template v-slot:subtitle>
-      <div style="display: flex; justify-content: space-between">
-        <span>{{ $t('ip_assignment') }}</span>
-        <v-btn
-          icon="$settings"
-          variant="plain"
-          @click="ipAssignmentDialog = true"
-          size="x-small"
-        ></v-btn>
-      </div>
-    </template>
-
-    <v-data-table-virtual
-      :headers="ipAssignmentHeaders"
-      :items="network.ipAssignmentPools"
-      style="border-radius: 0"
-      fixed-header
-      density="compact"
-    >
-      <template v-slot:item.target="{ item }">
-        {{ item.ipRangeStart }}
-      </template>
-      <template v-slot:item.via="{ item }">
-        {{ item.ipRangeEnd }}
-      </template>
-      <template v-slot:no-data>{{ $t('no_route_yet') }}</template>
-    </v-data-table-virtual>
-  </v-card>
-
-  <!-- IP Assignment Dialog -->
-  <v-dialog v-model="ipAssignmentDialog">
-    <v-card>
-      <v-card-title>
-        <div style="display: flex; justify-content: space-between">
-          <span>{{ $t('modify_ip_assignment_pool') }}</span>
-          <v-btn
-            icon="$add"
-            variant="tonal"
-            @click="network.ipAssignmentPools.push({ ipRangeStart: '', ipRangeEnd: '' })"
-          ></v-btn>
-        </div>
-      </v-card-title>
-      <v-card-text>
-        <v-form>
-          <v-container>
-            <v-checkbox
-              :label="'IPV4' + t('enable_auto_assign_from_range')"
-              v-model="network.v4AssignMode.zt"
-            ></v-checkbox>
-            <v-checkbox
-              :label="'IPV6' + t('enable_auto_assign_from_range')"
-              v-model="network.v6AssignMode.zt"
-            ></v-checkbox>
-            <v-checkbox
-              :label="t('enable_6plane')"
-              v-model="network.v6AssignMode['6plane']"
-            ></v-checkbox>
-            <v-checkbox
-              :label="t('enable_rfc4193')"
-              v-model="network.v6AssignMode.rfc4193"
-            ></v-checkbox>
-            <v-row v-for="(ipAssignment, index) in network.ipAssignmentPools" :key="index">
-              <v-col>
-                <v-text-field
-                  :label="t('ip_range_start')"
-                  required
-                  v-model="ipAssignment.ipRangeStart"
-                  variant="solo-filled"
-                  append-inner-icon="$delete"
-                  @click:append-inner="network.ipAssignmentPools.splice(index, 1)"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field
-                  :label="t('ip_range_end')"
-                  required
-                  v-model="ipAssignment.ipRangeEnd"
-                  variant="solo-filled"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-btn :text="t('cancel')" @click="ipAssignmentDialog = false" variant="tonal"></v-btn>
-        <v-btn
-          :text="t('submit')"
-          @click="modifyIpAssignment"
-          variant="tonal"
-          color="primary"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
-  <v-row style="margin-bottom: -25px">
+  <!-- Divider -->
+  <v-row>
     <v-col>
       <!-- DNS Part -->
       <v-card variant="tonal" height="100%" density="compact">
@@ -446,7 +469,7 @@ const modifyDns = () => {
       </v-card>
 
       <!-- DNS Dialog -->
-      <v-dialog v-model="dnsDialog">
+      <v-dialog v-model="dnsDialog" max-width="800">
         <v-card>
           <v-card-title>
             <div style="display: flex; justify-content: space-between">

@@ -151,6 +151,15 @@ const removeDns = () => {
   network.value.dns.servers = []
 }
 
+const addDnsServer = () => {
+  // Check if there are any DNS servers in network.value.dns.servers.
+  if (!network.value.dns.servers) {
+    network.value.dns.servers = ['']
+  } else {
+    network.value.dns.servers.push('')
+  }
+}
+
 const modifyDns = () => {
   fetch('/ztapi/controller/network/' + network.value.id, {
     method: 'POST',
@@ -449,7 +458,7 @@ const modifyDns = () => {
                   @click="removeDns"
                   style="margin-right: 5px"
                 ></v-btn>
-                <v-btn icon="$add" variant="tonal" @click="network.dns.servers.push('')"></v-btn>
+                <v-btn icon="$add" variant="tonal" @click="addDnsServer"></v-btn>
               </div>
             </div>
           </v-card-title>

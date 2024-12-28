@@ -57,12 +57,12 @@ const zh_cn = {
   no_auto_assign_ips: '不自动分配IP',
   sso_exempt: '单点登录豁免',
   active_bridge: '启用桥接',
-  delete_member_confirm: '确认删除节点',
   modify_member_info: '修改节点信息',
   modify_personal_info: '修改个人信息',
   invalid_username_or_password: '用户名或密码错误',
   not_implimented_yet: '暂未实现',
   modify_dns: '修改DNS',
+  confirm_delete_member: '确认删除节点',
 }
 
 export default zh_cn

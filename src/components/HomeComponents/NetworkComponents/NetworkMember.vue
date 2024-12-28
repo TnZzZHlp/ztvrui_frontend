@@ -244,8 +244,20 @@ const editMember = () => {
       </template>
 
       <template v-slot:item.actions="{ item }">
-        <v-btn size="small" icon="$edit" @click="openEditMemberDialog(item)"></v-btn>
-        <v-btn size="small" icon="$delete" @click="openDeleteMemberDialog(item)"></v-btn>
+        <v-btn
+          size="small"
+          icon="$delete"
+          color="error"
+          @click="openDeleteMemberDialog(item)"
+          style="margin-right: 10px"
+          variant="tonal"
+        ></v-btn>
+        <v-btn
+          size="small"
+          icon="$edit"
+          @click="openEditMemberDialog(item)"
+          variant="tonal"
+        ></v-btn>
       </template>
 
       <template v-slot:no-data>{{ $t('no_members') }}</template>
@@ -257,16 +269,24 @@ const editMember = () => {
     <v-card>
       <v-card-title>
         <div style="display: flex; justify-content: space-between">
-          <span>{{ $t('delete_member_confirm') }}</span>
+          <span>{{ $t('confirm_delete_member') + '?' }}</span>
         </div>
       </v-card-title>
       <v-card-actions>
-        <v-btn :text="t('cancel')" @click="deleteMemberDialog = false" variant="tonal"></v-btn>
         <v-btn
-          :text="t('submit')"
-          variant="tonal"
+          :text="t('confirm_delete_member')"
+          variant="outlined"
           color="error"
+          prepend-icon="$delete"
+          size="small"
           @click="deleteMember(currentDeleteMember)"
+          style="margin-right: 10px"
+        ></v-btn>
+        <v-btn
+          :text="t('cancel')"
+          @click="deleteMemberDialog = false"
+          variant="outlined"
+          size="small"
         ></v-btn>
       </v-card-actions>
     </v-card>

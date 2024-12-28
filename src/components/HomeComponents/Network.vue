@@ -89,7 +89,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-sheet style="padding-left: 10%; padding-right: 10%">
+  <v-sheet style="padding-left: 10%; padding-right: 10%" min-height="100vh">
     <v-container fluid>
       <v-row>
         <v-col cols="12">

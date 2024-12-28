@@ -500,7 +500,7 @@ const modifyDns = () => {
             ></v-btn>
           </div>
         </template>
-        <template v-slot:item> not implimented yet </template>
+        <template v-slot:item>{{ t('not_implimented_yet') }}</template>
       </v-card>
     </v-col>
   </v-row>

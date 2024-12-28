@@ -61,6 +61,8 @@ const zh_cn = {
   modify_member_info: '修改节点信息',
   modify_personal_info: '修改个人信息',
   invalid_username_or_password: '用户名或密码错误',
+  not_implimented_yet: '暂未实现',
+  modify_dns: '修改DNS',
 }
 
 export default zh_cn

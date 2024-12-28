@@ -72,7 +72,10 @@ onMounted(() => {
 <template>
   <v-app theme="dark">
     <v-layout class="rounded rounded-md">
-      <v-app-bar title="ZTVRUI">
+      <v-app-bar>
+        <template v-slot:title>
+          <span @click="router.push('/home')">ZTVRUI</span>
+        </template>
         <template v-slot:append>
           <v-btn icon @click="editProfileDialog = true">
             <v-icon icon="$settings"></v-icon>

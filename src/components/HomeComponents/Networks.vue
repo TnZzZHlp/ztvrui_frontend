@@ -209,10 +209,11 @@ onMounted(() => {
           <v-btn
             :text="$t('confirm_delete_network')"
             @click="deleteNetwork()"
-            prepend-icon="delete"
+            prepend-icon="$delete"
+            variant="tonal"
             color="red"
           ></v-btn>
-          <v-btn :text="$t('cancel')" @click="dialogShow = false"></v-btn>
+          <v-btn :text="$t('cancel')" @click="dialogShow = false" variant="tonal"></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

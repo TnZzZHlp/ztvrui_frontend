@@ -63,7 +63,7 @@ onMounted(() => {
 
       <main>
         <section>
-          <v-form v-model="valid">
+          <v-form>
             <v-container>
               <v-row>
                 <v-text-field

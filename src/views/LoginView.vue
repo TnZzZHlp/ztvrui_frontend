@@ -13,13 +13,6 @@ const password = ref('')
 const errMsg = ref('')
 const showErrMsg = ref(false)
 
-// Listen Enter
-document.onkeydown = function (event) {
-  if (event.key === 'Enter') {
-    login()
-  }
-}
-
 const login = () => {
   fetch('/api/login', {
     method: 'POST',
@@ -70,19 +63,30 @@ onMounted(() => {
 
       <main>
         <section>
-          <v-text-field
-            :label="$t('username')"
-            variant="outlined"
-            v-model="username"
-          ></v-text-field>
-          <v-text-field
-            :label="$t('password')"
-            variant="outlined"
-            v-model="password"
-            type="password"
-          ></v-text-field>
+          <v-form v-model="valid">
+            <v-container>
+              <v-row>
+                <v-text-field
+                  :label="$t('username')"
+                  variant="outlined"
+                  v-model="username"
+                ></v-text-field>
+              </v-row>
+              <v-row>
+                <v-text-field
+                  :label="$t('password')"
+                  variant="outlined"
+                  v-model="password"
+                  type="password"
+                  @keyup.enter="login"
+                ></v-text-field>
+              </v-row>
+              <v-row>
+                <v-btn @click="login()" variant="tonal" block>{{ $t('login') }}</v-btn>
+              </v-row>
+            </v-container>
+          </v-form>
 
-          <v-btn @click="login()" variant="tonal">{{ $t('login') }}</v-btn>
           <v-snackbar v-model="showErrMsg" timeout="3000" color="error" location="top">
             {{ errMsg }}
           </v-snackbar>

@@ -98,8 +98,17 @@ onMounted(() => {
       <v-card>
         <v-card-title>{{ t('modify_personal_info') }}</v-card-title>
         <v-card-text>
-          <v-text-field v-model="username" :label="t('username')"></v-text-field>
-          <v-text-field v-model="password" :label="t('password')" type="password"></v-text-field>
+          <v-text-field
+            v-model="username"
+            :label="t('username')"
+            autocomplete="username"
+          ></v-text-field>
+          <v-text-field
+            v-model="password"
+            :label="t('password')"
+            type="password"
+            autocomplete="password"
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

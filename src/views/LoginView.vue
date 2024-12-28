@@ -70,6 +70,7 @@ onMounted(() => {
                   :label="$t('username')"
                   variant="outlined"
                   v-model="username"
+                  autocomplete="username"
                 ></v-text-field>
               </v-row>
               <v-row>
@@ -78,6 +79,7 @@ onMounted(() => {
                   variant="outlined"
                   v-model="password"
                   type="password"
+                  autocomplete="password"
                   @keyup.enter="login"
                 ></v-text-field>
               </v-row>

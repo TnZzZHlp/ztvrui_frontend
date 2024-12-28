@@ -21,6 +21,8 @@ import {
   mdiLogout,
   mdiThemeLightDark,
   mdiCog,
+  mdiPlus,
+  mdiHome,
 } from '@mdi/js'
 
 const vuetify = createVuetify({
@@ -39,6 +41,8 @@ const vuetify = createVuetify({
       logout: mdiLogout,
       theme: mdiThemeLightDark,
       settings: mdiCog,
+      add: mdiPlus,
+      home: mdiHome,
     },
     sets: {
       mdi,

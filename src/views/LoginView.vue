@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const router = useRouter()
-
-// Get system theme
-const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-const theme = ref(systemTheme)
 
 // Login
 const username = ref('')
@@ -37,7 +36,7 @@ const login = () => {
       if (data.error === '0') {
         router.push('/home')
       } else {
-        errMsg.value = data.error
+        errMsg.value = t(data.error)
         showErrMsg.value = true
       }
     })
@@ -63,7 +62,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-app :theme="theme">
+  <v-app theme="dark">
     <div class="page-wrapper">
       <header>
         <v-img class="mx-auto my-6" max-width="64" src="/ZeroTierIcon.png"></v-img>

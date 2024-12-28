@@ -1,8 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useDisplay } from 'vuetify'
 import OverView from '@/components/HomeComponents/NetworkComponents/OverView.vue'
 import NetworkMember from '@/components/HomeComponents/NetworkComponents/NetworkMember.vue'
 
@@ -93,7 +92,7 @@ onMounted(() => {
   <v-sheet style="padding-left: 10%; padding-right: 10%">
     <v-container fluid>
       <v-row>
-        <v-col cols="12" style="height: 100%">
+        <v-col cols="12">
           <OverView
             :network="network"
             :showSnackBar="showSnackBar"

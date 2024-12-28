@@ -20,7 +20,8 @@
     "vue": "^3.5.13",
     "vue-i18n": "^10.0.5",
     "vue-router": "^4.4.5",
-    "vuetify": "^3.7.6"
+    "vuetify": "^3.7.6",
+    "zerotier-rule-compiler": "^1.2.2-2"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",

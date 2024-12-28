@@ -83,6 +83,13 @@ const Authorize = (item) => {
 }
 
 // Delete member
+const deleteMemberDialog = ref(false)
+const currentDeleteMember = ref(null)
+const openDeleteMemberDialog = (item) => {
+  deleteMemberDialog.value = true
+  currentDeleteMember.value = item
+}
+
 const deleteMember = (item) => {
   fetch(`/ztapi/controller/network/` + item.nwid + `/member/` + item.id, {
     method: 'DELETE',
@@ -90,6 +97,7 @@ const deleteMember = (item) => {
     .then((res) => res.json())
     .then((data) => {
       emit('showSnackBar', 'error', t('deleted'))
+      deleteMemberDialog.value = false
       emit('refreshData')
     })
     .catch((err) => {
@@ -133,6 +141,42 @@ const copyToClipboard = (content: string) => {
     unsecuredCopyToClipboard(content)
   }
   emit('showSnackBar', 'green', t('copied'))
+}
+
+// Edit Network Member Dialog
+const editMemberDialog = ref(false)
+const currentEditMember = ref(null)
+const openEditMemberDialog = (item) => {
+  editMemberDialog.value = true
+  currentEditMember.value = item
+}
+const editMember = () => {
+  fetch(
+    `/ztapi/controller/network/` +
+      currentEditMember.value.nwid +
+      `/member/` +
+      currentEditMember.value.id,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activeBridge: currentEditMember.value.activeBridge,
+        ipAssignments: currentEditMember.value.ipAssignments,
+        noAutoAssignIps: currentEditMember.value.noAutoAssignIps,
+      }),
+    },
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      emit('showSnackBar', 'green', t('save_success'))
+      editMemberDialog.value = false
+      emit('refreshData')
+    })
+    .catch((err) => {
+      console.error(err)
+    })
 }
 </script>
 
@@ -200,11 +244,94 @@ const copyToClipboard = (content: string) => {
       </template>
 
       <template v-slot:item.actions="{ item }">
-        <v-btn class="me-2" size="small" icon="$edit" @click="console.log('click')"></v-btn>
-        <v-btn size="small" icon="$delete" @click="deleteMember(item)"></v-btn>
+        <v-btn size="small" icon="$edit" @click="openEditMemberDialog(item)"></v-btn>
+        <v-btn size="small" icon="$delete" @click="openDeleteMemberDialog(item)"></v-btn>
       </template>
 
       <template v-slot:no-data>{{ $t('no_members') }}</template>
     </v-data-table-virtual>
   </v-card>
+
+  <!-- Delete Network Member Dialog -->
+  <v-dialog v-model="deleteMemberDialog" width="400">
+    <v-card>
+      <v-card-title>
+        <div style="display: flex; justify-content: space-between">
+          <span>{{ $t('delete_member_confirm') }}</span>
+        </div>
+      </v-card-title>
+      <v-card-actions>
+        <v-btn :text="t('cancel')" @click="deleteMemberDialog = false" variant="tonal"></v-btn>
+        <v-btn
+          :text="t('submit')"
+          variant="tonal"
+          color="error"
+          @click="deleteMember(currentDeleteMember)"
+        ></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <!-- Edit Network Member Dialog -->
+  <v-dialog v-model="editMemberDialog">
+    <v-card>
+      <v-card-title>
+        <div style="display: flex; justify-content: space-between">
+          <span>{{ $t('modify_member_info') }}</span>
+        </div>
+      </v-card-title>
+      <v-card-text>
+        <v-form>
+          <v-container>
+            <v-row>
+              <v-checkbox :label="$t('active_bridge')" v-model="currentEditMember.activeBridge">
+              </v-checkbox>
+            </v-row>
+            <v-row>
+              <v-container>
+                <v-row>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      width: 100%;
+                      padding-bottom: 10px;
+                    "
+                  >
+                    <span style="font-size: 20px">{{ t('ip_assignment') }}</span>
+                    <v-btn
+                      icon="$add"
+                      @click="currentEditMember.ipAssignments.push('')"
+                      size="x-small"
+                      variant="tonal"
+                    ></v-btn>
+                  </div>
+                </v-row>
+                <v-row v-for="(ip, index) in currentEditMember.ipAssignments" :key="index">
+                  <v-text-field
+                    variant="solo-filled"
+                    v-model="currentEditMember.ipAssignments[index]"
+                    append-icon="$delete"
+                    @click:append="currentEditMember.ipAssignments.splice(index, 1)"
+                  ></v-text-field>
+                </v-row>
+              </v-container>
+            </v-row>
+            <v-row>
+              <v-checkbox
+                :label="$t('no_auto_assign_ips')"
+                v-model="currentEditMember.noAutoAssignIps"
+              >
+              </v-checkbox>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn :text="t('cancel')" @click="editMemberDialog = false" variant="tonal"></v-btn>
+        <v-btn :text="t('submit')" variant="tonal" color="primary" @click="editMember"></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>

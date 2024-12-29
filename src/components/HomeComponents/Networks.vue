@@ -141,99 +141,95 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="cards" style="width: 80%; margin: 0 auto">
-    <!-- Networks -->
-    <v-card v-for="network in networks" :key="network.id">
-      <template v-slot:title>
-        <p>{{ $t('network_name') }}</p>
-        <p style="font-size: 30px">{{ network.name }}</p>
-      </template>
+  <v-container>
+    <v-row v-for="network in networks" :key="network.id">
+      <v-col>
+        <!-- Networks -->
+        <v-card>
+          <template v-slot:title>
+            <p>{{ $t('network_name') }}</p>
+            <p style="font-size: 30px">{{ network.name }}</p>
+          </template>
 
-      <template v-slot:subtitle>
-        {{ $t('network_id') }}
-        <v-btn variant="text" size="small" @click="copyToClipboard(network.id)">
-          <v-icon icon="$copy" />
-          {{ network.id }}
-        </v-btn>
-      </template>
+          <template v-slot:subtitle>
+            {{ $t('network_id') }}
+            <v-btn variant="text" size="small" @click="copyToClipboard(network.id)">
+              <v-icon icon="$copy" />
+              {{ network.id }}
+            </v-btn>
+          </template>
 
-      <template v-slot:actions>
-        <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
-          <v-btn
-            :text="$t('delete_network')"
-            variant="tonal"
-            @click="showDialog(network.id)"
-            prepend-icon="$delete"
-            color="red"
-          ></v-btn>
-          <v-btn
-            :text="$t('enter_network')"
-            variant="tonal"
-            @click="router.push('/home/network/' + network.id)"
-          ></v-btn>
-        </div>
-      </template>
-    </v-card>
+          <template v-slot:actions>
+            <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
+              <v-btn
+                :text="$t('delete_network')"
+                variant="tonal"
+                @click="showDialog(network.id)"
+                prepend-icon="$delete"
+                color="red"
+              ></v-btn>
+              <v-btn
+                :text="$t('enter_network')"
+                variant="tonal"
+                @click="router.push('/home/network/' + network.id)"
+              ></v-btn>
+            </div>
+          </template>
+        </v-card>
+      </v-col>
+    </v-row>
 
     <!-- Create a New Network -->
-    <v-card>
-      <template v-slot:title>
-        {{ $t('create_network') }}
-      </template>
+    <v-row>
+      <v-col>
+        <v-card>
+          <template v-slot:title>
+            {{ $t('create_network') }}
+          </template>
 
-      <template v-slot:text>
-        <v-text-field
-          :label="$t('network_name')"
-          variant="outlined"
-          max-width="400"
-          v-model="networkName"
-          @keyup.enter="createNetwork"
-        ></v-text-field>
-      </template>
+          <template v-slot:text>
+            <v-text-field
+              :label="$t('network_name')"
+              variant="outlined"
+              max-width="400"
+              v-model="networkName"
+              @keyup.enter="createNetwork"
+            ></v-text-field>
+          </template>
 
-      <template v-slot:actions>
-        <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
-          <v-btn :text="$t('create')" variant="tonal" @click="createNetwork"></v-btn>
-        </div>
-      </template>
+          <template v-slot:actions>
+            <div style="display: flex; justify-content: end; width: 100%; gap: 10px">
+              <v-btn :text="$t('create')" variant="tonal" @click="createNetwork"></v-btn>
+            </div>
+          </template>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+
+  <!-- Confirm Delete Network Dialog -->
+  <v-dialog max-width="500" v-model="dialogShow">
+    <v-card :title="$t('confirm_delete_network') + ' ' + deleteNetworkId + ' ' + '?'">
+      <v-card-text>
+        {{ $t('delete_network_tip') }}
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn
+          :text="$t('confirm_delete_network')"
+          @click="deleteNetwork()"
+          prepend-icon="$delete"
+          variant="tonal"
+          color="red"
+        ></v-btn>
+        <v-btn :text="$t('cancel')" @click="dialogShow = false" variant="tonal"></v-btn>
+      </v-card-actions>
     </v-card>
+  </v-dialog>
 
-    <!-- Confirm Delete Network Dialog -->
-    <v-dialog max-width="500" v-model="dialogShow">
-      <v-card :title="$t('confirm_delete_network') + ' ' + deleteNetworkId + ' ' + '?'">
-        <v-card-text>
-          {{ $t('delete_network_tip') }}
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn
-            :text="$t('confirm_delete_network')"
-            @click="deleteNetwork()"
-            prepend-icon="$delete"
-            variant="tonal"
-            color="red"
-          ></v-btn>
-          <v-btn :text="$t('cancel')" @click="dialogShow = false" variant="tonal"></v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
-      {{ snackBarText }}
-    </v-snackbar>
-  </div>
+  <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
+    {{ snackBarText }}
+  </v-snackbar>
 </template>
 
-<style>
-.cards {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-}
-
-.cards > * {
-  width: calc(100% - 20px);
-  margin: 10px;
-}
-</style>
+<style></style>

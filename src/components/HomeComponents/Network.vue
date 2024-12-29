@@ -89,8 +89,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-sheet style="padding-left: 10%; padding-right: 10%" min-height="100%">
-    <v-container fluid>
+  <v-sheet min-height="100%" class="pa-0">
+    <v-container>
       <v-row>
         <v-col cols="12">
           <OverView
@@ -117,4 +117,9 @@ onMounted(() => {
   </v-snackbar>
 </template>
 
-<style></style>
+<style>
+.desktop {
+  padding-left: 15%;
+  padding-right: 15%;
+}
+</style>

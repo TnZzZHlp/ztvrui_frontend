@@ -191,8 +191,17 @@ const editMember = () => {
       fixed-header
       density="compact"
     >
+      <!-- Top Search Bar -->
       <template v-slot:top>
-        <div style="display: flex; justify-content: space-between; align-items: center">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 10px;
+            padding-right: 10px;
+          "
+        >
           <v-text-field
             variant="underlined"
             append-inner-icon="$search"
@@ -202,28 +211,38 @@ const editMember = () => {
         </div>
       </template>
 
+      <!-- Authorized -->
       <template v-slot:item.authorized="{ item }">
-        <v-checkbox :model-value="item.authorized" @click="Authorize(item)"></v-checkbox>
+        <div style="min-width: 65px">
+          <v-checkbox :model-value="item.authorized" @click="Authorize(item)"></v-checkbox>
+        </div>
       </template>
 
+      <!-- Member Name -->
       <template v-slot:item.name="{ item }">
-        <v-text-field
-          variant="underlined"
-          v-model="item.name"
-          append-inner-icon="$save"
-          @click:appendInner="saveMemberName(item)"
-          @keydown.enter="saveMemberName(item)"
-          min-width="100"
-        >
-        </v-text-field>
+        <div style="min-width: 100px">
+          <v-text-field
+            variant="underlined"
+            v-model="item.name"
+            append-inner-icon="$save"
+            @click:appendInner="saveMemberName(item)"
+            @keydown.enter="saveMemberName(item)"
+            min-width="100"
+          >
+          </v-text-field>
+        </div>
       </template>
 
+      <!-- Zerotier ID -->
       <template v-slot:item.id="{ item }">
-        <v-chip color="primary" small>{{ item.id }}</v-chip>
+        <div style="min-width: 100px">
+          <v-chip color="primary" small>{{ item.id }}</v-chip>
+        </div>
       </template>
 
+      <!-- Zerotier Address -->
       <template v-slot:item.address="{ item }">
-        <div style="display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column; min-width: 100px">
           <v-btn
             v-for="(ip, index) in item.ipAssignments"
             :key="index"
@@ -237,27 +256,33 @@ const editMember = () => {
         </div>
       </template>
 
+      <!-- Physical Address -->
       <template v-slot:item.physical_address="{ item }">
-        <v-chip color="primary" small v-if="getMemberStatusById(item.id)">
-          {{ getMemberStatusById(item.id) }}
-        </v-chip>
+        <div style="min-width: 100px">
+          <v-chip color="primary" small v-if="getMemberStatusById(item.id)">
+            {{ getMemberStatusById(item.id) }}
+          </v-chip>
+        </div>
       </template>
 
+      <!-- Action Button -->
       <template v-slot:item.actions="{ item }">
-        <v-btn
-          size="small"
-          icon="$delete"
-          color="error"
-          @click="openDeleteMemberDialog(item)"
-          style="margin-right: 10px"
-          variant="tonal"
-        ></v-btn>
-        <v-btn
-          size="small"
-          icon="$edit"
-          @click="openEditMemberDialog(item)"
-          variant="tonal"
-        ></v-btn>
+        <div style="width: 90px">
+          <v-btn
+            size="small"
+            icon="$delete"
+            color="error"
+            @click="openDeleteMemberDialog(item)"
+            style="margin-right: 10px"
+            variant="tonal"
+          ></v-btn>
+          <v-btn
+            size="small"
+            icon="$edit"
+            @click="openEditMemberDialog(item)"
+            variant="tonal"
+          ></v-btn>
+        </div>
       </template>
 
       <template v-slot:no-data>{{ $t('no_members') }}</template>

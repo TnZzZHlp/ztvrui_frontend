@@ -89,7 +89,8 @@ onMounted(() => {
         </template>
       </v-app-bar>
 
-      <v-main class="d-flex" scrollable>
+      <!-- Main View -->
+      <v-main scrollable>
         <RouterView />
       </v-main>
     </v-layout>

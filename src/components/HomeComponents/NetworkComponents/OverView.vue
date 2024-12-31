@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { toRefs, ref, computed } from 'vue'
+import { toRefs, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import compile from './RulesCompiler.ts'
 
 const { t } = useI18n()
 
@@ -180,6 +181,62 @@ const modifyDns = () => {
       console.error('There was an error!', error)
     })
 }
+
+// Edit Rules Dialog
+const rulesDialog = ref(false)
+const originalRules = ref('')
+
+const saveRules = () => {
+  const rules = []
+  const tags = {}
+  const caps = {}
+
+  const result = compile(originalRules.value, rules, caps, tags)
+
+  if (result) {
+    const [first, second, error] = result
+    emit('showSnackBar', 'red', 'row:' + first + ' ' + 'col:' + second + ' ' + error)
+    rulesDialog.value = false
+    return
+  }
+
+  const capsArray = []
+  const capabilitiesByName = {}
+  for (const n in caps) {
+    capsArray.push(caps[n])
+    capabilitiesByName[n] = caps[n].id
+  }
+  const tagsArray = []
+  for (const n in tags) {
+    const t = tags[n]
+    const dfl = t['default']
+    tagsArray.push({
+      id: t.id,
+      default: dfl || dfl === 0 ? dfl : null,
+    })
+  }
+
+  fetch('/ztapi/controller/network/' + network.value.id, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      rules: rules,
+      tags: tagsArray,
+      capabilities: capsArray,
+    }),
+  })
+    .then((response) => response.json())
+    .then(() => {
+      emit('showSnackBar', 'green', t('save_success'))
+      rulesDialog.value = false
+      emit('refreshData')
+    })
+    .catch((error) => {
+      console.error('There was an error!', error)
+    })
+}
 </script>
 
 <template>
@@ -219,7 +276,7 @@ const modifyDns = () => {
       <!-- Info Dialog -->
       <v-dialog max-width="800" v-model="infoDialog">
         <v-card :title="t('modify_network_info')">
-          <v-card-text>
+          <v-card-text style="overflow-y: scroll">
             <v-form>
               <v-container>
                 <v-row>
@@ -307,7 +364,7 @@ const modifyDns = () => {
               ></v-btn>
             </div>
           </v-card-title>
-          <v-card-text>
+          <v-card-text style="overflow-y: scroll">
             <v-form>
               <v-container>
                 <v-row v-for="(route, index) in network.routes" :key="index">
@@ -387,7 +444,7 @@ const modifyDns = () => {
               ></v-btn>
             </div>
           </v-card-title>
-          <v-card-text>
+          <v-card-text style="overflow-y: scroll">
             <v-form>
               <v-container>
                 <v-checkbox
@@ -485,7 +542,7 @@ const modifyDns = () => {
               </div>
             </div>
           </v-card-title>
-          <v-card-text>
+          <v-card-text style="overflow-y: scroll">
             <v-form>
               <v-container>
                 <v-row>
@@ -527,13 +584,34 @@ const modifyDns = () => {
             <v-btn
               icon="$settings"
               variant="plain"
-              @click="console.log('123')"
+              @click="rulesDialog = true"
               size="x-small"
             ></v-btn>
           </div>
         </template>
-        <template v-slot:item>{{ t('not_implimented_yet') }}</template>
       </v-card>
+
+      <!-- Rules Dialog -->
+      <v-dialog v-model="rulesDialog" fullscreen>
+        <v-card>
+          <v-card-title>
+            <div style="display: flex; justify-content: space-between">
+              <span>{{ $t('modify_rules') }}</span>
+            </div>
+          </v-card-title>
+          <v-card-text style="overflow-y: scroll">
+            <p style="color: red">
+              {{ $t('rules_attention') }}
+            </p>
+            <v-textarea v-model="originalRules" variant="solo-filled" auto-grow></v-textarea>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn :text="t('cancel')" @click="rulesDialog = false" variant="tonal"></v-btn>
+            <v-btn :text="t('submit')" @click="saveRules" variant="tonal" color="primary"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
 </template>

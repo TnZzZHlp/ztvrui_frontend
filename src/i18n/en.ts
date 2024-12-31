@@ -63,6 +63,8 @@ const en = {
   invalid_username_or_password: 'Invalid Username or Password',
   not_implimented_yet: 'Not Implemented Yet',
   modify_dns: 'Modify DNS',
+  modify_rules: 'Modify Rules',
+  rules_attention: `Once the rules are saved, the original text will be irreversibly converted into Zerotier's JSON format and cannot be reverted back to the original text. Please ensure to keep a safe copy of the original text.`,
 }
 
 export default en

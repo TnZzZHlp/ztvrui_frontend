@@ -63,6 +63,9 @@ const zh_cn = {
   not_implimented_yet: '暂未实现',
   modify_dns: '修改DNS',
   confirm_delete_member: '确认删除节点',
+  rules_attention:
+    '一旦保存规则原文本将会被转换成Zerotier的JSON格式，无法可逆地转换回原文本，请妥善保存原文本。',
+  modify_rules: '修改规则',
 }
 
 export default zh_cn

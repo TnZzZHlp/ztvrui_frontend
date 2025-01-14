@@ -27,9 +27,9 @@ const search = ref('')
 const tableFilter = (value, query, item) => {
   const result =
     query &&
-    (item.raw.name.toString().toLowerCase().includes(query.toLowerCase()) ||
-      item.raw.id.toLowerCase().includes(query.toLowerCase()) ||
-      item.raw.ipAssignments.some((ip) => ip.toLowerCase().includes(query.toLowerCase())))
+    (item.raw.name?.toString().toLowerCase().includes(query.toLowerCase()) ||
+      item.raw.id?.toLowerCase().includes(query.toLowerCase()) ||
+      item.raw.ipAssignments?.some((ip) => ip.toLowerCase().includes(query.toLowerCase())))
 
   return result
 }

@@ -196,7 +196,6 @@ const saveRules = () => {
   if (result) {
     const [first, second, error] = result
     emit('showSnackBar', 'red', 'row:' + first + ' ' + 'col:' + second + ' ' + error)
-    rulesDialog.value = false
     return
   }
 

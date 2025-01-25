@@ -34,10 +34,6 @@ const router = createRouter({
           name: 'user_manage',
           component: () => import('@/components/HomeComponents/UserManage.vue'),
         },
-        {
-          path: '*',
-          redirect: '/',
-        },
       ],
     },
   ],

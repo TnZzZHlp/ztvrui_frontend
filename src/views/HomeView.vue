@@ -56,17 +56,6 @@ const editProfile = () => {
       showSnackBar('error', error)
     })
 }
-
-onMounted(() => {
-  // Check Cookie
-  fetch('/api/check')
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.error != '0') {
-        router.push(data.path)
-      }
-    })
-})
 </script>
 
 <template>
@@ -74,7 +63,7 @@ onMounted(() => {
     <v-layout class="rounded rounded-md">
       <v-app-bar>
         <template v-slot:title>
-          <v-btn @click="router.push('/home')" variant="text">ZTVRUI</v-btn>
+          <b @click="router.push('/home')" class="cursor-pointer">ZTVRUI</b>
         </template>
         <template v-slot:append>
           <v-btn icon @click="editProfileDialog = true">

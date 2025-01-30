@@ -225,11 +225,10 @@ onMounted(() => {
         <v-btn :text="$t('cancel')" @click="dialogShow = false" variant="tonal"></v-btn>
       </v-card-actions>
     </v-card>
+    <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
+      {{ snackBarText }}
+    </v-snackbar>
   </v-dialog>
-
-  <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
-    {{ snackBarText }}
-  </v-snackbar>
 </template>
 
 <style></style>

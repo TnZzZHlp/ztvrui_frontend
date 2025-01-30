@@ -39,4 +39,16 @@ const router = createRouter({
   ],
 })
 
+router.beforeEach((to) => {
+  // Check Cookie
+  fetch('/api/check')
+    .then((res) => res.json())
+    .then((data) => {
+      // If the user is logged in, redirect to the home page
+      if (to.name === 'login' && data.error === '0') {
+        router.push('/home')
+      }
+    })
+})
+
 export default router

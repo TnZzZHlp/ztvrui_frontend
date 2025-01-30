@@ -111,10 +111,10 @@ onMounted(() => {
         </v-col>
       </v-row>
     </v-container>
+    <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
+      {{ snackBarText }}
+    </v-snackbar>
   </v-sheet>
-  <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
-    {{ snackBarText }}
-  </v-snackbar>
 </template>
 
 <style>

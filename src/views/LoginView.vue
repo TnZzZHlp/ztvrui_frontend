@@ -38,20 +38,6 @@ const login = () => {
       showErrMsg.value = true
     })
 }
-
-onMounted(() => {
-  // Check Logined
-  fetch('/api/check')
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.error === '0') {
-        router.push('/home')
-      }
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-})
 </script>
 
 <template>

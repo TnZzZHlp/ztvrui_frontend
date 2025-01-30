@@ -80,7 +80,9 @@ const editProfile = () => {
 
       <!-- Main View -->
       <v-main scrollable>
-        <RouterView />
+        <keep-alive>
+          <RouterView />
+        </keep-alive>
       </v-main>
     </v-layout>
 

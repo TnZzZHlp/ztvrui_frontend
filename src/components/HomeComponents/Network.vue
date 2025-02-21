@@ -81,6 +81,12 @@ const refreshData = () => {
   getMembersDetail()
 }
 
+// Regularly update member information
+setInterval(() => {
+  getMembers()
+  getMembersDetail()
+}, 5000)
+
 onMounted(() => {
   getNetwork()
   getMembers()

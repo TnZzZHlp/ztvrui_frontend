@@ -3,10 +3,10 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <router-view v-slot="{ Component, route }">
+  <router-view v-slot="{ Component }">
     <keep-alive>
       <transition name="fade" mode="out-in">
-        <component :is="Component" :key="route.fullPath" />
+        <component :is="Component" />
       </transition>
     </keep-alive>
   </router-view>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { message, type } = defineProps({ message: String, type: String })
-console.log('Snackbar props:', { message, type })
 </script>
 
 <template>

@@ -1,18 +1,16 @@
-import { useI18n } from 'vue-i18n'
+import i18n from '@/i18n'
 import { showSnackBar } from './showSnackBar'
-
-const t = useI18n().t
 
 export function copyToClipboard(text: string) {
   // Determine whether the Clipboard API is supported
   if (navigator.clipboard) {
-    navigator.clipboard
+    return navigator.clipboard
       .writeText(text)
       .then(() => {
-        showSnackBar(t('copied'), 'success')
+        showSnackBar(i18n.global.t('common.copied'), 'success')
       })
       .catch(() => {
-        showSnackBar(t('copy_failed'), 'error')
+        showSnackBar(i18n.global.t('common.copyFailed'), 'error')
       })
   } else {
     // Fallback handling
@@ -22,5 +20,6 @@ export function copyToClipboard(text: string) {
     textArea.select()
     document.execCommand('copy')
     document.body.removeChild(textArea)
+    showSnackBar(i18n.global.t('common.copied'), 'success')
   }
 }

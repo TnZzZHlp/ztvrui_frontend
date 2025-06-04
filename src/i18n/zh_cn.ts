@@ -3,6 +3,8 @@ const zh_cn = {
     cancel: '取消',
     confirm: '确认',
     submit: '提交',
+    copied: '已复制',
+    copyFailed: '复制失败',
   },
   network: {
     default: '网络',
@@ -20,6 +22,13 @@ const zh_cn = {
     },
     name: '网络名称',
     enter: '进入网络',
+    detail: {
+      default: '网络详情',
+      overview: '网络概览',
+      members: '网络成员',
+      settings: '网络设置',
+      rules: '网络规则',
+    },
   },
   auth: {
     username: '用户名',

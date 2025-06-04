@@ -7,6 +7,7 @@ import { showSnackBar } from '@/utils/showSnackBar'
 import { showConfirmPopupPanel } from '@/utils/showConfirmPopupPanel'
 import { eventBus } from '@/utils/eventBus'
 import { useRouter } from 'vue-router'
+import { copyToClipboard } from '@/utils/copyToClipboard'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -63,7 +64,15 @@ onBeforeMount(() => {
     v-for="network in networks"
     :key="network.id"
   >
-    <span class="font-bold text-xl">{{ network.name }}</span>
+    <div>
+      <p class="font-bold text-xl">{{ network.name }}</p>
+      <button
+        class="cursor-pointer hover:bg-gray-200 transition-all px-1 mt-1 rounded"
+        @click="() => copyToClipboard(network.id!)"
+      >
+        {{ network.id }}
+      </button>
+    </div>
 
     <div class="flex items-center justify-end">
       <button
@@ -76,7 +85,7 @@ onBeforeMount(() => {
       <button
         class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300 font-bold"
         type="button"
-        @click="router.push({ name: 'networkDetail', params: { networkId: network.id } })"
+        @click="router.push(`/network/${network.id}/overview`)"
       >
         {{ t('network.enter') }}
       </button>

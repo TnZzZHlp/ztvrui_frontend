@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import addNetworkPopupPanel from '@/components/network/addNetworkPopupPanel.vue'
+import addNetworkPopupPanel from '@/components/networks/addNetworkPopupPanel.vue'
 import i18n from '@/i18n'
 export function showAddNetworkPanel() {
   const container = document.createElement('div')

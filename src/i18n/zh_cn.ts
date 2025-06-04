@@ -5,6 +5,7 @@ const zh_cn = {
     submit: '提交',
     copied: '已复制',
     copyFailed: '复制失败',
+    return: '返回',
   },
   network: {
     default: '网络',

@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import sideBarOpenIcon from '@/assets/icons/sidebar-open.svg'
+import sideBarCloseIcon from '@/assets/icons/sidebar-close.svg'
+import returnIcon from '@/assets/icons/return-back-button.svg'
 
 const { t } = useI18n()
 const router = useRouter()
+const showSiderBar = ref(false)
 
 const siderBarItems = [
   {
@@ -22,6 +27,11 @@ const siderBarItems = [
     label: t('network.detail.rules'),
     name: 'networkRules',
   },
+  {
+    label: t('common.return'),
+    icon: returnIcon,
+    name: 'networks',
+  },
 ]
 </script>
 
@@ -30,28 +40,45 @@ const siderBarItems = [
     <!-- Header -->
     <header class="shadow h-[60px] bg-white">
       <div class="h-full flex items-center justify-between px-4">
-        <span class="font-bold text-xl cursor-pointer" @click="router.push({ name: 'networks' })">{{
-          t('network.default')
-        }}</span>
+        <span class="font-bold text-xl cursor-pointer" @click="showSiderBar = !showSiderBar">
+          <transition name="fade" mode="out-in">
+            <img
+              :key="showSiderBar ? 'open' : 'close'"
+              :src="showSiderBar ? sideBarOpenIcon : sideBarCloseIcon"
+              alt="Toggle Sidebar"
+              class="inline-block mr-2"
+            />
+          </transition>
+        </span>
         <span class="font-bold text-xl">{{ t('network.detail.default') }}</span>
       </div>
     </header>
 
     <div class="flex flex-1">
       <!-- Sidebar -->
-      <section class="p-4 w-[250px] h-full overflow-y-auto shadow">
+      <section
+        class="h-full shadow transform transition-all duration-300 ease-in-out flex-none overflow-hidden"
+        :class="showSiderBar ? 'lg:w-64 p-4 w-full' : 'w-0 p-0'"
+      >
         <ol>
           <li
-            class="mb-2 w-full h-10 rounded flex items-center justify-center pl-2 transition-all"
+            class="mb-2 h-10 rounded flex items-center justify-center pl-2 transition-all"
             v-for="(item, index) in siderBarItems"
             :key="index"
-            :class="
-              router.currentRoute.value.name === item.name
-                ? 'bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800'
-                : 'bg-white text-black hover:bg-gray-100 active:bg-gray-200'
-            "
+            :class="{
+              'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white':
+                router.currentRoute.value.name === item.name,
+              'bg-white hover:bg-gray-100 active:bg-gray-200':
+                router.currentRoute.value.name !== item.name,
+            }"
           >
-            <button class="w-full text-left" @click="router.push({ name: item.name })">
+            <img
+              v-if="item.icon"
+              :src="item.icon"
+              alt="returnIcon"
+              class="h-full w-auto object-contain"
+            />
+            <button class="w-full text-left text-nowrap" @click="router.push({ name: item.name })">
               {{ item.label }}
             </button>
           </li>
@@ -59,7 +86,7 @@ const siderBarItems = [
       </section>
 
       <!-- Main Content -->
-      <main>
+      <main class="overflow-hidden">
         <router-view v-slot="{ Component, route }">
           <keep-alive>
             <transition name="fade" mode="out-in">

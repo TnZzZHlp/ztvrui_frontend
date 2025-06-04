@@ -32,7 +32,7 @@ const Login = (e: Event) => {
 <template>
   <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img class="mx-auto h-30 w-auto" src="/icon.png" alt="Your Company" />
+      <img class="mx-auto h-30 w-auto" src="/icon.png" alt="ZTVRUI Icon" />
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">

@@ -4,7 +4,9 @@ import { RouterView } from 'vue-router'
 
 <template>
   <router-view v-slot="{ Component, route }">
-    <component :is="Component" :key="route.fullPath" />
+    <transition name="fade" mode="out-in">
+      <component :is="Component" :key="route.fullPath" />
+    </transition>
   </router-view>
 </template>
 

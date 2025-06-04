@@ -1,9 +1,11 @@
 const en = {
   cancel: 'Cancel',
   copied: 'Copied',
+  copy_failed: 'Copy Failed',
   create: 'Create',
   create_network: 'Create New Network',
-  confirm_delete_network: 'Confirm Network Deletion',
+  confirm_delete_network: 'Confirm Delete Network?',
+  confirm: 'Confirm',
   delete_network: 'Delete Network',
   delete_network_tip: 'After deletion, the network cannot be recovered. Are you sure to delete?',
   enter_network: 'Enter Network',

@@ -11,42 +11,30 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/home',
-      name: 'home',
+      path: '/networks',
+      name: 'networks',
       component: () => import('@/views/NetworksView.vue'),
-      // children: [
-      //   {
-      //     path: '',
-      //     name: 'networks',
-      //     component: () => import('@/components/HomeComponents/Networks.vue'),
-      //   },
-      //   {
-      //     path: 'network/:id',
-      //     name: 'network',
-      //     component: () => import('@/components/HomeComponents/Network.vue'),
-      //   },
-      //   {
-      //     path: 'user_manage',
-      //     name: 'user_manage',
-      //     component: () => import('@/components/HomeComponents/UserManage.vue'),
-      //   },
-      // ],
+    },
+    {
+      path: '/network/:networkId',
+      name: 'networkDetail',
+      component: () => import('@/views/NetworkDetailView.vue'),
     },
   ],
 })
 
-// router.beforeEach(async (to) => {
-//   await check()
-//     .then(() => {
-//       if (to.name === 'login') {
-//         router.push({ name: 'home' })
-//       }
-//     })
-//     .catch(() => {
-//       if (to.name !== 'login') {
-//         router.push({ name: 'login' })
-//       }
-//     })
-// })
+router.beforeEach(async (to) => {
+  await check()
+    .then(() => {
+      if (to.name === 'login') {
+        router.push({ name: 'networks' })
+      }
+    })
+    .catch(() => {
+      if (to.name !== 'login') {
+        router.push({ name: 'login' })
+      }
+    })
+})
 
 export default router

@@ -42,7 +42,7 @@ const closePopupPanel = () => {
           @click="closePopupPanel"
           type="button"
         >
-          <b>{{ t('cancel') }}</b>
+          <b>{{ t('common.cancel') }}</b>
         </button>
         <button
           class="mx-2 px-4 py-2 shadow-sm/20 rounded transition-all"
@@ -53,7 +53,7 @@ const closePopupPanel = () => {
           @click="handleClick"
           type="button"
         >
-          <b>{{ t('confirm') }}</b>
+          <b>{{ t('common.confirm') }}</b>
         </button>
       </div>
     </div>

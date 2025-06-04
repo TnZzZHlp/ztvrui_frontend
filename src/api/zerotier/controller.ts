@@ -28,12 +28,15 @@ export function listNetworkIDs(): Promise<string[]> {
   })
 }
 
-export function generateRandomNetworkID(): Promise<ControllerNetworkInfo> {
+export function generateRandomNetworkID(
+  networkInfo: ControllerNetworkInfo,
+): Promise<ControllerNetworkInfo> {
   return fetch(`/ztapi/controller/network`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify(networkInfo),
   }).then((response) => {
     if (!response.ok) {
       throw new Error(`Error fetching network IDs: ${response.statusText}`)

@@ -1,5 +1,5 @@
 @import 'tailwindcss';
 
 button {
-  @apply mx-2 px-4 py-2 shadow-sm/20 rounded transition-all;
+  @apply shadow-sm/20 rounded transition-all;
 }

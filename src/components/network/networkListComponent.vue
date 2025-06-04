@@ -4,26 +4,30 @@ import { onBeforeMount, ref, type Ref } from 'vue'
 import { deleteNetwork, getNetworkByID, listNetworkIDs } from '@/api/zerotier/controller'
 import type { ControllerNetworkInfo } from '@/types/zerotier/controller'
 import { showSnackBar } from '@/utils/showSnackBar'
-import { showPopupPanel } from '@/utils/showPopupPanel'
+import { showConfirmPopupPanel } from '@/utils/showConfirmPopupPanel'
+import { eventBus } from '@/utils/eventBus'
+import { useRouter } from 'vue-router'
+
 const { t } = useI18n()
+const router = useRouter()
 
 const networks: Ref<ControllerNetworkInfo[]> = ref([])
 
 const handleDeleteNetwork = (networkId: string) => {
-  showPopupPanel(
+  showConfirmPopupPanel(
     () => {
       // Call the API to delete the network
       deleteNetwork(networkId)
         .then(() => {
-          showSnackBar(t('network_deleted_successfully'), 'success')
+          showSnackBar(t('network.delete.success'), 'success')
           // Refresh the list of networks
           refreshNetworks()
         })
         .catch((error) => {
-          showSnackBar(t('network_deletion_failed') + error, 'error')
+          showSnackBar(t('network.delete.failed') + error, 'error')
         })
     },
-    t('delete_network_tip'),
+    t('network.delete.notice'),
     'warn',
   )
 }
@@ -48,13 +52,14 @@ const refreshNetworks = () => {
 }
 
 onBeforeMount(() => {
+  eventBus.addEventListener('networkListChanged', refreshNetworks)
   refreshNetworks()
 })
 </script>
 
 <template>
   <div
-    class="shadow w-full rounded min-h-[150px] p-4 flex flex-col justify-between"
+    class="shadow w-full rounded min-h-[150px] p-4 flex flex-col justify-between my-2"
     v-for="network in networks"
     :key="network.id"
   >
@@ -64,15 +69,16 @@ onBeforeMount(() => {
       <button
         class="mx-2 px-4 py-2 shadow-sm/20 rounded bg-red-500 text-white hover:bg-red-600 transition-all active:bg-red-700 font-bold"
         type="button"
-        @click="handleDeleteNetwork(network.id)"
+        @click="handleDeleteNetwork(network.id!)"
       >
-        {{ t('delete_network') }}
+        {{ t('network.delete.default') }}
       </button>
       <button
         class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300 font-bold"
         type="button"
+        @click="router.push({ name: 'networkDetail', params: { networkId: network.id } })"
       >
-        {{ t('enter_network') }}
+        {{ t('network.enter') }}
       </button>
     </div>
   </div>

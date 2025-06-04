@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import NetworksComponent from '@/components/NetworkListComponent.vue'
+import NetworksComponent from '@/components/network/networkListComponent.vue'
+import { showAddNetworkPanel } from '@/utils/showAddNetworkPopupPanel'
 const { t } = useI18n()
 </script>
 
@@ -10,8 +11,12 @@ const { t } = useI18n()
       <div class="h-full flex items-center justify-between px-4">
         <span class="font-bold text-xl">{{ t('network.default') }}</span>
         <div>
-          <button class="">{{ t('network.add') }}</button>
-          <button class="">{{ t('network.add') }}</button>
+          <button
+            class="mx-2 px-4 py-2 hover:bg-gray-200 active:bg-gray-300"
+            @click="showAddNetworkPanel"
+          >
+            {{ t('network.add.default') }}
+          </button>
         </div>
       </div>
     </header>

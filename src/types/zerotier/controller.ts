@@ -7,22 +7,22 @@ export interface ControllerStatusInfo {
 
 export interface ControllerNetworkInfo {
   name: string
-  enableBroadcast: boolean
-  mtu: number
-  dns: DNS
-  private: boolean
-  ipAssignmentPools: IPAssignmentPool[]
-  v4AssignMode: V4AssignMode
-  v6AssignMode: V6AssignMode
-  multicastLimit: number
-  routes: Route[]
-  id: string
-  nwid: string
-  creationTime: number
-  objtype: string
-  revision: number
-  capabilities: Array<number[]>
-  rules: Rule[]
+  enableBroadcast?: boolean
+  mtu?: number
+  dns?: DNS
+  private?: boolean
+  ipAssignmentPools?: IPAssignmentPool[]
+  v4AssignMode?: V4AssignMode
+  v6AssignMode?: V6AssignMode
+  multicastLimit?: number
+  routes?: Route[]
+  id?: string
+  nwid?: string
+  creationTime?: number
+  objtype?: string
+  revision?: number
+  capabilities?: Array<number[]>
+  rules?: Rule[]
 }
 
 export interface DNS {

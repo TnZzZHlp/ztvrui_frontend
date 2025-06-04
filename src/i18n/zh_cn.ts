@@ -7,6 +7,7 @@ const zh_cn = {
   delete_network: '删除网络',
   delete_network_tip: '删除网络后，将无法恢复，确定删除吗？',
   enter_network: '进入网络',
+  forgot_password: '忘记了密码？',
   login: '登录',
   logout: '登出',
   network_member: '网络成员',
@@ -66,6 +67,7 @@ const zh_cn = {
   rules_attention:
     '一旦保存规则原文本将会被转换成Zerotier的JSON格式，无法可逆地转换回原文本，请妥善保存原文本。',
   modify_rules: '修改规则',
+  login_failed: '登录失败，请检查您的用户名和密码',
 }
 
 export default zh_cn

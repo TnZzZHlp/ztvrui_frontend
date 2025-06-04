@@ -7,6 +7,7 @@ const en = {
   delete_network: 'Delete Network',
   delete_network_tip: 'After deletion, the network cannot be recovered. Are you sure to delete?',
   enter_network: 'Enter Network',
+  forgot_password: 'Forgot Password?',
   login: 'Login',
   logout: 'Logout',
   network_member: 'Network Member',
@@ -21,10 +22,10 @@ const en = {
   setting: 'Settings',
   user_manage: 'User Management',
   username: 'Username',
-  network_id: 'Network ID',
   member_name: 'Member Name',
   member_id: 'Member ID',
   member_address: 'Member Address',
+  network_id: 'Network ID',
   actions: 'Actions',
   authorized: 'Authorized',
   save_success: 'Save Successful',
@@ -65,6 +66,7 @@ const en = {
   modify_dns: 'Modify DNS',
   modify_rules: 'Modify Rules',
   rules_attention: `Once the rules are saved, the original text will be irreversibly converted into Zerotier's JSON format and cannot be reverted back to the original text. Please ensure to keep a safe copy of the original text.`,
+  login_failed: 'Login Failed, please check your username and password',
 }
 
 export default en

@@ -35,19 +35,18 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to) => {
-  // Check Cookie
-  check()
-    .then(() => {
-      if (to.name === 'login') {
-        router.push('/home')
-      }
-    })
-    .catch(() => {
-      if (to.name !== 'login') {
-        router.push('/')
-      }
-    })
-})
+// router.beforeEach(async (to) => {
+//   await check()
+//     .then(() => {
+//       if (to.name === 'login') {
+//         router.push({ name: 'home' })
+//       }
+//     })
+//     .catch(() => {
+//       if (to.name !== 'login') {
+//         router.push({ name: 'login' })
+//       }
+//     })
+// })
 
 export default router

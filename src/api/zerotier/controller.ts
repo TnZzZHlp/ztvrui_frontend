@@ -9,9 +9,6 @@ import type {
 export function controllerStatus(): Promise<ControllerStatusInfo> {
   return fetch(`/ztapi/controller`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   }).then((response) => {
     if (!response.ok) {
       throw new Error(`Error fetching controller status: ${response.statusText}`)
@@ -23,9 +20,6 @@ export function controllerStatus(): Promise<ControllerStatusInfo> {
 export function listNetworkIDs(): Promise<string[]> {
   return fetch(`/ztapi/controller/network`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   }).then((response) => {
     if (!response.ok) {
       throw new Error(`Error fetching network IDs: ${response.statusText}`)

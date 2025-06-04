@@ -4,7 +4,10 @@ import snackBar from '../components/snackBar.vue'
 let currentSnackBar: HTMLDivElement | null = null
 let timer: ReturnType<typeof setTimeout> | null = null
 
-export function showSnackBar(message: string, type: string = 'info') {
+export function showSnackBar(
+  message: string,
+  type: 'info' | 'error' | 'warn' | 'success' = 'info',
+) {
   if (currentSnackBar) {
     currentSnackBar.remove()
   }

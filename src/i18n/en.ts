@@ -8,6 +8,7 @@ const en = {
   confirm: 'Confirm',
   delete_network: 'Delete Network',
   delete_network_tip: 'After deletion, the network cannot be recovered. Are you sure to delete?',
+  network_deleted_successfully: 'Network Deleted Successfully',
   enter_network: 'Enter Network',
   forgot_password: 'Forgot Password?',
   login: 'Login',

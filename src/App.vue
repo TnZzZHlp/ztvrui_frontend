@@ -4,16 +4,18 @@ import { RouterView } from 'vue-router'
 
 <template>
   <router-view v-slot="{ Component, route }">
-    <transition name="fade" mode="out-in">
-      <component :is="Component" :key="route.fullPath" />
-    </transition>
+    <keep-alive>
+      <transition name="fade" mode="out-in">
+        <component :is="Component" :key="route.fullPath" />
+      </transition>
+    </keep-alive>
   </router-view>
 </template>
 
 <style>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.25s;
+  transition: opacity 0.15s;
 }
 
 .fade-enter-from,

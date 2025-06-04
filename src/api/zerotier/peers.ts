@@ -1,4 +1,4 @@
-import type { PeerInfo } from '@/types/Peers'
+import type { PeerInfo } from '@/types/zerotier/peers'
 
 export function listPeers(): Promise<PeerInfo[]> {
   return fetch(`/ztapi/peer`, {

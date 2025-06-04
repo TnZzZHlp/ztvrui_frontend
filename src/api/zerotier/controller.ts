@@ -4,7 +4,7 @@ import type {
   Members,
   ControllerNetworkMemberInfo,
   ControllerNetworkMemberSettings,
-} from '@/types/Controller'
+} from '@/types/zerotier/controller'
 
 export function controllerStatus(): Promise<ControllerStatusInfo> {
   return fetch(`/ztapi/controller`, {

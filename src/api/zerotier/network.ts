@@ -1,5 +1,5 @@
-import type { Result } from '@/types/Common'
-import type { LocalNetworkInfo, LocalNetworkSettings } from '@/types/Network'
+import type { Result } from '@/types/zerotier/common'
+import type { LocalNetworkInfo, LocalNetworkSettings } from '@/types/zerotier/network'
 
 export function joinOrUpdateNetworkSettings(
   networkId: string,

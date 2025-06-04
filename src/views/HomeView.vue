@@ -80,9 +80,11 @@ const editProfile = () => {
 
       <!-- Main View -->
       <v-main scrollable>
-        <keep-alive>
-          <RouterView />
-        </keep-alive>
+        <router-view v-slot="{ Component, route }">
+          <keep-alive>
+            <component :is="Component" :key="route.fullPath" />
+          </keep-alive>
+        </router-view>
       </v-main>
     </v-layout>
 
@@ -109,11 +111,10 @@ const editProfile = () => {
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
+      {{ snackBarText }}
+    </v-snackbar>
   </v-app>
-
-  <v-snackbar v-model="snackBarShow" timeout="2000" location="top" :color="snackBarStatus">
-    {{ snackBarText }}
-  </v-snackbar>
 </template>
 
 <style scoped></style>

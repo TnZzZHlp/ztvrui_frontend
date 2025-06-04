@@ -1,4 +1,4 @@
-import type { NodeStatus } from '@/types/NodeStatus'
+import type { NodeStatus } from '@/types/zerotier/nodeStatus'
 
 export function nodeStatus(): Promise<NodeStatus> {
   return fetch(`/ztapi/status`, {

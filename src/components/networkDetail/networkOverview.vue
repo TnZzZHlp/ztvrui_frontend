@@ -8,15 +8,6 @@ import NetworkIPv4AssignmentComponent from './overView/networkIPv4Assignment.vue
 import NetworkIPv6AssignmentComponent from './overView/networkIPv6Assignment.vue'
 import NetworkDNSComponent from './overView/networkDNS.vue'
 import NetworkRoutesComponent from './overView/networkRoutes.vue'
-import { onBeforeMount } from 'vue'
-import { getNetworkOverviewData } from './networkDetailStorage'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
-
-onBeforeMount(() => {
-  getNetworkOverviewData(route.params.networkId as string)
-})
 </script>
 
 <template>

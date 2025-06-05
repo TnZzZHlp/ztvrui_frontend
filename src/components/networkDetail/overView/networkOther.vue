@@ -33,16 +33,70 @@ const changeEnableBroadcast = (e: Event) => {
       showSnackBar(t('common.updateFailed') + err, 'error')
     })
 }
+
+const changeMTU = (e: Event) => {
+  const data = networkData.value
+  if (!data) return
+
+  const mtu = parseInt((e.target as HTMLInputElement).value, 10)
+
+  if (mtu < 1280) {
+    showSnackBar(t('network.mtuTooLow'), 'error')
+    return
+  }
+
+  const payload: ControllerNetworkInfo = {
+    ...data,
+    mtu,
+  }
+
+  createOrUpdateNetwork(data.id as string, payload)
+    .then(() => {
+      showSnackBar(t('common.updateSuccess'), 'success')
+    })
+    .catch((err) => {
+      showSnackBar(t('common.updateFailed') + err, 'error')
+    })
+}
+
+const changeMulticastLimit = (e: Event) => {
+  const data = networkData.value
+  if (!data) return
+
+  const multicastLimit = parseInt((e.target as HTMLInputElement).value, 10)
+
+  if (multicastLimit < 0) {
+    showSnackBar(t('network.multicastLimitInvalid'), 'error')
+    return
+  }
+
+  const payload: ControllerNetworkInfo = {
+    ...data,
+    multicastLimit,
+  }
+
+  createOrUpdateNetwork(data.id as string, payload)
+    .then(() => {
+      showSnackBar(t('common.updateSuccess'), 'success')
+    })
+    .catch((err) => {
+      showSnackBar(t('common.updateFailed') + err, 'error')
+    })
+}
 </script>
 
 <template>
   <!-- Network MTU MulticastLimit enableBroadcast -->
-  <div class="p-4 shadow bg-white rounded-2lg">
+  <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">MTU</p>
-    <h1 class="text-3xl font-bold">{{ networkData?.mtu }}</h1>
+    <input class="text-3xl font-bold" v-model="networkData!.mtu" @change="changeMTU" />
 
     <p class="text-gray-500 mt-2">{{ t('network.multicastLimit') }}</p>
-    <p class="text-ms font-bold">{{ networkData?.multicastLimit }}</p>
+    <input
+      class="text-ms font-bold"
+      v-model="networkData!.multicastLimit"
+      @change="changeMulticastLimit"
+    />
 
     <p class="text-gray-500 mt-2">{{ t('network.enableBroadcast') }}</p>
     <input

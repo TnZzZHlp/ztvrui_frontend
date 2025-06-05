@@ -36,6 +36,11 @@ const siderBarItems = [
     },
   },
 ]
+
+onBeforeMount(() => {
+  // Fetch network overview data when the component is mounted
+  getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
+})
 </script>
 
 <template>

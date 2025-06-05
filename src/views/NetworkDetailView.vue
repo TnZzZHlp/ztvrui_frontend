@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue'
+import { onActivated, onBeforeMount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 import sideBarOpenIcon from '@/assets/icons/sidebar-open.svg'
 import sideBarCloseIcon from '@/assets/icons/sidebar-close.svg'
 import returnIcon from '@/assets/icons/return-back-button.svg'
@@ -41,9 +41,17 @@ const siderBarItems = [
   },
 ]
 
-onBeforeMount(() => {
-  // Fetch network overview data when the component is mounted
-  getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
+// watch(
+//   () => router.currentRoute.value.params.networkId,
+//   (id) => {
+//     if (id) getNetworkOverviewData(id as string)
+//   },
+//   { immediate: true },
+// )
+
+onActivated(() => {
+  const id = router.currentRoute.value.params.networkId as string
+  getNetworkOverviewData(id)
 })
 </script>
 
@@ -100,11 +108,15 @@ onBeforeMount(() => {
 
       <!-- Main Content -->
       <main class="overflow-scroll w-full h-full">
-        <router-view v-slot="{ Component, route }">
-          <transition name="fade" mode="out-in">
-            <component :is="Component" :key="route.fullPath" />
-          </transition>
-        </router-view>
+        <RouterView v-slot="{ Component }">
+          <template v-if="Component">
+            <Transition mode="out-in" name="fade">
+              <KeepAlive>
+                <component :is="Component"></component>
+              </KeepAlive>
+            </Transition>
+          </template>
+        </RouterView>
       </main>
     </div>
   </div>

@@ -8,6 +8,7 @@ import NetworkIPv4AssignmentComponent from './overView/networkIPv4Assignment.vue
 import NetworkIPv6AssignmentComponent from './overView/networkIPv6Assignment.vue'
 import NetworkDNSComponent from './overView/networkDNS.vue'
 import NetworkRoutesComponent from './overView/networkRoutes.vue'
+import NetworkRulesComponent from './overView/networkRules.vue'
 </script>
 
 <template>
@@ -21,5 +22,6 @@ import NetworkRoutesComponent from './overView/networkRoutes.vue'
     <NetworkIPv6AssignmentComponent />
     <NetworkRoutesComponent />
     <NetworkDNSComponent />
+    <NetworkRulesComponent />
   </div>
 </template>

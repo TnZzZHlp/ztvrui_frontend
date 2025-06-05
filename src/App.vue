@@ -3,13 +3,15 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <router-view v-slot="{ Component }">
-    <keep-alive>
-      <transition name="fade" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </keep-alive>
-  </router-view>
+  <RouterView v-slot="{ Component }">
+    <template v-if="Component">
+      <Transition mode="out-in" name="fade">
+        <KeepAlive>
+          <component :is="Component"></component>
+        </KeepAlive>
+      </Transition>
+    </template>
+  </RouterView>
 </template>
 
 <style>

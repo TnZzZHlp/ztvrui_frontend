@@ -31,6 +31,7 @@ const refreshNetworkData = (networkId: string) => {
 }
 
 export const getNetworkOverviewData = (networkId: string) => {
+  console.log('getNetworkOverviewData', networksData.value, networkId)
   if (networksData.value.findIndex((network) => network.id === networkId) !== -1) return
   getNetworkById(networkId)
     .then((data) => {

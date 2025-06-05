@@ -62,6 +62,10 @@ const zh_cn = {
       failGet: '获取网络详情失败',
     },
     routes: '路由',
+    dns: {
+      domain: '域名',
+      servers: 'DNS 服务器',
+    },
   },
   auth: {
     username: '用户名',

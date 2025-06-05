@@ -8,8 +8,6 @@ import { computed } from 'vue'
 const route = useRoute()
 const { t } = useI18n()
 
-console.log('networkIPAssignmentPools route', route)
-
 const networkData = computed(() => {
   return networksData.value.find((network) => network.id === (route.params.networkId as string))
 })

@@ -1,21 +1,33 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
+import { showModifyDNS } from './popupPanel/showModifyDNS'
+import { useI18n } from 'vue-i18n'
 
-const router = useRouter()
+const { t } = useI18n()
+
+const route = useRoute()
 const networkData = computed(() => {
-  return networksData.value.find(
-    (data) => data.id === (router.currentRoute.value.params.networkId as string),
-  )
+  return networksData.value.find((data) => data.id === (route.params.networkId as string))
 })
 </script>
 
 <template>
   <!-- Network DNS -->
   <div class="p-4 shadow bg-white rounded-2lg">
-    <p class="text-gray-500">DNS</p>
-    <h1 class="text-xl font-bold">{{ networkData?.dns?.domain }}</h1>
+    <div class="flex justify-between">
+      <span class="text-gray-500">DNS</span>
+      <button
+        @click="showModifyDNS(networkData?.id as string)"
+        class="transition-all rounded hover:bg-gray-200 active:bg-gray-400"
+      >
+        <img src="@/assets/icons/setting.svg" alt="Setting" class="h-6 object-contain" />
+      </button>
+    </div>
+    <span class="text-gray-500">{{ t('network.dns.domain') }}</span>
+    <h1 class="text-xl font-bold overflow-hidden">{{ networkData?.dns?.domain }}</h1>
+    <span class="text-gray-500">{{ t('network.dns.servers') }}</span>
     <ol>
       <li v-for="(server, index) in networkData?.dns?.servers" :key="index">{{ server }}</li>
     </ol>

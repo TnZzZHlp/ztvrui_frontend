@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { showModifyNetworkRoutes } from './popupPanel/showModifyNetworkRoutes'
 
-const router = useRouter()
+const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find(
-    (data) => data.id === (router.currentRoute.value.params.networkId as string),
-  )
+  return networksData.value.find((data) => data.id === (route.params.networkId as string))
 })
 </script>
 

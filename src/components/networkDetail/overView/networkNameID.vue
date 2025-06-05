@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -8,13 +8,11 @@ import type { ControllerNetworkInfo } from '@/types/zerotier/controller'
 import { createOrUpdateNetwork } from '@/api/zerotier/controller'
 import { showSnackBar } from '@/utils/showSnackBar'
 
-const router = useRouter()
+const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find(
-    (data) => data.id === (router.currentRoute.value.params.networkId as string),
-  )
+  return networksData.value.find((data) => data.id === (route.params.networkId as string))
 })
 
 const changeNetworkName = (e: Event) => {
@@ -42,7 +40,7 @@ const changeNetworkName = (e: Event) => {
   <div class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">{{ t('network.name') }}</p>
     <input
-      class="text-3xl font-bold border-b-1 block w-full"
+      class="text-3xl font-bold border-b-1 block w-full focus:outline-none"
       type="text"
       placeholder="Network Name"
       name="Network Name"

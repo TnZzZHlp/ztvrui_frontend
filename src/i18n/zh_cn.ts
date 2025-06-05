@@ -67,6 +67,9 @@ const zh_cn = {
       domain: '域名',
       servers: 'DNS 服务器',
     },
+    rules: {
+      default: '网络规则',
+    },
   },
   auth: {
     username: '用户名',

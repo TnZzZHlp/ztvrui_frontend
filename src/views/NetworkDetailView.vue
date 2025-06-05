@@ -36,8 +36,6 @@ const siderBarItems = [
     },
   },
 ]
-
-getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
 </script>
 
 <template>

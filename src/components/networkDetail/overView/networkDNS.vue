@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { networksData } from '../networkDetailStorage'
-import { computed } from 'vue'
+import { getNetworkOverviewData, networksData } from '../networkDetailStorage'
+import { computed, onBeforeMount } from 'vue'
 import { showModifyDNS } from './popupPanel/showModifyDNS'
 import { useI18n } from 'vue-i18n'
 

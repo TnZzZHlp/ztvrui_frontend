@@ -38,6 +38,7 @@ const siderBarItems = [
 ]
 
 onBeforeMount(() => {
+  console.log('NetworkDetailView mounted')
   getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
 })
 </script>

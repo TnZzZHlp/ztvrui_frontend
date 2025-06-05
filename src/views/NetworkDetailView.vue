@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onActivated, onBeforeMount, ref, watch } from 'vue'
+import { onActivated, onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { onBeforeRouteUpdate, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import sideBarOpenIcon from '@/assets/icons/sidebar-open.svg'
 import sideBarCloseIcon from '@/assets/icons/sidebar-close.svg'
 import returnIcon from '@/assets/icons/return-back-button.svg'
@@ -41,17 +41,9 @@ const siderBarItems = [
   },
 ]
 
-// watch(
-//   () => router.currentRoute.value.params.networkId,
-//   (id) => {
-//     if (id) getNetworkOverviewData(id as string)
-//   },
-//   { immediate: true },
-// )
-
 onActivated(() => {
   const id = router.currentRoute.value.params.networkId as string
-  getNetworkOverviewData(id)
+  if (id) getNetworkOverviewData(id)
 })
 </script>
 
@@ -64,7 +56,7 @@ onActivated(() => {
           <transition name="fade" mode="out-in">
             <img
               :key="showSiderBar ? 'open' : 'close'"
-              :src="showSiderBar ? sideBarOpenIcon : sideBarCloseIcon"
+              :src="showSiderBar ? sideBarCloseIcon : sideBarOpenIcon"
               alt="Toggle Sidebar"
               class="inline-block mr-2"
             />

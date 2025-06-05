@@ -60,7 +60,7 @@ const closePopupPanel = () => {
 
 onBeforeMount(() => {
   // Find the network data by ID
-  networkData.value = networksData.value.find((data) => data.id === networkId)
+  networkData.value = _.cloneDeep(networksData.value.find((data) => data.id === networkId))
 
   if (!networkData.value) {
     showSnackBar(t('network.notFound'), 'error')
@@ -68,6 +68,13 @@ onBeforeMount(() => {
   }
 
   if (!networkData.value?.dns) {
+    networkData.value.dns = {
+      domain: '',
+      servers: [],
+    }
+  }
+
+  if (Array.isArray(networkData.value?.dns)) {
     networkData.value.dns = {
       domain: '',
       servers: [],

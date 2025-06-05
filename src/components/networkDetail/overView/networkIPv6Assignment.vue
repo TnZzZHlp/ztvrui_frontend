@@ -15,7 +15,6 @@ const networkData = computed(() => {
 })
 
 const changeIPv6Assignment = (e: Event, type: string) => {
-  console.log('changeIPv6Assignment', e, type)
   const data = networkData
   if (!data.value) return
 

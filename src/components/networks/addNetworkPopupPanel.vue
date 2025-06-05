@@ -25,7 +25,6 @@ const handleClick = (e: Event) => {
 
         //  Dispatch an event to notify that the network list has changed
         eventBus.dispatchEvent(new Event('networkListChanged'))
-
         closePopupPanel()
       })
       .catch((error) => {

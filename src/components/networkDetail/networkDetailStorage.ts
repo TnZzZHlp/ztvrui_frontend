@@ -34,14 +34,7 @@ export const getNetworkOverviewData = (networkId: string) => {
   if (networksData.value.findIndex((network) => network.id === networkId) !== -1) return
   getNetworkById(networkId)
     .then((data) => {
-      const index = networksData.value.findIndex((network) => network.id === data.id)
-      if (index !== -1) {
-        // Update existing network data
-        networksData.value[index] = data
-      } else {
-        // Add new network data
-        networksData.value.push(data)
-      }
+      networksData.value.push(data)
     })
     .catch((error) => {
       showSnackBar(i18n.global.t('failGet') + error, 'error')

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { networksData } from '@/components/networkDetail/networkDetailStorage'
+import compile from './rulesCompile'
 import _ from 'lodash'
 import { showSnackBar } from '@/utils/showSnackBar'
 import { createOrUpdateNetwork } from '@/api/zerotier/controller'
@@ -17,30 +18,53 @@ const networkData = ref(
 
 const close = ref(false)
 const { t } = useI18n()
+const originalRules = ref('')
 
 const handleClick = () => {
-  // Validate IP range with regex
-  const routes = networkData.value?.routes || []
+  // Save original rules to web storage
 
-  // Validate CIDR network target and IP next hop
-  const cidrRegex =
-    /^(25[0-5]|2[0-4]\d|[01]?\d?\d)(\.(25[0-5]|2[0-4]\d|[01]?\d?\d)){3}\/([0-9]|[12]\d|3[0-2])$/
-  const ipRegex = /^(25[0-5]|2[0-4]\d|[01]?\d?\d)(\.(25[0-5]|2[0-4]\d|[01]?\d?\d)){3}$/
+  const rules: never[] = []
+  const tags = {}
+  const caps = {}
 
-  const isValid = routes.every((route) => {
-    return cidrRegex.test(route.target) && ipRegex.test(route.via)
-  })
+  const result = compile(originalRules.value, rules, caps, tags)
 
-  if (!isValid) {
-    showSnackBar(t('network.ipAssignmentPools.invalidedIP'), 'error')
+  if (result) {
+    const [first, second, error] = result
+    showSnackBar('row:' + first + ' ' + 'col:' + second + ' ' + error, 'error')
     return
   }
 
-  // Submit changes
+  const capsArray = []
+  const capabilitiesByName = {}
+  for (const n in caps) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    capsArray.push(caps[n])
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    capabilitiesByName[n] = caps[n].id
+  }
+  const tagsArray = []
+  for (const n in tags) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const t = tags[n]
+    const dfl = t['default']
+    tagsArray.push({
+      id: t.id,
+      default: dfl || dfl === 0 ? dfl : null,
+    })
+  }
+
+  // Update network data
   createOrUpdateNetwork(networkData.value?.id as string, {
-    name: networkData.value?.name!,
     ...networkData.value,
-    routes: networkData.value?.routes,
+    name: networkData.value?.name!,
+    rules: rules,
+    tags: tagsArray,
+    capabilities: capsArray,
   })
     .then(() => {
       // Update the network data in the storage
@@ -48,6 +72,9 @@ const handleClick = () => {
         detail: networkData.value?.id,
       })
       eventBus.dispatchEvent(event)
+      // Update the network data in the local storage
+      localStorage.setItem('networkRules_' + networkData.value?.id, originalRules.value)
+
       showSnackBar(t('common.updateSuccess'), 'success')
     })
     .catch((err) => {
@@ -62,6 +89,11 @@ const closePopupPanel = () => {
     container?.remove()
   }, 300)
 }
+
+onBeforeMount(() => {
+  // Load original rules from web storage
+  originalRules.value = localStorage.getItem('networkRules_' + networkData.value?.id) || ''
+})
 </script>
 
 <template>
@@ -69,36 +101,18 @@ const closePopupPanel = () => {
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 popup-panel"
     :class="{ 'popup-panel-leave-active': close }"
   >
-    <div class="bg-white rounded p-5 flex flex-col justify-between lg:w-1/3">
-      <!-- Routes -->
-      <div class="flex">
-        <span class="w-full">{{ t('network.default') }}</span>
-        <span class="w-full">{{ t('network.via') }}</span>
-        <span class="w-4"></span>
-      </div>
-      <div class="flex" v-for="(route, index) in networkData?.routes" :key="index">
-        <input
-          type="text"
-          :placeholder="t('network.default')"
-          class="focus:outline-none border-b w-full mr-1"
-          name="default"
-          v-model="route.target"
-          autocomplete="off"
-        />
-        <input
-          type="text"
-          :placeholder="t('network.via')"
-          class="focus:outline-none border-b w-full"
-          name="via"
-          v-model="route.via"
-          autocomplete="off"
-        />
-        <img
-          src="@/assets/icons/delete.svg"
-          alt="delete IP assignment pool"
-          class="w-4 cursor-pointer"
-          @click="networkData?.ipAssignmentPools!.splice(index, 1)"
-        />
+    <div
+      class="bg-white rounded p-5 flex flex-col justify-between w-9/10 h-8/10 lg:w-2/3 shadow-lg"
+    >
+      <!-- Rules -->
+      <div class="flex flex-col h-full">
+        <span class="w-full">{{ t('network.rules.default') }}</span>
+        <textarea
+          name="rules"
+          id="rules"
+          class="border rounded p-2 h-full resize-none"
+          v-model="originalRules"
+        ></textarea>
       </div>
 
       <!-- Actions -->
@@ -109,18 +123,6 @@ const closePopupPanel = () => {
           type="button"
         >
           <b>{{ t('common.cancel') }}</b>
-        </button>
-        <button
-          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
-          @click="
-            networkData?.routes?.push({
-              target: '',
-              via: '',
-            })
-          "
-          type="button"
-        >
-          <b>{{ t('common.add') }}</b>
         </button>
         <button
           class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"

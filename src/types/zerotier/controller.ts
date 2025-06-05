@@ -23,6 +23,12 @@ export interface ControllerNetworkInfo {
   revision?: number
   capabilities?: Array<number[]>
   rules?: Rule[]
+  tags?: Tag[]
+}
+
+export interface Tag {
+  id: string
+  default?: string | null
 }
 
 export interface DNS {

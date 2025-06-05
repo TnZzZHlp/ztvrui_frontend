@@ -108,9 +108,9 @@ const closePopupPanel = () => {
         <button
           class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
           @click="
-            networkData?.ipAssignmentPools?.push({
-              ipRangeStart: '',
-              ipRangeEnd: '',
+            networkData?.routes?.push({
+              target: '',
+              via: '',
             })
           "
           type="button"

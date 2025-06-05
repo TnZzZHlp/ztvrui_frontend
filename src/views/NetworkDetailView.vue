@@ -95,11 +95,9 @@ onBeforeMount(() => {
       <!-- Main Content -->
       <main class="overflow-scroll w-full h-full">
         <router-view v-slot="{ Component, route }">
-          <keep-alive>
-            <transition name="fade" mode="out-in">
-              <component :is="Component" :key="route.fullPath" />
-            </transition>
-          </keep-alive>
+          <transition name="fade" mode="out-in">
+            <component :is="Component" :key="route.fullPath" />
+          </transition>
         </router-view>
       </main>
     </div>

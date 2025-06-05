@@ -17,18 +17,18 @@ export function controllerStatus(): Promise<ControllerStatusInfo> {
   })
 }
 
-export function listNetworkIDs(): Promise<string[]> {
+export function listNetworkIds(): Promise<string[]> {
   return fetch(`/ztapi/controller/network`, {
     method: 'GET',
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(`Error fetching network IDs: ${response.statusText}`)
+      throw new Error(`Error fetching network Ids: ${response.statusText}`)
     }
     return response.json()
   })
 }
 
-export function generateRandomNetworkID(
+export function generateRandomNetworkId(
   networkInfo: ControllerNetworkInfo,
 ): Promise<ControllerNetworkInfo> {
   return fetch(`/ztapi/controller/network`, {
@@ -39,13 +39,13 @@ export function generateRandomNetworkID(
     body: JSON.stringify(networkInfo),
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(`Error fetching network IDs: ${response.statusText}`)
+      throw new Error(`Error fetching network Ids: ${response.statusText}`)
     }
     return response.json()
   })
 }
 
-export function getNetworkByID(networkId: string): Promise<ControllerNetworkInfo> {
+export function getNetworkById(networkId: string): Promise<ControllerNetworkInfo> {
   return fetch(`/ztapi/controller/network/${networkId}`, {
     method: 'GET',
     headers: {
@@ -53,7 +53,7 @@ export function getNetworkByID(networkId: string): Promise<ControllerNetworkInfo
     },
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(`Error fetching network by ID: ${response.statusText}`)
+      throw new Error(`Error fetching network by Id: ${response.statusText}`)
     }
     return response.json()
   })
@@ -90,7 +90,7 @@ export function deleteNetwork(networkId: string): Promise<void> {
   })
 }
 
-export function listNetworkMemberIDs(networkId: string): Promise<Members> {
+export function listNetworkMemberIds(networkId: string): Promise<Members> {
   return fetch(`/ztapi/controller/network/${networkId}/member`, {
     method: 'GET',
     headers: {
@@ -98,13 +98,13 @@ export function listNetworkMemberIDs(networkId: string): Promise<Members> {
     },
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(`Error fetching network member IDs: ${response.statusText}`)
+      throw new Error(`Error fetching network member Ids: ${response.statusText}`)
     }
     return response.json()
   })
 }
 
-export function getNetworkMemberByID(
+export function getNetworkMemberById(
   networkId: string,
   memberId: string,
 ): Promise<ControllerNetworkMemberInfo> {
@@ -115,7 +115,7 @@ export function getNetworkMemberByID(
     },
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(`Error fetching network member by ID: ${response.statusText}`)
+      throw new Error(`Error fetching network member by Id: ${response.statusText}`)
     }
     return response.json()
   })

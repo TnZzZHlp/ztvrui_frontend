@@ -14,7 +14,7 @@ export function listPeers(): Promise<PeerInfo[]> {
   })
 }
 
-export function getJoinedNetworkByID(memberId: string): Promise<PeerInfo> {
+export function getJoinedNetworkById(memberId: string): Promise<PeerInfo> {
   return fetch(`/ztapi/peer/${memberId}`, {
     method: 'GET',
     headers: {
@@ -22,7 +22,7 @@ export function getJoinedNetworkByID(memberId: string): Promise<PeerInfo> {
     },
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(`Error fetching joined network by ID: ${response.statusText}`)
+      throw new Error(`Error fetching joined network by Id: ${response.statusText}`)
     }
     return response.json()
   })

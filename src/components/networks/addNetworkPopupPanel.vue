@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { generateRandomNetworkID } from '@/api/zerotier/controller'
+import { generateRandomNetworkId } from '@/api/zerotier/controller'
 import { showSnackBar } from '@/utils/showSnackBar'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -17,7 +17,9 @@ const handleClick = (e: Event) => {
   const networkName = form.networkName.value.trim()
 
   if (networkName) {
-    generateRandomNetworkID({ name: networkName })
+    generateRandomNetworkId({
+      name: networkName,
+    })
       .then(() => {
         showSnackBar(t('network.add.success'), 'success')
 

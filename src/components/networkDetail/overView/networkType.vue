@@ -1,34 +1,37 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { networkOverviewData } from '../networkDetailStorage'
+import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { createOrUpdateNetwork } from '@/api/zerotier/controller'
-import type { ControllerNetworkInfo } from '@/types/zerotier/controller'
 import { showSnackBar } from '@/utils/showSnackBar'
+import type { ControllerNetworkInfo } from '@/types/zerotier/controller'
 
 const router = useRouter()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networkOverviewData.value.find(
+  return networksData.value.find(
     (data) => data.id === (router.currentRoute.value.params.networkId as string),
   )
 })
 
-const changeEnableBroadcast = (e: Event) => {
+const changeNetworkType = (e: Event) => {
+  const checked = (e.target as HTMLInputElement).checked
   const data = networkData.value
   if (!data) return
 
-  const checked = (e.target as HTMLInputElement).checked
-
   const payload: ControllerNetworkInfo = {
     ...data,
-    enableBroadcast: checked,
+    private: checked,
   }
 
   createOrUpdateNetwork(data.id as string, payload)
     .then(() => {
+      const data = networkData.value
+      if (!data) return
+
+      data.private = checked
       showSnackBar(t('common.updateSuccess'), 'success')
     })
     .catch((err) => {
@@ -38,19 +41,14 @@ const changeEnableBroadcast = (e: Event) => {
 </script>
 
 <template>
-  <!-- Network MTU MulticastLimit enableBroadcast -->
+  <!-- Network Type -->
   <div class="p-4 shadow bg-white rounded-2lg">
-    <p class="text-gray-500">MTU</p>
-    <h1 class="text-3xl font-bold">{{ networkData?.mtu }}</h1>
-
-    <p class="text-gray-500 mt-2">{{ t('network.multicastLimit') }}</p>
-    <p class="text-ms font-bold">{{ networkData?.multicastLimit }}</p>
-
-    <p class="text-gray-500 mt-2">{{ t('network.enableBroadcast') }}</p>
-    <input
-      type="checkbox"
-      @change="changeEnableBroadcast"
-      :checked="networkData?.enableBroadcast"
-    />
+    <p class="text-gray-500">{{ t('network.type.default') }}</p>
+    <div class="flex justify-between items-center">
+      <span class="text-3xl font-bold">
+        {{ networkData?.private ? t('network.type.private') : t('network.type.public') }}
+      </span>
+      <input type="checkbox" @change="changeNetworkType" :checked="networkData?.private" />
+    </div>
   </div>
 </template>

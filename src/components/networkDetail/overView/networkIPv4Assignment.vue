@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { networkOverviewData } from '../networkDetailStorage'
+import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { createOrUpdateNetwork } from '@/api/zerotier/controller'
@@ -11,7 +11,7 @@ const router = useRouter()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networkOverviewData.value.find(
+  return networksData.value.find(
     (data) => data.id === (router.currentRoute.value.params.networkId as string),
   )
 })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import NetworksComponent from '@/components/networks/networkListComponent.vue'
-import { showAddNetworkPanel } from '@/utils/showAddNetworkPopupPanel'
+import NetworksComponent from '@/components/networks/networkList.vue'
+import { showAddNetworkPanel } from '@/components/networks/showAddNetworkPopupPanel'
 const { t } = useI18n()
 </script>
 

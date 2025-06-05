@@ -13,7 +13,7 @@ export interface ControllerNetworkInfo {
   private?: boolean
   ipAssignmentPools?: IPAssignmentPool[]
   v4AssignMode?: V4AssignMode
-  v6AssignMode: V6AssignMode
+  v6AssignMode?: V6AssignMode
   multicastLimit?: number
   routes?: Route[]
   id?: string

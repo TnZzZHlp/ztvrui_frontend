@@ -23,12 +23,12 @@ const router = createRouter({
         {
           path: 'overview',
           name: 'networkOverview',
-          component: () => import('@/components/networkDetail/networkOverviewComponent.vue'),
+          component: () => import('@/components/networkDetail/networkOverview.vue'),
         },
         {
           path: 'members',
           name: 'networkMembers',
-          component: () => import('@/components/networkDetail/networkMembersComponent.vue'),
+          component: () => import('@/components/networkDetail/networkMembers.vue'),
         },
       ],
     },

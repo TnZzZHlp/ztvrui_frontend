@@ -6,11 +6,13 @@ const zh_cn = {
     copied: '已复制',
     copyFailed: '复制失败',
     return: '返回',
+    add: '增加',
     updateSuccess: '更新成功',
     updateFailed: '更新失败',
   },
   network: {
     default: '网络',
+    via: '下一跳',
     creationTime: '创建时间',
     dnsDomain: 'DNS 域名',
     multicastLimit: '多播限制',
@@ -19,6 +21,7 @@ const zh_cn = {
       default: 'IP 分配池',
       ipRangeStart: '起始 IP',
       ipRangeEnd: '结束 IP',
+      invalidedIP: 'IP 不合法',
     },
     ipv4Assignment: {
       default: 'IPv4 分配模式',
@@ -48,7 +51,7 @@ const zh_cn = {
       failed: '网络删除失败',
     },
     name: '网络名称',
-    id: '网络ID',
+    id: '网络Id',
     enter: '进入网络',
     detail: {
       default: '网络详情',
@@ -58,6 +61,7 @@ const zh_cn = {
       rules: '网络规则',
       failGet: '获取网络详情失败',
     },
+    routes: '路由',
   },
   auth: {
     username: '用户名',

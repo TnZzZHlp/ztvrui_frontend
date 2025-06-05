@@ -47,7 +47,7 @@ export function leaveNetwork(networkId: string): Promise<Result> {
   })
 }
 
-export function getJoinedNetworkByID(networkId: string): Promise<LocalNetworkInfo> {
+export function getJoinedNetworkById(networkId: string): Promise<LocalNetworkInfo> {
   return fetch(`/ztapi/network/${networkId}`, {
     method: 'GET',
     headers: {

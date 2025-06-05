@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { networkOverviewData } from '../networkDetailStorage'
+import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
 
 const router = useRouter()
 const networkData = computed(() => {
-  return networkOverviewData.value.find(
+  return networksData.value.find(
     (data) => data.id === (router.currentRoute.value.params.networkId as string),
   )
 })

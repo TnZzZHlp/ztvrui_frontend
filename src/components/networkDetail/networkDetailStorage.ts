@@ -1,11 +1,11 @@
-import { getNetworkByID } from '@/api/zerotier/controller'
+import { getNetworkById } from '@/api/zerotier/controller'
 import type { ControllerNetworkInfo } from '@/types/zerotier/controller'
 import { showSnackBar } from '@/utils/showSnackBar'
 import { ref, type Ref } from 'vue'
 import { eventBus } from '@/utils/eventBus'
 import i18n from '@/i18n'
 
-export const networkOverviewData: Ref<ControllerNetworkInfo[]> = ref([])
+export const networksData: Ref<ControllerNetworkInfo[]> = ref([])
 
 // Listen controller network info update requests
 eventBus.addEventListener('controllerNetworkInfoUpdate', (e) => {
@@ -14,15 +14,15 @@ eventBus.addEventListener('controllerNetworkInfoUpdate', (e) => {
 })
 
 export const getNetworkOverviewData = (networkId: string) => {
-  getNetworkByID(networkId)
+  getNetworkById(networkId)
     .then((data) => {
-      const index = networkOverviewData.value.findIndex((network) => network.id === data.id)
+      const index = networksData.value.findIndex((network) => network.id === data.id)
       if (index !== -1) {
         // Update existing network data
-        networkOverviewData.value[index] = data
+        networksData.value[index] = data
       } else {
         // Add new network data
-        networkOverviewData.value.push(data)
+        networksData.value.push(data)
       }
     })
     .catch((error) => {

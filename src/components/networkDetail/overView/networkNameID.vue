@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { networkOverviewData } from '../networkDetailStorage'
+import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { copyToClipboard } from '@/utils/copyToClipboard'
@@ -12,7 +12,7 @@ const router = useRouter()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networkOverviewData.value.find(
+  return networksData.value.find(
     (data) => data.id === (router.currentRoute.value.params.networkId as string),
   )
 })
@@ -38,12 +38,14 @@ const changeNetworkName = (e: Event) => {
 </script>
 
 <template>
-  <!-- Network Name and ID -->
+  <!-- Network Name and Id -->
   <div class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">{{ t('network.name') }}</p>
     <input
-      class="text-3xl font-bold border-b-1"
+      class="text-3xl font-bold border-b-1 block w-full"
       type="text"
+      placeholder="Network Name"
+      name="Network Name"
       @change="changeNetworkName"
       :value="networkData?.name"
     />

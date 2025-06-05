@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { onBeforeMount, ref, type Ref } from 'vue'
-import { deleteNetwork, getNetworkByID, listNetworkIDs } from '@/api/zerotier/controller'
+import { deleteNetwork, getNetworkById, listNetworkIds } from '@/api/zerotier/controller'
 import type { ControllerNetworkInfo } from '@/types/zerotier/controller'
 import { showSnackBar } from '@/utils/showSnackBar'
 import { showConfirmPopupPanel } from '@/utils/showConfirmPopupPanel'
@@ -34,11 +34,11 @@ const handleDeleteNetwork = (networkId: string) => {
 }
 
 const refreshNetworks = () => {
-  listNetworkIDs()
+  listNetworkIds()
     .then((data) => {
       networks.value = []
       data.forEach((networkId) => {
-        getNetworkByID(networkId)
+        getNetworkById(networkId)
           .then((networkInfo) => {
             networks.value.push(networkInfo)
           })

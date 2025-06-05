@@ -82,14 +82,14 @@ const closePopupPanel = () => {
       >
         <input
           type="text"
-          :placeholder="t('network.routes.default')"
+          :placeholder="t('network.default')"
           class="focus:outline-none border-b"
           name="default"
           v-model="route.target"
         />
         <input
           type="text"
-          :placeholder="t('network.routes.via')"
+          :placeholder="t('network.via')"
           class="focus:outline-none border-b"
           name="via"
           v-model="route.via"

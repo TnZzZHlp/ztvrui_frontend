@@ -67,7 +67,7 @@ getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
       >
         <ol>
           <li
-            class="mb-2 h-10 rounded flex items-center justify-center pl-2 transition-all"
+            class="mb-2 h-10 rounded flex items-center justify-center pl-2 transition-all cursor-pointer"
             v-for="(item, index) in siderBarItems"
             :key="index"
             :class="{
@@ -76,6 +76,7 @@ getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
               'bg-white hover:bg-gray-100 active:bg-gray-200':
                 router.currentRoute.value.name !== item.name,
             }"
+            @click="item.action"
           >
             <img
               v-if="item.icon"
@@ -83,9 +84,9 @@ getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
               alt="returnIcon"
               class="h-full w-auto object-contain"
             />
-            <button class="w-full text-left text-nowrap" @click="item.action">
+            <span class="w-full text-left text-nowrap">
               {{ item.label }}
-            </button>
+            </span>
           </li>
         </ol>
       </section>

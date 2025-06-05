@@ -13,6 +13,7 @@ const zh_cn = {
   network: {
     default: '网络',
     via: '下一跳',
+    mtuTooLow: 'MTU 过低',
     creationTime: '创建时间',
     dnsDomain: 'DNS 域名',
     multicastLimit: '多播限制',

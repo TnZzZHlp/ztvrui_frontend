@@ -16,7 +16,9 @@ const siderBarItems = [
     name: 'networkOverview',
     action: () => {
       router.push({ name: 'networkOverview' })
-      showSiderBar.value = false
+      if (window.innerWidth <= 1024) {
+        showSiderBar.value = false
+      }
     },
   },
   {
@@ -24,7 +26,9 @@ const siderBarItems = [
     name: 'networkMembers',
     action: () => {
       router.push({ name: 'networkMembers' })
-      showSiderBar.value = false
+      if (window.innerWidth <= 1024) {
+        showSiderBar.value = false
+      }
     },
   },
   {

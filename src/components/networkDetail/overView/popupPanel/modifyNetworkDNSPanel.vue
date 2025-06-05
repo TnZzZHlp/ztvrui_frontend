@@ -93,11 +93,18 @@ onBeforeMount(() => {
       </div>
 
       <span class="text-gray-500">{{ t('network.dns.servers') }}</span>
-      <div class="flex flex-col" v-for="(_, index) in networkData.dns!.servers" :key="index">
+      <div class="flex w-full" v-for="(_, index) in networkData.dns!.servers" :key="index">
         <input
           type="text"
-          class="border-b-1 focus:outline-none"
+          class="border-b-1 focus:outline-none w-full"
           v-model="networkData.dns!.servers[index]"
+          autocomplete="off"
+        />
+        <img
+          src="@/assets/icons/delete.svg"
+          alt="delete DNS server"
+          class="w-4 h-4 cursor-pointer ml-2"
+          @click="networkData?.dns!.servers.splice(index, 1)"
         />
       </div>
 

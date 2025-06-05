@@ -71,28 +71,33 @@ const closePopupPanel = () => {
   >
     <div class="bg-white rounded p-5 flex flex-col justify-between lg:w-1/3">
       <!-- Routes -->
-      <div class="grid grid-cols-2 gap-2">
-        <span>{{ t('network.default') }}</span>
-        <span>{{ t('network.via') }}</span>
+      <div class="flex">
+        <span class="w-full">{{ t('network.default') }}</span>
+        <span class="w-full">{{ t('network.via') }}</span>
+        <span class="w-4"></span>
       </div>
-      <div
-        class="grid grid-cols-2 gap-2 mb-2"
-        v-for="(route, index) in networkData?.routes"
-        :key="index"
-      >
+      <div class="flex" v-for="(route, index) in networkData?.routes" :key="index">
         <input
           type="text"
           :placeholder="t('network.default')"
-          class="focus:outline-none border-b"
+          class="focus:outline-none border-b w-full mr-1"
           name="default"
           v-model="route.target"
+          autocomplete="off"
         />
         <input
           type="text"
           :placeholder="t('network.via')"
-          class="focus:outline-none border-b"
+          class="focus:outline-none border-b w-full"
           name="via"
           v-model="route.via"
+          autocomplete="off"
+        />
+        <img
+          src="@/assets/icons/delete.svg"
+          alt="delete IP assignment pool"
+          class="w-4 cursor-pointer"
+          @click="networkData?.ipAssignmentPools!.splice(index, 1)"
         />
       </div>
 

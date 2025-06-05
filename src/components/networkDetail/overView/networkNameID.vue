@@ -46,6 +46,7 @@ const changeNetworkName = (e: Event) => {
       name="Network Name"
       @change="changeNetworkName"
       :value="networkData?.name"
+      autocomplete="off"
     />
     <p class="text-gray-500 mt-2">{{ t('network.id') }}</p>
     <button

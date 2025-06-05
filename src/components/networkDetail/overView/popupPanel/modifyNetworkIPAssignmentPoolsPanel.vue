@@ -68,28 +68,37 @@ const closePopupPanel = () => {
   >
     <div class="bg-white rounded p-5 flex flex-col justify-between lg:w-1/3">
       <!-- Routes -->
-      <div class="grid grid-cols-2 gap-2">
-        <span>{{ t('network.ipAssignmentPools.ipRangeStart') }}</span>
-        <span>{{ t('network.ipAssignmentPools.ipRangeEnd') }}</span>
+      <div class="flex mb-2">
+        <span class="w-full">{{ t('network.ipAssignmentPools.ipRangeStart') }}</span>
+        <span class="w-full">{{ t('network.ipAssignmentPools.ipRangeEnd') }}</span>
+        <span class="w-4"></span>
       </div>
       <div
-        class="grid grid-cols-2 gap-2 mb-2"
+        class="flex mb-2"
         v-for="(ipAssignment, index) in networkData?.ipAssignmentPools"
         :key="index"
       >
         <input
           type="text"
           :placeholder="t('network.ipAssignmentPools.ipRangeStart')"
-          class="focus:outline-none border-b"
+          class="focus:outline-none border-b w-full mr-1"
           name="ipRangeStart"
           v-model="ipAssignment.ipRangeStart"
+          autocomplete="off"
         />
         <input
           type="text"
           :placeholder="t('network.ipAssignmentPools.ipRangeEnd')"
-          class="focus:outline-none border-b"
+          class="focus:outline-none border-b w-full"
           name="ipRangeEnd"
           v-model="ipAssignment.ipRangeEnd"
+          autocomplete="off"
+        />
+        <img
+          src="@/assets/icons/delete.svg"
+          alt="delete IP assignment pool"
+          class="w-4 cursor-pointer"
+          @click="networkData?.ipAssignmentPools!.splice(index, 1)"
         />
       </div>
 

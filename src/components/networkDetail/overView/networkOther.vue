@@ -89,12 +89,22 @@ const changeMulticastLimit = (e: Event) => {
   <!-- Network MTU MulticastLimit enableBroadcast -->
   <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">MTU</p>
-    <input class="text-3xl font-bold" v-model="networkData!.mtu" @change="changeMTU" />
+    <input
+      class="text-3xl font-bold focus:outline-none border-b-1 w-full"
+      type="number"
+      min="1280"
+      v-model="networkData!.mtu"
+      autocomplete="off"
+      @change="changeMTU"
+    />
 
     <p class="text-gray-500 mt-2">{{ t('network.multicastLimit') }}</p>
     <input
-      class="text-ms font-bold"
+      class="text-ms font-bold focus:outline-none border-b-1 w-full"
+      type="number"
+      min="0"
       v-model="networkData!.multicastLimit"
+      autocomplete="off"
       @change="changeMulticastLimit"
     />
 

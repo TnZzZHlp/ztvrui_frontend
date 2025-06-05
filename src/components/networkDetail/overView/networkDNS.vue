@@ -15,7 +15,7 @@ const networkData = computed(() => {
 
 <template>
   <!-- Network DNS -->
-  <div class="p-4 shadow bg-white rounded-2lg">
+  <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <div class="flex justify-between">
       <span class="text-gray-500">DNS</span>
       <button

@@ -39,7 +39,7 @@ const changeIPv4Assignment = (e: Event) => {
 
 <template>
   <!-- Network IPv4 Assignment -->
-  <div class="p-4 shadow bg-white rounded-2lg">
+  <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">{{ t('network.ipv4Assignment.default') }}</p>
     <div class="flex items-center justify-between">
       <span class="text-xl font-bold">

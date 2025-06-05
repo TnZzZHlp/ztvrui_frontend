@@ -37,7 +37,7 @@ const changeNetworkName = (e: Event) => {
 
 <template>
   <!-- Network Name and Id -->
-  <div class="p-4 shadow bg-white rounded-2lg">
+  <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">{{ t('network.name') }}</p>
     <input
       class="text-3xl font-bold border-b-1 block w-full focus:outline-none"

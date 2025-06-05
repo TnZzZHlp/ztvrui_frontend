@@ -15,7 +15,7 @@ const networkData = computed(() => {
 
 <template>
   <!-- Network IP AssignmentPools -->
-  <div class="p-4 shadow bg-white rounded-2lg lg:col-span-2">
+  <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg lg:col-span-2">
     <div class="flex justify-between">
       <span class="text-gray-500">{{ t('network.ipAssignmentPools.default') }}</span>
       <button

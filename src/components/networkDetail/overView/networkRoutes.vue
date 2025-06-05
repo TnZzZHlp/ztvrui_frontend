@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { networksData } from '../networkDetailStorage'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { showModifyNetworkRoutes } from './popupPanel/showModifyNetworkRoutes'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -17,7 +18,15 @@ const networkData = computed(() => {
 <template>
   <!-- Network Routes -->
   <div class="p-4 shadow bg-white rounded-2lg lg:col-span-2">
-    <p class="text-gray-500">{{ t('network.routes') }}</p>
+    <div class="flex justify-between">
+      <span class="text-gray-500">{{ t('network.routes') }}</span>
+      <button
+        @click="showModifyNetworkRoutes(networkData?.id as string)"
+        class="transition-all rounded hover:bg-gray-200 active:bg-gray-400"
+      >
+        <img src="@/assets/icons/setting.svg" alt="Setting" class="h-6 object-contain" />
+      </button>
+    </div>
     <ol class="divide-y divide-gray-200">
       <li class="text-gray-700">
         <div class="flex justify-between">

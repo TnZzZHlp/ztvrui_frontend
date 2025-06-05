@@ -6,9 +6,35 @@ const zh_cn = {
     copied: '已复制',
     copyFailed: '复制失败',
     return: '返回',
+    updateSuccess: '更新成功',
+    updateFailed: '更新失败',
   },
   network: {
     default: '网络',
+    creationTime: '创建时间',
+    dnsDomain: 'DNS 域名',
+    multicastLimit: '多播限制',
+    enableBroadcast: '启用广播',
+    ipAssignmentPools: {
+      default: 'IP 分配池',
+      ipRangeStart: '起始 IP',
+      ipRangeEnd: '结束 IP',
+    },
+    ipv4Assignment: {
+      default: 'IPv4 分配模式',
+      zt: 'ZeroTier 分配',
+    },
+    ipv6Assignment: {
+      default: 'IPv6 分配模式',
+      zt: 'ZeroTier 分配',
+      '6plane': '6plane 分配',
+      rfc4193: 'RFC 4193 分配',
+    },
+    type: {
+      default: '网络类型',
+      public: '公共网络',
+      private: '私有网络',
+    },
     add: {
       default: '添加网络',
       success: '网络添加成功',
@@ -22,6 +48,7 @@ const zh_cn = {
       failed: '网络删除失败',
     },
     name: '网络名称',
+    id: '网络ID',
     enter: '进入网络',
     detail: {
       default: '网络详情',
@@ -29,6 +56,7 @@ const zh_cn = {
       members: '网络成员',
       settings: '网络设置',
       rules: '网络规则',
+      failGet: '获取网络详情失败',
     },
   },
   auth: {

@@ -23,22 +23,12 @@ const router = createRouter({
         {
           path: 'overview',
           name: 'networkOverview',
-          component: () => import('@/components/networkDetail/networkRulesComponent.vue'),
+          component: () => import('@/components/networkDetail/networkOverviewComponent.vue'),
         },
         {
           path: 'members',
           name: 'networkMembers',
           component: () => import('@/components/networkDetail/networkMembersComponent.vue'),
-        },
-        {
-          path: 'settings',
-          name: 'networkSettings',
-          component: () => import('@/components/networkDetail/networkSettingsComponent.vue'),
-        },
-        {
-          path: 'rules',
-          name: 'networkRules',
-          component: () => import('@/components/networkDetail/networkRulesComponent.vue'),
         },
       ],
     },

@@ -1,38 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import sideBarOpenIcon from '@/assets/icons/sidebar-open.svg'
 import sideBarCloseIcon from '@/assets/icons/sidebar-close.svg'
 import returnIcon from '@/assets/icons/return-back-button.svg'
+import { getNetworkOverviewData } from '@/components/networkDetail/networkDetailStorage'
 
 const { t } = useI18n()
 const router = useRouter()
-const showSiderBar = ref(false)
-
+const showSiderBar = ref(window.innerWidth >= 1024)
 const siderBarItems = [
   {
     label: t('network.detail.overview'),
     name: 'networkOverview',
+    action: () => {
+      router.push({ name: 'networkOverview' })
+      showSiderBar.value = false
+    },
   },
   {
     label: t('network.detail.members'),
     name: 'networkMembers',
-  },
-  {
-    label: t('network.detail.settings'),
-    name: 'networkSettings',
-  },
-  {
-    label: t('network.detail.rules'),
-    name: 'networkRules',
+    action: () => {
+      router.push({ name: 'networkMembers' })
+      showSiderBar.value = false
+    },
   },
   {
     label: t('common.return'),
     icon: returnIcon,
     name: 'networks',
+    action: () => {
+      router.push({ name: 'networks' })
+    },
   },
 ]
+
+onBeforeMount(() => {
+  getNetworkOverviewData(router.currentRoute.value.params.networkId as string)
+})
 </script>
 
 <template>
@@ -54,10 +61,10 @@ const siderBarItems = [
       </div>
     </header>
 
-    <div class="flex flex-1">
+    <div class="flex flex-1 overflow-hidden w-full">
       <!-- Sidebar -->
       <section
-        class="h-full shadow transform transition-all duration-300 ease-in-out flex-none overflow-hidden"
+        class="h-full shadow transition-all duration-300 flex-none overflow-hidden"
         :class="showSiderBar ? 'lg:w-64 p-4 w-full' : 'w-0 p-0'"
       >
         <ol>
@@ -78,7 +85,7 @@ const siderBarItems = [
               alt="returnIcon"
               class="h-full w-auto object-contain"
             />
-            <button class="w-full text-left text-nowrap" @click="router.push({ name: item.name })">
+            <button class="w-full text-left text-nowrap" @click="item.action">
               {{ item.label }}
             </button>
           </li>
@@ -86,7 +93,7 @@ const siderBarItems = [
       </section>
 
       <!-- Main Content -->
-      <main class="overflow-hidden">
+      <main class="overflow-scroll w-full h-full">
         <router-view v-slot="{ Component, route }">
           <keep-alive>
             <transition name="fade" mode="out-in">

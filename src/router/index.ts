@@ -1,13 +1,9 @@
+import { check } from '@/api/manage/check'
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
-import HomeView from '../views/HomeView.vue'
-
-import NetworksComponent from '@/components/HomeComponents/Networks.vue'
-import NetworkComponent from '@/components/HomeComponents/Network.vue'
-import UserManageComponent from '@/components/HomeComponents/UserManage.vue'
+import LoginView from '@/views/LoginView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -15,28 +11,42 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/home',
-      name: 'home',
-      component: HomeView,
+      path: '/networks',
+      name: 'networks',
+      component: () => import('@/views/NetworksView.vue'),
+    },
+    {
+      path: '/network/:networkId',
+      name: 'networkDetail',
+      component: () => import('@/views/NetworkDetailView.vue'),
       children: [
         {
-          path: '',
-          name: 'networks',
-          component: NetworksComponent,
+          path: 'overview',
+          name: 'networkOverview',
+          component: () => import('@/components/networkDetail/networkOverview.vue'),
         },
         {
-          path: 'network/:id',
-          name: 'network',
-          component: NetworkComponent,
-        },
-        {
-          path: 'user_manage',
-          name: 'user_manage',
-          component: UserManageComponent,
+          path: 'members',
+          name: 'networkMembers',
+          component: () => import('@/components/networkDetail/networkMembers.vue'),
         },
       ],
     },
   ],
+})
+
+router.beforeEach(async (to) => {
+  await check()
+    .then(() => {
+      if (to.name === 'login') {
+        router.push({ name: 'networks' })
+      }
+    })
+    .catch(() => {
+      if (to.name !== 'login') {
+        router.push({ name: 'login' })
+      }
+    })
 })
 
 export default router

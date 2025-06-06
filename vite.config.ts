@@ -4,11 +4,11 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import vuetify from 'vite-plugin-vuetify'
-
+import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
+
 export default defineConfig({
-  plugins: [vue(), vueJsx(), vueDevTools(), vuetify()],
+  plugins: [vue(), vueJsx(), vueDevTools(), tailwindcss()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -17,11 +17,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/ztapi/': {
-        target: 'http://192.168.3.10:7000',
+        target: 'http://192.168.255.51:7000',
         changeOrigin: true,
       },
       '/api/': {
-        target: 'http://192.168.3.10:7000',
+        target: 'http://192.168.255.51:7000',
         changeOrigin: true,
       },
     },

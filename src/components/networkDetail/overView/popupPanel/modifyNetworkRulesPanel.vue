@@ -97,38 +97,27 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 popup-panel"
-    :class="{ 'popup-panel-leave-active': close }"
-  >
-    <div
-      class="bg-white rounded p-5 flex flex-col justify-between w-9/10 h-8/10 lg:w-2/3 shadow-lg"
-    >
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 popup-panel"
+    :class="{ 'popup-panel-leave-active': close }">
+    <div class="bg-white rounded p-5 flex flex-col justify-between w-9/10 h-8/10 lg:w-2/3 shadow-lg">
       <!-- Rules -->
       <div class="flex flex-col h-full">
-        <span class="w-full">{{ t('network.rules.default') }}</span>
-        <textarea
-          name="rules"
-          id="rules"
-          class="border rounded p-2 h-full resize-none"
-          v-model="originalRules"
-        ></textarea>
+        <div class="flex items-center justify-between">
+          <span class="text-xl text-nowrap">{{ t('network.rules.default') }}</span>
+          <span class="w-full font-bold text-end">{{ t('network.rules.warn') }}</span>
+        </div>
+        <textarea name="rules" id="rules" class="border rounded p-2 h-full resize-none"
+          v-model="originalRules"></textarea>
       </div>
 
       <!-- Actions -->
       <div class="flex justify-between mt-4">
-        <button
-          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
-          @click="closePopupPanel"
-          type="button"
-        >
+        <button class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
+          @click="closePopupPanel" type="button">
           <b>{{ t('common.cancel') }}</b>
         </button>
-        <button
-          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
-          @click="handleClick"
-          type="submit"
-        >
+        <button class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
+          @click="handleClick" type="submit">
           <b>{{ t('common.confirm') }}</b>
         </button>
       </div>
@@ -149,6 +138,7 @@ onBeforeMount(() => {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -158,6 +148,7 @@ onBeforeMount(() => {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

@@ -18,7 +18,7 @@ const { t } = useI18n()
 
 const handleClick = () => {
   // Validate IP range with regex
-  const dns = networkData.value?.dns!
+  const dns = networkData.value?.dns
 
   // Validate CIDR network target and IP next hop
   const ipRegex = /^(25[0-5]|2[0-4]\d|[01]?\d?\d)(\.(25[0-5]|2[0-4]\d|[01]?\d?\d)){3}$/

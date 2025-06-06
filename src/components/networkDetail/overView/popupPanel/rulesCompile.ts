@@ -221,6 +221,7 @@ function _parseNum(n) {
     else n = parseInt(n, 10)
     return typeof n === 'number' && n !== null && !isNaN(n) ? n : -1
   } catch (e) {
+    console.error(e)
     return -1
   }
 }

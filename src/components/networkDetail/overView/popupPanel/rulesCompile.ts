@@ -949,7 +949,7 @@ function compile(src, rules, caps, tags) {
     return null
   } catch (e) {
     console.log(e.stack)
-    return [0, 0, 'Unexpected exception: ' + e.toString()]
+    return [0, 0, ('Unexpected exception: ' + e) as string]
   }
 }
 

@@ -18,6 +18,7 @@ const zh_cn = {
     dnsDomain: 'DNS 域名',
     multicastLimit: '多播限制',
     enableBroadcast: '启用广播',
+    ip: 'IP 地址',
     ipAssignmentPools: {
       default: 'IP 分配池',
       ipRangeStart: '起始 IP',
@@ -74,6 +75,9 @@ const zh_cn = {
     member: {
       error: '获取成员列表失败',
       unnamed: '未命名成员',
+      id: '成员 ID',
+      autoAssignIps: '自动分配 IP',
+      activeBridge: '允许桥接',
     },
   },
   auth: {

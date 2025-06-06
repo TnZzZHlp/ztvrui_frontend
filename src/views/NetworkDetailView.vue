@@ -29,11 +29,11 @@ const siderBarItems = [
         showSiderBar.value = false
       }
     },
-  }
+  },
 ]
 
 onActivated(() => {
-  const id = router.currentRoute.value.params.networkId.toString()
+  const id = router.currentRoute.value.params.networkId as string
   if (id) getNetworkOverviewData(id)
 })
 </script>
@@ -45,8 +45,12 @@ onActivated(() => {
       <div class="h-full flex items-center justify-between px-4">
         <span class="font-bold text-xl cursor-pointer" @click="showSiderBar = !showSiderBar">
           <transition name="fade" mode="out-in">
-            <img :key="showSiderBar ? 'open' : 'close'" :src="showSiderBar ? sideBarCloseIcon : sideBarOpenIcon"
-              alt="Toggle Sidebar" class="inline-block mr-2" />
+            <img
+              :key="showSiderBar ? 'open' : 'close'"
+              :src="showSiderBar ? sideBarCloseIcon : sideBarOpenIcon"
+              alt="Toggle Sidebar"
+              class="inline-block mr-2"
+            />
           </transition>
         </span>
         <span class="font-bold text-xl">{{ t('network.detail.default') }}</span>
@@ -55,24 +59,36 @@ onActivated(() => {
 
     <div class="flex flex-1 overflow-hidden w-full">
       <!-- Sidebar -->
-      <section class="h-full shadow transition-all duration-300 flex-none overflow-hidden"
-        :class="showSiderBar ? 'lg:w-64 p-4 w-full' : 'w-0 p-0'">
+      <section
+        class="h-full shadow transition-all duration-300 flex-none overflow-hidden"
+        :class="showSiderBar ? 'lg:w-64 p-4 w-full' : 'w-0 p-0'"
+      >
         <ol>
-          <li class="mb-2 h-10 rounded flex items-center justify-center pl-2 transition-all cursor-pointer"
-            v-for="(item, index) in siderBarItems" :key="index" :class="{
+          <li
+            class="mb-2 h-10 rounded flex items-center justify-center pl-2 transition-all cursor-pointer"
+            v-for="(item, index) in siderBarItems"
+            :key="index"
+            :class="{
               'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white':
                 router.currentRoute.value.name === item.name,
               'bg-white hover:bg-gray-100 active:bg-gray-200':
                 router.currentRoute.value.name !== item.name,
-            }" @click="item.action">
+            }"
+            @click="item.action"
+          >
             <span class="w-full text-left text-nowrap">
               {{ item.label }}
             </span>
           </li>
           <li
             class="mb-2 h-10 rounded flex items-center justify-center pl-2 transition-all cursor-pointer bg-white hover:bg-gray-100 active:bg-gray-200"
-            @click="router.push({ name: 'networks' })">
-            <img src="@/assets/icons/return-back-button.svg" alt="returnIcon" class="h-full w-auto object-contain" />
+            @click="router.push({ name: 'networks' })"
+          >
+            <img
+              src="@/assets/icons/return-back-button.svg"
+              alt="returnIcon"
+              class="h-full w-auto object-contain"
+            />
             <span class="w-full text-left text-nowrap">
               {{ t('common.return') }}
             </span>

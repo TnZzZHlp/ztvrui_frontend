@@ -11,7 +11,7 @@ const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find((data) => data.id === (route.params.networkId.toString()))
+  return networksData.value.find((data) => data.id === (route.params.networkId as string))
 })
 
 const changeIPv6Assignment = (e: Event, type: string) => {
@@ -34,7 +34,7 @@ const changeIPv6Assignment = (e: Event, type: string) => {
     },
   }
 
-  createOrUpdateNetwork(data.value.id.toString(), payload)
+  createOrUpdateNetwork(data.value.id as string, payload)
     .then(() => {
       showSnackBar(t('common.updateSuccess'), 'success')
     })
@@ -48,7 +48,11 @@ const changeIPv6Assignment = (e: Event, type: string) => {
   <!-- Network IPv6 Assignment -->
   <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">{{ t('network.ipv6Assignment.default') }}</p>
-    <div class="flex items-center justify-between" v-for="(value, item) in networkData?.v6AssignMode" :key="item">
+    <div
+      class="flex items-center justify-between"
+      v-for="(value, item) in networkData?.v6AssignMode"
+      :key="item"
+    >
       <span class="text-xl font-bold">
         {{ t(`network.ipv6Assignment.${item}`) }}
       </span>

@@ -8,7 +8,7 @@ const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find((data) => data.id === (route.params.networkId.toString()))
+  return networksData.value.find((data) => data.id === (route.params.networkId as string))
 })
 </script>
 

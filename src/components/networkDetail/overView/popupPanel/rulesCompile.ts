@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+/* tslint:disable */
 // @ts-nocheck
 // Names for bits in characteristics -- 0==LSB, 63==MSB
 const CHARACTERISTIC_BITS = {

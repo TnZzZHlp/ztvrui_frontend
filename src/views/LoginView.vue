@@ -15,8 +15,8 @@ const Login = (e: Event) => {
   const formData = new FormData(e.target as HTMLFormElement)
 
   // Extract username and password
-  const username = formData.get('username') as string
-  const password = formData.get('password') as string
+  const username = formData.get('username').toString()
+  const password = formData.get('password').toString()
 
   // Call the login function from the API
   login({ username, password })
@@ -44,13 +44,8 @@ const Login = (e: Event) => {
             t('auth.username')
           }}</label>
           <div class="mt-2">
-            <input
-              type="username"
-              name="username"
-              id="username"
-              autocomplete="username"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-            />
+            <input type="username" name="username" id="username" autocomplete="username"
+              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
           </div>
         </div>
 
@@ -66,21 +61,14 @@ const Login = (e: Event) => {
             </div>
           </div>
           <div class="mt-2">
-            <input
-              type="password"
-              name="password"
-              id="password"
-              autocomplete="current-password"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-            />
+            <input type="password" name="password" id="password" autocomplete="current-password"
+              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
           </div>
         </div>
 
         <div>
-          <button
-            type="submit"
-            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
+          <button type="submit"
+            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             {{ t('auth.login') }}
           </button>
         </div>

@@ -9,7 +9,7 @@ const { t } = useI18n()
 
 const route = useRoute()
 const networkData = computed(() => {
-  return networksData.value.find((data) => data.id === (route.params.networkId as string))
+  return networksData.value.find((data) => data.id === (route.params.networkId.toString()))
 })
 </script>
 
@@ -18,10 +18,8 @@ const networkData = computed(() => {
   <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <div class="flex justify-between">
       <span class="text-gray-500">DNS</span>
-      <button
-        @click="showModifyDNS(networkData?.id as string)"
-        class="transition-all rounded hover:bg-gray-200 active:bg-gray-400"
-      >
+      <button @click="showModifyDNS(networkData?.id.toString())"
+        class="transition-all rounded hover:bg-gray-200 active:bg-gray-400">
         <img src="@/assets/icons/setting.svg" alt="Setting" class="h-6 object-contain" />
       </button>
     </div>

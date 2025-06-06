@@ -11,7 +11,7 @@ const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find((data) => data.id === (route.params.networkId as string))
+  return networksData.value.find((data) => data.id === (route.params.networkId.toString()))
 })
 
 const changeEnableBroadcast = (e: Event) => {
@@ -25,7 +25,7 @@ const changeEnableBroadcast = (e: Event) => {
     enableBroadcast: checked,
   }
 
-  createOrUpdateNetwork(data.id as string, payload)
+  createOrUpdateNetwork(data.id.toString(), payload)
     .then(() => {
       showSnackBar(t('common.updateSuccess'), 'success')
     })
@@ -50,7 +50,7 @@ const changeMTU = (e: Event) => {
     mtu,
   }
 
-  createOrUpdateNetwork(data.id as string, payload)
+  createOrUpdateNetwork(data.id.toString(), payload)
     .then(() => {
       showSnackBar(t('common.updateSuccess'), 'success')
     })
@@ -75,7 +75,7 @@ const changeMulticastLimit = (e: Event) => {
     multicastLimit,
   }
 
-  createOrUpdateNetwork(data.id as string, payload)
+  createOrUpdateNetwork(data.id.toString(), payload)
     .then(() => {
       showSnackBar(t('common.updateSuccess'), 'success')
     })
@@ -89,30 +89,14 @@ const changeMulticastLimit = (e: Event) => {
   <!-- Network MTU MulticastLimit enableBroadcast -->
   <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">MTU</p>
-    <input
-      class="text-3xl font-bold focus:outline-none border-b-1 w-full"
-      type="number"
-      min="1280"
-      v-model="networkData!.mtu"
-      autocomplete="off"
-      @change="changeMTU"
-    />
+    <input class="text-3xl font-bold focus:outline-none border-b-1 w-full" type="number" min="1280"
+      v-model="networkData!.mtu" autocomplete="off" @change="changeMTU" />
 
     <p class="text-gray-500 mt-2">{{ t('network.multicastLimit') }}</p>
-    <input
-      class="text-ms font-bold focus:outline-none border-b-1 w-full"
-      type="number"
-      min="0"
-      v-model="networkData!.multicastLimit"
-      autocomplete="off"
-      @change="changeMulticastLimit"
-    />
+    <input class="text-ms font-bold focus:outline-none border-b-1 w-full" type="number" min="0"
+      v-model="networkData!.multicastLimit" autocomplete="off" @change="changeMulticastLimit" />
 
     <p class="text-gray-500 mt-2">{{ t('network.enableBroadcast') }}</p>
-    <input
-      type="checkbox"
-      @change="changeEnableBroadcast"
-      :checked="networkData?.enableBroadcast"
-    />
+    <input type="checkbox" @change="changeEnableBroadcast" :checked="networkData?.enableBroadcast" />
   </div>
 </template>

@@ -33,7 +33,7 @@ const handleClick = () => {
   }
 
   // Submit changes
-  createOrUpdateNetwork(networkData.value?.id as string, {
+  createOrUpdateNetwork(networkData.value?.id.toString(), {
     dns: networkData.value?.dns,
     ...networkData.value,
   })
@@ -84,58 +84,35 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 popup-panel"
-    :class="{ 'popup-panel-leave-active': close }"
-  >
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 popup-panel"
+    :class="{ 'popup-panel-leave-active': close }">
     <div class="bg-white rounded p-5 flex flex-col justify-between lg:w-1/3">
       <!-- DNS -->
       <div class="flex flex-col mb-1">
         <span class="text-gray-500">{{ t('network.dns.domain') }}</span>
-        <input
-          type="text"
-          class="border-b-1 focus:outline-none"
-          v-model="networkData.dns!.domain"
-        />
+        <input type="text" class="border-b-1 focus:outline-none" v-model="networkData.dns!.domain" />
       </div>
 
       <span class="text-gray-500">{{ t('network.dns.servers') }}</span>
       <div class="flex w-full" v-for="(_, index) in networkData.dns!.servers" :key="index">
-        <input
-          type="text"
-          class="border-b-1 focus:outline-none w-full"
-          v-model="networkData.dns!.servers[index]"
-          autocomplete="off"
-        />
-        <img
-          src="@/assets/icons/delete.svg"
-          alt="delete DNS server"
-          class="w-4 h-4 cursor-pointer ml-2"
-          @click="networkData?.dns!.servers.splice(index, 1)"
-        />
+        <input type="text" class="border-b-1 focus:outline-none w-full" v-model="networkData.dns!.servers[index]"
+          autocomplete="off" />
+        <img src="@/assets/icons/delete.svg" alt="delete DNS server" class="w-4 h-4 cursor-pointer ml-2"
+          @click="networkData?.dns!.servers.splice(index, 1)" />
       </div>
 
       <!-- Actions -->
       <div class="flex justify-between mt-4">
-        <button
-          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
-          @click="closePopupPanel"
-          type="button"
-        >
+        <button class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
+          @click="closePopupPanel" type="button">
           <b>{{ t('common.cancel') }}</b>
         </button>
-        <button
-          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
-          @click="networkData?.dns!.servers.push('')"
-          type="button"
-        >
+        <button class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
+          @click="networkData?.dns!.servers.push('')" type="button">
           <b>{{ t('common.add') }}</b>
         </button>
-        <button
-          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
-          @click="handleClick"
-          type="submit"
-        >
+        <button class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
+          @click="handleClick" type="submit">
           <b>{{ t('common.confirm') }}</b>
         </button>
       </div>
@@ -156,6 +133,7 @@ onBeforeMount(() => {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -165,6 +143,7 @@ onBeforeMount(() => {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

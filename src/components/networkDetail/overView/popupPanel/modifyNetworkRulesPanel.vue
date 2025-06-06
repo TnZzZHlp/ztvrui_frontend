@@ -13,7 +13,7 @@ const { container, networkId } = defineProps({
   networkId: String,
 })
 const networkData = ref(
-  _.cloneDeep(networksData.value.find((data) => data.id === (networkId as string))),
+  _.cloneDeep(networksData.value.find((data) => data.id === (networkId.toString()))),
 )
 
 const close = ref(false)
@@ -59,7 +59,7 @@ const handleClick = () => {
   }
 
   // Update network data
-  createOrUpdateNetwork(networkData.value?.id as string, {
+  createOrUpdateNetwork(networkData.value?.id.toString(), {
     ...networkData.value,
     name: networkData.value?.name!,
     rules: rules,

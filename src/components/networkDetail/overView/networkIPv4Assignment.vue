@@ -11,7 +11,7 @@ const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find((data) => data.id === (route.params.networkId as string))
+  return networksData.value.find((data) => data.id === (route.params.networkId.toString()))
 })
 
 const changeIPv4Assignment = (e: Event) => {
@@ -27,7 +27,7 @@ const changeIPv4Assignment = (e: Event) => {
     },
   }
 
-  createOrUpdateNetwork(data.id as string, payload)
+  createOrUpdateNetwork(data.id.toString(), payload)
     .then(() => {
       showSnackBar(t('common.updateSuccess'), 'success')
     })
@@ -45,11 +45,7 @@ const changeIPv4Assignment = (e: Event) => {
       <span class="text-xl font-bold">
         {{ t('network.ipv4Assignment.zt') }}
       </span>
-      <input
-        type="checkbox"
-        @change="changeIPv4Assignment"
-        :checked="networkData?.v4AssignMode?.zt"
-      />
+      <input type="checkbox" @change="changeIPv4Assignment" :checked="networkData?.v4AssignMode?.zt" />
     </div>
   </div>
 </template>

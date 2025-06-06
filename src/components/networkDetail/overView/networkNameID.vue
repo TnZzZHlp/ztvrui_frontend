@@ -12,7 +12,7 @@ const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find((data) => data.id === (route.params.networkId as string))
+  return networksData.value.find((data) => data.id === (route.params.networkId.toString()))
 })
 
 const changeNetworkName = (e: Event) => {
@@ -25,7 +25,7 @@ const changeNetworkName = (e: Event) => {
     name: newName,
   }
 
-  createOrUpdateNetwork(data.id as string, payload)
+  createOrUpdateNetwork(data.id.toString(), payload)
     .then(() => {
       showSnackBar(t('common.updateSuccess'), 'success')
     })
@@ -39,20 +39,11 @@ const changeNetworkName = (e: Event) => {
   <!-- Network Name and Id -->
   <div v-if="networkData" class="p-4 shadow bg-white rounded-2lg">
     <p class="text-gray-500">{{ t('network.name') }}</p>
-    <input
-      class="text-3xl font-bold border-b-1 block w-full focus:outline-none"
-      type="text"
-      placeholder="Network Name"
-      name="Network Name"
-      @change="changeNetworkName"
-      :value="networkData?.name"
-      autocomplete="off"
-    />
+    <input class="text-3xl font-bold border-b-1 block w-full focus:outline-none" type="text" placeholder="Network Name"
+      name="Network Name" @change="changeNetworkName" :value="networkData?.name" autocomplete="off" />
     <p class="text-gray-500 mt-2">{{ t('network.id') }}</p>
-    <button
-      class="hover:bg-gray-100 active:bg-gray-200 px-2 py-1 rounded text-gray-700 transition-all"
-      @click="copyToClipboard(networkData?.id as string)"
-    >
+    <button class="hover:bg-gray-100 active:bg-gray-200 px-2 py-1 rounded text-gray-700 transition-all"
+      @click="copyToClipboard(networkData?.id.toString())">
       {{ networkData?.id }}
     </button>
   </div>

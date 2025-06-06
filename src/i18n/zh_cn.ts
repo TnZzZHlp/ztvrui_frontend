@@ -71,6 +71,10 @@ const zh_cn = {
       default: '网络规则',
       warn: '网络规则将会在保存在浏览器中后转换成 ZeroTier 的规则格式，一旦清除浏览器缓存原文将会丢失，请注意备份',
     },
+    member: {
+      error: '获取成员列表失败',
+      unnamed: '未命名成员',
+    },
   },
   auth: {
     username: '用户名',

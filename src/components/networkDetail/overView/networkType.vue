@@ -11,7 +11,7 @@ const route = useRoute()
 const { t } = useI18n()
 
 const networkData = computed(() => {
-  return networksData.value.find((data) => data.id === (route.params.networkId as string))
+  return networksData.value.find((data) => data.id === (route.params.networkId.toString()))
 })
 
 const changeNetworkType = (e: Event) => {
@@ -24,7 +24,7 @@ const changeNetworkType = (e: Event) => {
     private: checked,
   }
 
-  createOrUpdateNetwork(data.id as string, payload)
+  createOrUpdateNetwork(data.id.toString(), payload)
     .then(() => {
       const data = networkData.value
       if (!data) return

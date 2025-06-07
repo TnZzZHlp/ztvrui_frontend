@@ -32,7 +32,7 @@ const networkData = computed(() => {
             {{ t('network.default') }}
           </p>
           <p class="text-sm text-gray-500 w-full">
-            {{ t('network.via') }}
+            {{ t('network.via.default') }}
           </p>
         </div>
       </li>
@@ -42,7 +42,7 @@ const networkData = computed(() => {
             {{ route.target }}
           </p>
           <p class="w-full">
-            {{ route.via }}
+            {{ route.via ?? 'LAN' }}
           </p>
         </div>
       </li>

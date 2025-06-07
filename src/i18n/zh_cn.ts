@@ -12,7 +12,10 @@ const zh_cn = {
   },
   network: {
     default: '网络',
-    via: '下一跳',
+    via: {
+      default: '下一跳',
+      notice: '留空则为LAN网络',
+    },
     mtuTooLow: 'MTU 过低, 请设置为 1280 或更高',
     creationTime: '创建时间',
     dnsDomain: 'DNS 域名',

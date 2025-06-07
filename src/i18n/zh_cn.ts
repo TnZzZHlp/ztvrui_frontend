@@ -85,8 +85,9 @@ const zh_cn = {
     password: '密码',
     login: '登录',
     logout: '退出登录',
-    login_failed: '登录失败，请检查用户名和密码',
-    forgot_password: '忘记密码',
+    loginFailed: '登录失败，请检查用户名和密码',
+    forgotPassword: '忘记密码',
+    modifyInfo: '修改信息',
   },
 }
 

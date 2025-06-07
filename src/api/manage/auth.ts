@@ -23,3 +23,17 @@ export function logout(): Promise<void> {
     }
   })
 }
+
+export function editprofile(authInfo: Auth): Promise<void> {
+  return fetch(`/api/editprofile`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(authInfo),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Error editing profile: ${response.statusText}`)
+    }
+  })
+}

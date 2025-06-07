@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import NetworksComponent from '@/components/networks/networkList.vue'
 import { showAddNetworkPanel } from '@/components/networks/showAddNetworkPopupPanel'
+import { showModifyInfoPanel } from '@/components/networks/showModifyInfoPopupPanel'
 const { t } = useI18n()
 </script>
 
@@ -12,6 +13,12 @@ const { t } = useI18n()
       <div class="h-full flex items-center justify-between px-4">
         <span class="font-bold text-xl">{{ t('network.default') }}</span>
         <div>
+          <button
+            class="mx-2 px-4 py-2 hover:bg-gray-200 active:bg-gray-300 shadow-sm/20 rounded"
+            @click="showModifyInfoPanel"
+          >
+            {{ t('auth.modifyInfo') }}
+          </button>
           <button
             class="mx-2 px-4 py-2 hover:bg-gray-200 active:bg-gray-300 shadow-sm/20 rounded"
             @click="showAddNetworkPanel"

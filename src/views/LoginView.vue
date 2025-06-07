@@ -24,7 +24,7 @@ const Login = (e: Event) => {
       router.push({ name: 'networks' })
     })
     .catch((_) => {
-      showSnackBar(t('auth.login_failed'), 'error')
+      showSnackBar(t('auth.loginFailed'), 'error')
     })
 }
 </script>
@@ -61,7 +61,7 @@ const Login = (e: Event) => {
             }}</label>
             <div class="text-sm">
               <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">{{
-                t('auth.forgot_password')
+                t('auth.forgotPassword')
               }}</a>
             </div>
           </div>

@@ -1,9 +1,10 @@
 const zh_cn = {
   auth: {
-    forgot_password: '忘记密码',
+    forgotPassword: '忘记密码',
     login: '登录',
-    login_failed: '登录失败，请检查用户名和密码',
+    loginFailed: '登录失败，请检查用户名和密码',
     logout: '退出登录',
+    modifyInfo: '修改信息',
     password: '密码',
     username: '用户名',
   },
@@ -11,20 +12,14 @@ const zh_cn = {
     add: '增加',
     cancel: '取消',
     confirm: '确认',
-    copyFailed: '复制失败',
     copied: '已复制',
+    copyFailed: '复制失败',
     return: '返回',
     submit: '提交',
     updateFailed: '更新失败',
     updateSuccess: '更新成功',
   },
   network: {
-    add: {
-      default: '添加网络',
-      failed: '网络添加失败',
-      needName: '网络名称不能为空',
-      success: '网络添加成功',
-    },
     creationTime: '创建时间',
     default: '网络',
     delete: {
@@ -69,6 +64,9 @@ const zh_cn = {
     member: {
       activeBridge: '允许桥接',
       autoAssignIps: '自动分配 IP',
+      deleteConfirm: '确认删除成员？该操作无法恢复',
+      deleteFailed: '成员删除失败',
+      deleteSuccess: '成员删除成功',
       error: '获取成员列表失败',
       id: '成员 ID',
       unnamed: '未命名成员',
@@ -81,12 +79,10 @@ const zh_cn = {
       default: '网络规则',
       warn: '网络规则将会在保存在浏览器中后转换成 ZeroTier 的规则格式，一旦清除浏览器缓存原文将会丢失，请注意备份',
     },
-    type: {
-      default: '网络类型',
-      private: '私有网络',
-      public: '公共网络',
+    via: {
+      default: '下一跳',
+      notice: '留空则为LAN网络',
     },
-    via: '下一跳',
   },
 }
 

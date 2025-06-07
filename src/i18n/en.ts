@@ -1,9 +1,10 @@
 const en = {
   auth: {
-    forgot_password: 'Forgot Password',
+    forgotPassword: 'Forgot Password',
     login: 'Login',
-    login_failed: 'Login failed, please check username and password',
+    loginFailed: 'Login failed, please check username and password',
     logout: 'Logout',
+    modifyInfo: 'Modify Information',
     password: 'Password',
     username: 'Username',
   },
@@ -11,26 +12,20 @@ const en = {
     add: 'Add',
     cancel: 'Cancel',
     confirm: 'Confirm',
-    copyFailed: 'Copy failed',
     copied: 'Copied',
+    copyFailed: 'Copy failed',
     return: 'Return',
     submit: 'Submit',
     updateFailed: 'Update failed',
     updateSuccess: 'Update successful',
   },
   network: {
-    add: {
-      default: 'Add Network',
-      failed: 'Failed to add network',
-      needName: 'Network name cannot be empty',
-      success: 'Network added successfully',
-    },
     creationTime: 'Creation Time',
     default: 'Network',
     delete: {
       default: 'Delete Network',
-      failed: 'Failed to delete network',
-      notice: 'Confirm delete network? This operation cannot be undone',
+      failed: 'Network deletion failed',
+      notice: 'Confirm delete network? This operation cannot be recovered',
       success: 'Network deleted successfully',
     },
     detail: {
@@ -69,6 +64,9 @@ const en = {
     member: {
       activeBridge: 'Allow Bridging',
       autoAssignIps: 'Auto-assign IPs',
+      deleteConfirm: 'Confirm delete member? This operation cannot be recovered',
+      deleteFailed: 'Member deletion failed',
+      deleteSuccess: 'Member deleted successfully',
       error: 'Failed to get member list',
       id: 'Member ID',
       unnamed: 'Unnamed Member',
@@ -79,14 +77,12 @@ const en = {
     routes: 'Routes',
     rules: {
       default: 'Network Rules',
-      warn: 'Network rules will be converted to ZeroTier rule format after being saved in the browser. Once the browser cache is cleared, the original text will be lost. Please back it up.',
+      warn: 'Network rules will be converted to ZeroTier rule format after being saved in browser. Once browser cache is cleared, the original text will be lost. Please remember to backup',
     },
-    type: {
-      default: 'Network Type',
-      private: 'Private Network',
-      public: 'Public Network',
+    via: {
+      default: 'Next Hop',
+      notice: 'Leave empty for LAN network',
     },
-    via: 'Next Hop',
   },
 }
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import NetworkNameIdComponent from './overView/networkNameId.vue'
-import NetworkCreationTimeComponent from './overView/networkCreateTime.vue'
-import NetworkTypeComponent from './overView/networkType.vue'
-import NetworkMTUComponent from './overView/networkOther.vue'
-import NetworkIPAssignmentPoolsComponent from './overView/networkIPAssignmentPools.vue'
-import NetworkIPv4AssignmentComponent from './overView/networkIPv4Assignment.vue'
-import NetworkIPv6AssignmentComponent from './overView/networkIPv6Assignment.vue'
-import NetworkDNSComponent from './overView/networkDNS.vue'
-import NetworkRoutesComponent from './overView/networkRoutes.vue'
-import NetworkRulesComponent from './overView/networkRules.vue'
+import NetworkNameIdComponent from './overview/networkNameId.vue'
+import NetworkCreationTimeComponent from './overview/networkCreateTime.vue'
+import NetworkTypeComponent from './overview/networkType.vue'
+import NetworkMTUComponent from './overview/networkOther.vue'
+import NetworkIPAssignmentPoolsComponent from './overview/networkIPAssignmentPools.vue'
+import NetworkIPv4AssignmentComponent from './overview/networkIPv4Assignment.vue'
+import NetworkIPv6AssignmentComponent from './overview/networkIPv6Assignment.vue'
+import NetworkDNSComponent from './overview/networkDNS.vue'
+import NetworkRoutesComponent from './overview/networkRoutes.vue'
+import NetworkRulesComponent from './overview/networkRules.vue'
 </script>
 
 <template>

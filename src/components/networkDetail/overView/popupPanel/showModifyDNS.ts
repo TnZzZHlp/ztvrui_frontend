@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import modifyNetworkDNSPanel from '@/components/networkDetail/overView/popupPanel/modifyNetworkDNSPanel.vue'
+import modifyNetworkDNSPanel from '@/components/networkDetail/overview/popupPanel/modifyNetworkDNSPanel.vue'
 import i18n from '@/i18n'
 export function showModifyDNS(networkId: string) {
   const container = document.createElement('div')

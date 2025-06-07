@@ -25,10 +25,9 @@ const handleClick = () => {
   // Validate CIDR network target and IP next hop
   const cidrRegex =
     /^(25[0-5]|2[0-4]\d|[01]?\d?\d)(\.(25[0-5]|2[0-4]\d|[01]?\d?\d)){3}\/([0-9]|[12]\d|3[0-2])$/
-  const ipRegex = /^(25[0-5]|2[0-4]\d|[01]?\d?\d)(\.(25[0-5]|2[0-4]\d|[01]?\d?\d)){3}$/
 
   const isValid = routes.every((route) => {
-    return cidrRegex.test(route.target) && ipRegex.test(route.via)
+    return cidrRegex.test(route.target)
   })
 
   if (!isValid) {
@@ -73,7 +72,7 @@ const closePopupPanel = () => {
       <!-- Routes -->
       <div class="flex">
         <span class="w-full">{{ t('network.default') }}</span>
-        <span class="w-full">{{ t('network.via') }}</span>
+        <span class="w-full">{{ t('network.via.default') }}</span>
         <span class="w-4"></span>
       </div>
       <div class="flex" v-for="(route, index) in networkData?.routes" :key="index">
@@ -87,7 +86,7 @@ const closePopupPanel = () => {
         />
         <input
           type="text"
-          :placeholder="t('network.via')"
+          :placeholder="t('network.via.notice')"
           class="focus:outline-none border-b w-full"
           name="via"
           v-model="route.via"

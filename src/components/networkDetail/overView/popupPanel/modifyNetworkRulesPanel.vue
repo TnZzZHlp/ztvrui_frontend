@@ -59,9 +59,9 @@ const handleClick = () => {
   }
 
   // Update network data
-  createOrUpdateNetwork(networkData.value?.id! as string, {
+  createOrUpdateNetwork(networkData.value?.id as string, {
     ...networkData.value,
-    name: networkData.value?.name!,
+    name: networkData.value?.name as string,
     rules: rules,
     tags: tagsArray,
     capabilities: capsArray,

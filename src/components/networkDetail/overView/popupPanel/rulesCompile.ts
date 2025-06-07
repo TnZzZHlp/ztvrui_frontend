@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+/* tslint:disable */
 // @ts-nocheck
 // Names for bits in characteristics -- 0==LSB, 63==MSB
 const CHARACTERISTIC_BITS = {
@@ -220,6 +221,7 @@ function _parseNum(n) {
     else n = parseInt(n, 10)
     return typeof n === 'number' && n !== null && !isNaN(n) ? n : -1
   } catch (e) {
+    console.error(e)
     return -1
   }
 }

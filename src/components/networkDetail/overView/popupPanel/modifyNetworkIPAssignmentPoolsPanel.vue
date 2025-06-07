@@ -35,7 +35,7 @@ const handleClick = () => {
 
   // Submit changes
   createOrUpdateNetwork(networkData.value?.id as string, {
-    name: networkData.value?.name!,
+    name: networkData.value?.name as string,
     ...networkData.value,
     ipAssignmentPools: networkData.value?.ipAssignmentPools,
   })

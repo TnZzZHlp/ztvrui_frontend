@@ -1,5 +1,14 @@
 const en = {
+  auth: {
+    forgot_password: 'Forgot Password',
+    login: 'Login',
+    login_failed: 'Login failed, please check username and password',
+    logout: 'Logout',
+    password: 'Password',
+    username: 'Username',
+  },
   common: {
+    add: 'Add',
     cancel: 'Cancel',
     confirm: 'Confirm',
     submit: 'Submit',
@@ -11,6 +20,13 @@ const en = {
     updateFailed: 'Update failed',
   },
   network: {
+    add: {
+      default: 'Add Network',
+      failed: 'Failed to add network',
+      needName: 'Network name cannot be empty',
+      success: 'Network added successfully',
+    },
+    creationTime: 'Creation Time',
     default: 'Network',
     via: {
       default: 'Via',

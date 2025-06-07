@@ -38,13 +38,6 @@ const closePopupPanel = () => {
       </span>
       <div class="flex justify-end mt-4">
         <button
-          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
-          @click="closePopupPanel"
-          type="button"
-        >
-          <b>{{ t('common.cancel') }}</b>
-        </button>
-        <button
           class="mx-2 px-4 py-2 shadow-sm/20 rounded transition-all"
           :class="{
             'bg-red-500 text-white  hover:bg-red-600 active:bg-red-800': type === 'warn',
@@ -54,6 +47,13 @@ const closePopupPanel = () => {
           type="button"
         >
           <b>{{ t('common.confirm') }}</b>
+        </button>
+        <button
+          class="mx-2 px-4 py-2 shadow-sm/20 rounded hover:bg-gray-200 transition-all active:bg-gray-300"
+          @click="closePopupPanel"
+          type="button"
+        >
+          <b>{{ t('common.cancel') }}</b>
         </button>
       </div>
     </div>

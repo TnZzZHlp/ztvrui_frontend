@@ -3,6 +3,7 @@ import {
   createOrUpdateNetworkMember,
   getNetworkMemberById,
   listNetworkMemberIds,
+  deleteNetworkMember,
 } from '@/api/zerotier/controller'
 import type { ControllerNetworkMemberInfo } from '@/types/zerotier/controller'
 import { showSnackBar } from '@/utils/showSnackBar'
@@ -13,8 +14,10 @@ import { copyToClipboard } from '@/utils/copyToClipboard'
 import yesIcon from '@/assets/icons/yes.svg'
 import noIcon from '@/assets/icons/no.svg'
 import settingIcon from '@/assets/icons/setting.svg'
+import deleteIcon from '@/assets/icons/delete.svg'
 import { showModifyMemberIP } from './member/showModifyMember'
 import { eventBus } from '@/utils/eventBus'
+import { showConfirmPopupPanel } from '@/utils/showConfirmPopupPanel'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -110,13 +113,36 @@ onBeforeMount(() => {
             autocomplete="off"
             @change="changeMemberSettings(members[index])"
           />
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <!-- Edit Button -->
             <button
-              class="cursor-pointer rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-400 active:bg-gray-300 transition-all mr-1"
+              class="cursor-pointer rounded-full w-8 h-8 flex items-center justify-center bg-gray-300 hover:bg-gray-400 active:bg-gray-300 transition-all"
               @click="showModifyMemberIP(member)"
             >
               <img :src="settingIcon" alt="editMember" class="w-5 h-5" />
+            </button>
+
+            <!-- Delete Button -->
+            <button
+              class="cursor-pointer rounded-full w-8 h-8 flex items-center justify-center bg-red-500 hover:bg-red-600 active:bg-red-700 transition-all"
+              @click="
+                showConfirmPopupPanel(
+                  () => {
+                    deleteNetworkMember(member.nwid, member.id)
+                      .then(() => {
+                        showSnackBar(t('network.member.deleteSuccess'), 'success')
+                        members.splice(index, 1) // Remove member from list
+                      })
+                      .catch((err) => {
+                        showSnackBar(t('network.member.deleteFailed') + err, 'error')
+                      })
+                  },
+                  t('network.member.deleteConfirm'),
+                  'warn',
+                )
+              "
+            >
+              <img :src="deleteIcon" alt="editMember" class="filter brightness-0 invert w-3 h-3" />
             </button>
 
             <!-- Authorization Button -->
@@ -133,7 +159,7 @@ onBeforeMount(() => {
               <img
                 :src="member.authorized ? yesIcon : noIcon"
                 alt="changeAuthorization"
-                class="filter brightness-0 invert w-5 h-5"
+                class="filter brightness-0 invert w-3 h-3"
               />
             </button>
           </div>

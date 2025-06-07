@@ -20,6 +20,9 @@ const en = {
     updateSuccess: 'Update successful',
   },
   network: {
+    add: {
+      default: 'Add Network',
+    },
     creationTime: 'Creation Time',
     default: 'Network',
     delete: {
@@ -78,6 +81,11 @@ const en = {
     rules: {
       default: 'Network Rules',
       warn: 'Network rules will be converted to ZeroTier rule format after being saved in browser. Once browser cache is cleared, the original text will be lost. Please remember to backup',
+    },
+    type: {
+      default: 'Network Type',
+      private: 'Private Network',
+      public: 'Public Network',
     },
     via: {
       default: 'Next Hop',

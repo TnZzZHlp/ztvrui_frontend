@@ -20,6 +20,9 @@ const zh_cn = {
     updateSuccess: '更新成功',
   },
   network: {
+    add: {
+      default: '添加网络',
+    },
     creationTime: '创建时间',
     default: '网络',
     delete: {
@@ -78,6 +81,11 @@ const zh_cn = {
     rules: {
       default: '网络规则',
       warn: '网络规则将会在保存在浏览器中后转换成 ZeroTier 的规则格式，一旦清除浏览器缓存原文将会丢失，请注意备份',
+    },
+    type: {
+      default: '网络类型',
+      private: '私有网络',
+      public: '公共网络',
     },
     via: {
       default: '下一跳',
